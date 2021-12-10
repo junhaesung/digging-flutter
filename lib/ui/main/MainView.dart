@@ -20,6 +20,7 @@ class MainView extends StatelessWidget {
           ],
         ),
         backgroundColor: Color(0xff83daff),
+        elevation: 0.0,
       ),
       body: SafeArea(
         child: ListView(
