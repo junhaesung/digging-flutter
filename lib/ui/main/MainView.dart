@@ -39,7 +39,8 @@ class MainView extends StatelessWidget {
     );
   }
 
-  BottomNavigationBar getBottomNavigationBar() => BottomNavigationBar(
+  BottomNavigationBar getBottomNavigationBar() =>
+      BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -132,7 +133,8 @@ class MainView extends StatelessWidget {
   List<Widget> getBrandWidgets() =>
       Brand.getBrands().map((e) => toBrandWidget(e)).toList();
 
-  Widget toBrandWidget(Brand brand) => Padding(
+  Widget toBrandWidget(Brand brand) =>
+      Padding(
         padding: const EdgeInsets.all(8.0),
         child: ClipOval(
           child: Image.network(
@@ -145,13 +147,14 @@ class MainView extends StatelessWidget {
       );
 
   /// 디깅의 추천 향수
-  Widget getRecommendedPerfumeWidget() => Container(
+  Widget getRecommendedPerfumeWidget() =>
+      Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0x3383d9ff), Color(0x33c2b7e4)],
-        )),
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0x3383d9ff), Color(0x33c2b7e4)],
+            )),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -181,7 +184,8 @@ class MainView extends StatelessWidget {
         ),
       );
 
-  Widget toPerfumeWidget(Perfume perfume) => Container(
+  Widget toPerfumeWidget(Perfume perfume) =>
+      Container(
         width: 90,
         child: Column(
           children: [
@@ -204,10 +208,8 @@ class MainView extends StatelessWidget {
         ),
       );
 
-  Widget getRecommendedItem(
-    String title,
-    List<Perfume> perfumes,
-  ) =>
+  Widget getRecommendedItem(String title,
+      List<Perfume> perfumes,) =>
       Padding(
         padding: const EdgeInsets.only(
           left: 20,
@@ -231,17 +233,27 @@ class MainView extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 30),
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Color(0xffc7c7c7),
+                          ),
+                        ],
                       ),
                     ),
                     Row(
                       children:
-                          perfumes.map((e) => toPerfumeWidget(e)).toList(),
+                      perfumes.map((e) => toPerfumeWidget(e)).toList(),
                     ),
                   ],
                 ),
