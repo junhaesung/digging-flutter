@@ -27,7 +27,7 @@ class MainView extends StatelessWidget {
             // For you
             getForYouWidget(context, Perfume.getPerfumes(1)),
             // 인기브랜드
-            getPopularBrandWidget(),
+            getPopularBrandWidget(context),
             // 디깅의 추천 향수
             getRecommendedPerfumeWidget(),
             // 내가 좋아할 노트
@@ -166,7 +166,7 @@ class MainView extends StatelessWidget {
       );
 
   /// 인기브랜드
-  Widget getPopularBrandWidget() {
+  Widget getPopularBrandWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
         top: 30,
@@ -190,7 +190,7 @@ class MainView extends StatelessWidget {
                 height: 86,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  children: getBrandWidgets(),
+                  children: getBrandWidgets(context),
                 ),
               ),
             ),
@@ -200,20 +200,25 @@ class MainView extends StatelessWidget {
     );
   }
 
-  List<Widget> getBrandWidgets() =>
-      Brand.getBrands().map((e) => toBrandWidget(e)).toList();
+  List<Widget> getBrandWidgets(BuildContext context) =>
+      Brand.getBrands().map((e) => toBrandWidget(context, e)).toList();
 
-  Widget toBrandWidget(Brand brand) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ClipOval(
-          child: Image.network(
-            brand.logoImageUrl,
-            fit: BoxFit.fitWidth,
-            height: 70,
-            width: 70,
+  Widget toBrandWidget(BuildContext context, Brand brand) => GestureDetector(
+    onTap: () {
+      goToPerfumeListView(context);
+    },
+    child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ClipOval(
+            child: Image.network(
+              brand.logoImageUrl,
+              fit: BoxFit.fitWidth,
+              height: 70,
+              width: 70,
+            ),
           ),
         ),
-      );
+  );
 
   /// 디깅의 추천 향수
   Widget getRecommendedPerfumeWidget() => Container(
