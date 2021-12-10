@@ -56,35 +56,41 @@ class SearchView extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 24,
-                horizontal: 20,
-              ),
-              child: Container(
-                child: Text(
-                  '노트로 향수 찾기',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff11171c),
-                  ),
-                ),
-              ),
-            ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                child: Container(
-                  child: GridView.count(
-                    // physics: NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    childAspectRatio: 164 / 104,
-                    children: NoteGroup.getNoteGroups()
-                        .map((e) => toNoteGroupWidget(context, e))
-                        .toList(),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 24,
+                      horizontal: 20,
+                    ),
+                    child: Container(
+                      child: Text(
+                        '노트로 향수 찾기',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff11171c),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                      child: Container(
+                        child: GridView.count(
+                          // physics: NeverScrollableScrollPhysics(),
+                          crossAxisCount: 2,
+                          childAspectRatio: 164 / 104,
+                          children: NoteGroup.getNoteGroups()
+                              .map((e) => toNoteGroupWidget(context, e))
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
