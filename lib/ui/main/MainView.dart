@@ -110,6 +110,7 @@ class MainView extends StatelessWidget {
               '인기브랜드',
               style: TextStyle(
                 fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
             ),
             Padding(
@@ -143,18 +144,33 @@ class MainView extends StatelessWidget {
         ),
       );
 
-  Widget getRecommendedPerfumeWidget() => Column(
-        children: [
-          Text('디깅의 추천 향수'),
-          Column(
-            children: [
-              getRecommendedItem('이달의 향수', Perfume.getPerfumes(3).toList()),
-              getRecommendedItem(
-                  '모든 분들에게 인기가 많아요', Perfume.getPerfumes(3).toList()),
-              getRecommendedItem('선물하기 좋은 향수', Perfume.getPerfumes(3).toList()),
-            ],
-          ),
-        ],
+  /// 디깅의 추천 향수
+  Widget getRecommendedPerfumeWidget() => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: Text(
+                '디깅의 추천 향수',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                getRecommendedItem('이달의 향수', Perfume.getPerfumes(3).toList()),
+                getRecommendedItem(
+                    '모든 분들에게 인기가 많아요', Perfume.getPerfumes(3).toList()),
+                getRecommendedItem(
+                    '선물하기 좋은 향수', Perfume.getPerfumes(3).toList()),
+              ],
+            ),
+          ],
+        ),
       );
 
   Widget toPerfumeWidget(Perfume perfume) => Container(
@@ -184,16 +200,42 @@ class MainView extends StatelessWidget {
     String title,
     List<Perfume> perfumes,
   ) =>
-      SizedBox(
-        height: 226,
-        width: 335,
-        child: Column(
-          children: [
-            Text(title),
-            Row(
-              children: perfumes.map((e) => toPerfumeWidget(e)).toList(),
+      Padding(
+        padding: const EdgeInsets.only(
+          left: 20,
+          right: 20,
+          bottom: 30,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 20,
+              horizontal: 30,
             ),
-          ],
+            child: Container(
+              height: 226,
+              width: 335,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: perfumes.map((e) => toPerfumeWidget(e)).toList(),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       );
 
