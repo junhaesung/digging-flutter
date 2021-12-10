@@ -22,7 +22,7 @@ class SearchView extends StatelessWidget {
       ),
       body: Container(
         color: Color(0xfff8f8f8),
-        child: ListView(
+        child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -73,17 +73,18 @@ class SearchView extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14.0),
-              child: Container(
-                height: 813,
-                child: GridView.count(
-                  // physics: NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  childAspectRatio: 164 / 104,
-                  children: NoteGroup.getNoteGroups()
-                      .map((e) => toNoteGroupWidget(context, e))
-                      .toList(),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                child: Container(
+                  child: GridView.count(
+                    // physics: NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    childAspectRatio: 164 / 104,
+                    children: NoteGroup.getNoteGroups()
+                        .map((e) => toNoteGroupWidget(context, e))
+                        .toList(),
+                  ),
                 ),
               ),
             ),
