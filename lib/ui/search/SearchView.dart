@@ -82,7 +82,7 @@ class SearchView extends StatelessWidget {
                   crossAxisCount: 2,
                   childAspectRatio: 164 / 104,
                   children: NoteGroup.getNoteGroups()
-                      .map((e) => toNoteGroupWidget(e))
+                      .map((e) => toNoteGroupWidget(context, e))
                       .toList(),
                 ),
               ),
@@ -121,29 +121,38 @@ class SearchView extends StatelessWidget {
     Navigator.pushReplacementNamed(context, '/main');
   }
 
-  Widget toNoteGroupWidget(NoteGroup noteGroup) {
+  void goToNoteListView(BuildContext context) {
+    Navigator.pushNamed(context, '/search/notes');
+  }
+
+  Widget toNoteGroupWidget(BuildContext context, NoteGroup noteGroup) {
     return Padding(
       padding: const EdgeInsets.all(6.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          height: 104,
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 20,
-              bottom: 12,
-            ),
-            child: Column(
-              children: [
-                Image.asset(
-                  noteGroup.assetImageName,
-                  height: 32,
-                  fit: BoxFit.fitHeight,
-                ),
-                Container(height: 10),
-                Text(noteGroup.name),
-              ],
+      child: GestureDetector(
+        onTap: () {
+          goToNoteListView(context);
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            height: 104,
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 20,
+                bottom: 12,
+              ),
+              child: Column(
+                children: [
+                  Image.asset(
+                    noteGroup.assetImageName,
+                    height: 32,
+                    fit: BoxFit.fitHeight,
+                  ),
+                  Container(height: 10),
+                  Text(noteGroup.name),
+                ],
+              ),
             ),
           ),
         ),

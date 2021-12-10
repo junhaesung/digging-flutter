@@ -1,3 +1,4 @@
+import 'package:digging/ui/search/NoteListView.dart';
 import 'package:flutter/material.dart';
 
 import 'ui/SplashView.dart';
@@ -25,6 +26,7 @@ class DiggingApp extends StatelessWidget {
         '/main/perfumes': (context) => MainPerfumeListView(),
         '/perfume/detail': (context) => PerfumeDetailView(),
         '/search': (context) => SearchView(),
+        '/search/notes': (context) => NoteListView(),
         '/onboard/description': (context) => DescriptionView(),
         '/onboard/nickname': (context) => NicknameView(),
         '/onboard/gender-and-age': (context) => GenderAndAgeView(),
