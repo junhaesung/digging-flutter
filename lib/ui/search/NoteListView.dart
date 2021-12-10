@@ -87,25 +87,34 @@ class NoteListView extends StatelessWidget {
   Widget toNoteWidget(BuildContext context, Note note) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 15,
-              horizontal: 18,
-            ),
-            child: Text(
-              note.name,
-              style: TextStyle(
-                fontSize: 16,
-                color: Color(0xff11171c),
+      child: GestureDetector(
+        onTap: () {
+          _goToPerfumeDetailView(context);
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10.0),
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 15,
+                horizontal: 18,
+              ),
+              child: Text(
+                note.name,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color(0xff11171c),
+                ),
               ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  void _goToPerfumeDetailView(context) {
+    Navigator.pushNamed(context, '/search/perfumes');
   }
 }
