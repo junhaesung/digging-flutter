@@ -424,5 +424,5 @@ goToPerfumeDetailView(BuildContext context) {
 }
 
 goToSearchView(BuildContext context) {
-  Navigator.pushNamed(context, '/search');
+  Navigator.pushReplacementNamed(context, '/search');
 }

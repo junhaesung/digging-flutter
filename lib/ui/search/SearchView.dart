@@ -36,6 +36,6 @@ class SearchView extends StatelessWidget {
       );
 
   void goToMainView(BuildContext context) {
-    Navigator.pushNamed(context, '/main');
+    Navigator.pushReplacementNamed(context, '/main');
   }
 }
