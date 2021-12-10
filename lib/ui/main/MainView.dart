@@ -10,22 +10,18 @@ class MainView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('digging'),
-        actions: [
-          // TODO: 종모양으로 바꾸기
-          Icon(Icons.circle),
-        ],
       ),
       body: SafeArea(
         child: ListView(
           children: [
             // for you
-            getForYouWidget(Perfume.getPerfumes(1)),
+            getForYouWidget(context, Perfume.getPerfumes(1)),
             // 인기브랜드
             getPopularBrandWidget(),
             // 디깅의 추천 향수
             getRecommendedPerfumeWidget(),
             // 내가 좋아할 노트
-            Text('내가 좋아할 노트'),
+            getFavoriteNotePerfume(context),
           ],
         ),
       ),
@@ -33,7 +29,7 @@ class MainView extends StatelessWidget {
     );
   }
 
-  Widget getForYouWidget(List<Perfume> perfumes) => SizedBox(
+  Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) => SizedBox(
         height: 300,
         width: 300,
         child: Container(
@@ -42,24 +38,29 @@ class MainView extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Column(
-                children: [
-                  Container(
-                    child: Row(
-                      children: [
-                        Icon(Icons.star),
-                        Text('for you'),
-                      ],
+              GestureDetector(
+                onTap: () {
+                  goToPerfumeDetailView(context);
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      child: Row(
+                        children: [
+                          Icon(Icons.star),
+                          Text('for you'),
+                        ],
+                      ),
                     ),
-                  ),
-                  Image.network(
-                    perfumes[0].imageUrl,
-                    height: 189,
-                    fit: BoxFit.fill,
-                  ),
-                  Text(perfumes[0].brandName),
-                  Text(perfumes[0].name),
-                ],
+                    Image.network(
+                      perfumes[0].imageUrl,
+                      height: 189,
+                      fit: BoxFit.fill,
+                    ),
+                    Text(perfumes[0].brandName),
+                    Text(perfumes[0].name),
+                  ],
+                ),
               ),
               DotsIndicator(dotsCount: 3, position: 0),
             ],
@@ -168,4 +169,76 @@ class MainView extends StatelessWidget {
           ],
         ),
       );
+
+  Widget getFavoriteNotePerfume(BuildContext context) {
+    return Column(
+      children: [
+        Text('내가 좋아할 노트'),
+        Container(
+          height: 100,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('FLOWERS'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('NATURAL & SYNTHETIC'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('CITRUS'),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          height: 200,
+          child: GridView.count(
+            crossAxisCount: 2,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  goToPerfumeListView(context);
+                },
+                child: Column(
+                  children: [
+                    Text('image'),
+                    Text('Note Collection'),
+                    Text('2줄까지'),
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  goToPerfumeListView(context);
+                },
+                child: Column(
+                  children: [
+                    Text('image'),
+                    Text('Note Collection'),
+                    Text('2줄까지'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  goToPerfumeListView(BuildContext context) {
+    Navigator.pushNamed(
+      context,
+      '/main/perfumes',
+      arguments: {"key", "value"},
+    );
+  }
+
+  goToPerfumeDetailView(BuildContext context) {
+    Navigator.pushNamed(context, '/perfume/detail');
+  }
 }
