@@ -8,6 +8,7 @@ import 'ui/onboard/GenderAndAgeView.dart';
 import 'ui/onboard/NicknameView.dart';
 import 'ui/onboard/NoteGroupView.dart';
 import 'ui/perfume/PerfumeDetailView.dart';
+import 'ui/search/SearchView.dart';
 
 void main() {
   runApp(DiggingApp());
@@ -23,6 +24,7 @@ class DiggingApp extends StatelessWidget {
         '/main': (context) => MainView(),
         '/main/perfumes': (context) => MainPerfumeListView(),
         '/perfume/detail': (context) => PerfumeDetailView(),
+        '/search': (context) => SearchView(),
         '/onboard/description': (context) => DescriptionView(),
         '/onboard/nickname': (context) => NicknameView(),
         '/onboard/gender-and-age': (context) => GenderAndAgeView(),
