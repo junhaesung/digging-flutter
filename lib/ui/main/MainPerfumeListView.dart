@@ -38,7 +38,7 @@ class MainPerfumeListView extends StatelessWidget {
             ),
             child: ListView(
               children: Perfume.getPerfumes(10)
-                  .map((e) => toPerfumeListItem(e))
+                  .map((e) => toPerfumeListItem(context, e))
                   .toList(),
             ),
           ),
@@ -47,54 +47,63 @@ class MainPerfumeListView extends StatelessWidget {
     );
   }
 
-  Widget toPerfumeListItem(Perfume perfume) {
+  Widget toPerfumeListItem(BuildContext context, Perfume perfume) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          color: Colors.white,
-          height: 100,
-          child: Padding(
-            padding: const EdgeInsets.all(7.0),
-            child: Row(
-              children: [
-                Image.network(
-                  perfume.imageUrl,
-                  fit: BoxFit.fitHeight,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 23),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        perfume.brandName,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xffc7c7c7),
-                        ),
-                      ),
-                      Container(
-                        height: 4,
-                      ),
-                      Text(
-                        perfume.name,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+      child: GestureDetector(
+        onTap: () {
+          _goToPerfumeDetail(context);
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            color: Colors.white,
+            height: 100,
+            child: Padding(
+              padding: const EdgeInsets.all(7.0),
+              child: Row(
+                children: [
+                  Image.network(
+                    perfume.imageUrl,
+                    fit: BoxFit.fitHeight,
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 23),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          perfume.brandName,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xffc7c7c7),
+                          ),
+                        ),
+                        Container(
+                          height: 4,
+                        ),
+                        Text(
+                          perfume.name,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  void _goToPerfumeDetail(BuildContext context) {
+    Navigator.pushNamed(context, '/perfume/detail');
   }
 }
