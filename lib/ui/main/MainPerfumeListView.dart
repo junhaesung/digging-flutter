@@ -1,5 +1,4 @@
 import 'package:digging/domain/perfume.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// 1. brand 선택해서 오는 경우
