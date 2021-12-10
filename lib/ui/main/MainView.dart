@@ -145,31 +145,39 @@ class MainView extends StatelessWidget {
       );
 
   /// 디깅의 추천 향수
-  Widget getRecommendedPerfumeWidget() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 30),
-              child: Text(
-                '디깅의 추천 향수',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+  Widget getRecommendedPerfumeWidget() => Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0x3383d9ff), Color(0x33c2b7e4)],
+        )),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20, bottom: 30),
+                child: Text(
+                  '디깅의 추천 향수',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            Column(
-              children: [
-                getRecommendedItem('이달의 향수', Perfume.getPerfumes(3).toList()),
-                getRecommendedItem(
-                    '모든 분들에게 인기가 많아요', Perfume.getPerfumes(3).toList()),
-                getRecommendedItem(
-                    '선물하기 좋은 향수', Perfume.getPerfumes(3).toList()),
-              ],
-            ),
-          ],
+              Column(
+                children: [
+                  getRecommendedItem('이달의 향수', Perfume.getPerfumes(3).toList()),
+                  getRecommendedItem(
+                      '모든 분들에게 인기가 많아요', Perfume.getPerfumes(3).toList()),
+                  getRecommendedItem(
+                      '선물하기 좋은 향수', Perfume.getPerfumes(3).toList()),
+                ],
+              ),
+            ],
+          ),
         ),
       );
 
@@ -208,31 +216,35 @@ class MainView extends StatelessWidget {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 20,
-              horizontal: 30,
-            ),
-            child: Container(
-              height: 226,
-              width: 335,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 30),
-                    child: Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 20,
+                horizontal: 30,
+              ),
+              child: Container(
+                height: 226,
+                width: 335,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30),
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                  Row(
-                    children: perfumes.map((e) => toPerfumeWidget(e)).toList(),
-                  ),
-                ],
+                    Row(
+                      children:
+                          perfumes.map((e) => toPerfumeWidget(e)).toList(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
