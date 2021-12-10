@@ -4,12 +4,22 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
 class MainView extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('digging'),
+        title: Row(
+          children: [
+            Text('digg'),
+            Text(
+              'ing',
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: Color(0xff83daff),
       ),
       body: SafeArea(
         child: ListView(
@@ -29,7 +39,8 @@ class MainView extends StatelessWidget {
     );
   }
 
-  Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) => SizedBox(
+  Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) =>
+      SizedBox(
         height: 300,
         width: 300,
         child: Container(
