@@ -39,6 +39,21 @@ class MainView extends StatelessWidget {
     );
   }
 
+  BottomNavigationBar getBottomNavigationBar() => BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'search',
+          ),
+          // TODO: digging view
+        ],
+      );
+
+  /// for you
   Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) =>
       SizedBox(
         height: 300,
@@ -79,53 +94,54 @@ class MainView extends StatelessWidget {
         ),
       );
 
-  Widget toBrandWidget(Brand brand) => SizedBox(
-        height: 70,
-        width: 70,
-        child: Center(
-          child: Image.network(
-            brand.logoImageUrl,
-            fit: BoxFit.fill,
-          ),
+  /// 인기브랜드
+  Widget getPopularBrandWidget() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 30,
+        left: 20,
+      ),
+      child: Container(
+        height: 186,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '인기브랜드',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 32),
+              child: Container(
+                height: 86,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: getBrandWidgets(),
+                ),
+              ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
 
   List<Widget> getBrandWidgets() =>
       Brand.getBrands().map((e) => toBrandWidget(e)).toList();
 
-  BottomNavigationBar getBottomNavigationBar() => BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'home',
+  Widget toBrandWidget(Brand brand) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ClipOval(
+          child: Image.network(
+            brand.logoImageUrl,
+            fit: BoxFit.fitWidth,
+            height: 70,
+            width: 70,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'search',
-          ),
-          // TODO: digging view
-        ],
+        ),
       );
-
-  Widget getPopularBrandWidget() {
-    return Container(
-      height: 186,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 30, left: 20),
-            child: Text('인기브랜드'),
-          ),
-          Expanded(
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: getBrandWidgets(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget getRecommendedPerfumeWidget() => Column(
         children: [
