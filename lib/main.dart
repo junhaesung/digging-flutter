@@ -1,4 +1,4 @@
-import 'package:digging/ui/search/NoteListView.dart';
+
 import 'package:flutter/material.dart';
 
 import 'ui/SplashView.dart';
@@ -9,6 +9,7 @@ import 'ui/onboard/GenderAndAgeView.dart';
 import 'ui/onboard/NicknameView.dart';
 import 'ui/onboard/NoteGroupView.dart';
 import 'ui/perfume/PerfumeDetailView.dart';
+import 'ui/search/NoteListView.dart';
 import 'ui/search/PerfumeListView.dart';
 import 'ui/search/SearchView.dart';
 
