@@ -1,3 +1,4 @@
+import 'package:digging/domain/note.dart';
 import 'package:flutter/material.dart';
 
 import '/domain/notegroup.dart';
@@ -127,16 +128,28 @@ class SearchView extends StatelessWidget {
     Navigator.pushReplacementNamed(context, '/main');
   }
 
-  void goToNoteListView(BuildContext context) {
-    Navigator.pushNamed(context, '/search/notes');
+  void goToNoteListView(
+    BuildContext context,
+    NoteGroup noteGroup,
+    List<Note> notes,
+  ) {
+    Navigator.pushNamed(context, '/search/notes', arguments: {
+      "notes": notes,
+      "noteGroup": noteGroup,
+    });
   }
 
   Widget toNoteGroupWidget(BuildContext context, NoteGroup noteGroup) {
+    var notes = Note.getNotes(10);
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: GestureDetector(
         onTap: () {
-          goToNoteListView(context);
+          goToNoteListView(
+            context,
+            noteGroup,
+            notes,
+          );
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
