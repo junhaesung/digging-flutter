@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 /// 1. brand 선택해서 오는 경우
 /// 2. 노트그룹 선택해서 오는 경우
+/// 3. 추천 선택해서 오는 경우
 class MainPerfumeListView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _MainPerfumeListView();
@@ -12,6 +13,7 @@ class MainPerfumeListView extends StatefulWidget {
 
 class _MainPerfumeListView extends State<MainPerfumeListView> {
   late String title;
+  late List<Perfume> perfumes;
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +22,23 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
     Brand? brand = arguments != null && arguments.containsKey('brand')
         ? arguments['brand'] as Brand
         : null;
-    NoteGroup? noteGroup = arguments != null && arguments.containsKey('noteGroup')
-        ? arguments['noteGroup'] as NoteGroup
+    NoteGroup? noteGroup =
+        arguments != null && arguments.containsKey('noteGroup')
+            ? arguments['noteGroup'] as NoteGroup
+            : null;
+    String? title = arguments != null && arguments.containsKey('title')
+        ? arguments['title'] as String
         : null;
 
-    setState(() {
-      title = brand?.name ?? noteGroup?.name ?? "";
-    });
+    this.title = brand?.name ?? noteGroup?.name ?? title ?? "";
+    this.perfumes = arguments != null && arguments.containsKey('noteGroup')
+        ? arguments['perfumes'] as List<Perfume>
+        : Perfume.getPerfumes(10);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          title,
+          this.title,
           style: TextStyle(
             fontSize: 16,
             color: Color(0xff1b1b1b),
@@ -60,9 +67,8 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
               right: 20,
             ),
             child: ListView(
-              children: Perfume.getPerfumes(10)
-                  .map((e) => toPerfumeListItem(context, e))
-                  .toList(),
+              children:
+                  perfumes.map((e) => toPerfumeListItem(context, e)).toList(),
             ),
           ),
         ),

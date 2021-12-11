@@ -183,6 +183,7 @@ class _MainView extends State<MainView> {
 
   /// 인기브랜드
   Widget getPopularBrandWidget(BuildContext context) {
+    List<Brand> brands = Brand.getBrands();
     return Padding(
       padding: const EdgeInsets.only(
         top: 30,
@@ -206,7 +207,7 @@ class _MainView extends State<MainView> {
                 height: 86,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  children: getBrandWidgets(context),
+                  children: getBrandWidgets(context, brands),
                 ),
               ),
             ),
@@ -216,12 +217,19 @@ class _MainView extends State<MainView> {
     );
   }
 
-  List<Widget> getBrandWidgets(BuildContext context) =>
-      Brand.getBrands().map((e) => toBrandWidget(context, e)).toList();
+  List<Widget> getBrandWidgets(BuildContext context, List<Brand> brands) =>
+      brands
+          .map((e) => toBrandWidget(context, e, Perfume.getPerfumes(10)))
+          .toList();
 
-  Widget toBrandWidget(BuildContext context, Brand brand) => GestureDetector(
+  Widget toBrandWidget(
+    BuildContext context,
+    Brand brand,
+    List<Perfume> perfumes,
+  ) =>
+      GestureDetector(
         onTap: () {
-          _goToPerfumeListView(context, brand);
+          _goToPerfumeListView(context, brand, perfumes);
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -271,11 +279,21 @@ class _MainView extends State<MainView> {
               ),
               Column(
                 children: [
-                  getRecommendedItem('이달의 향수', Perfume.getPerfumes(3).toList()),
                   getRecommendedItem(
-                      '모든 분들에게 인기가 많아요', Perfume.getPerfumes(3).toList()),
+                    context,
+                    '이달의 향수',
+                    Perfume.getPerfumes(3).toList(),
+                  ),
                   getRecommendedItem(
-                      '선물하기 좋은 향수', Perfume.getPerfumes(3).toList()),
+                    context,
+                    '모든 분들에게 인기가 많아요',
+                    Perfume.getPerfumes(3).toList(),
+                  ),
+                  getRecommendedItem(
+                    context,
+                    '선물하기 좋은 향수',
+                    Perfume.getPerfumes(3).toList(),
+                  ),
                 ],
               ),
             ],
@@ -284,6 +302,7 @@ class _MainView extends State<MainView> {
       );
 
   Widget getRecommendedItem(
+    BuildContext context,
     String title,
     List<Perfume> perfumes,
   ) =>
@@ -293,57 +312,68 @@ class _MainView extends State<MainView> {
           right: 20,
           bottom: 30,
         ),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 30,
-              left: 20,
-              bottom: 30,
-              right: 12,
+        child: GestureDetector(
+          onTap: () {
+            _goToPerfumeListViewWithTitleAndPerfumes(
+              context,
+              title,
+              perfumes,
+            );
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
             ),
-            child: Container(
-              height: 226,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 30),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            title,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 30,
+                left: 20,
+                bottom: 30,
+                right: 12,
+              ),
+              child: Container(
+                height: 226,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: Color(0xffc7c7c7),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: GridView.count(
-                        physics: NeverScrollableScrollPhysics(),
-                        crossAxisCount: 3,
-                        childAspectRatio: 90 / 150,
-                        crossAxisSpacing: 12,
-                        children:
-                            perfumes.map((e) => toPerfumeWidget(e)).toList(),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Color(0xffc7c7c7),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: GridView.count(
+                          physics: NeverScrollableScrollPhysics(),
+                          crossAxisCount: 3,
+                          childAspectRatio: 90 / 150,
+                          crossAxisSpacing: 12,
+                          children: perfumes
+                              .take(3)
+                              .map((e) => toPerfumeWidget(e))
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -447,12 +477,33 @@ class _MainView extends State<MainView> {
     );
   }
 
-  void _goToPerfumeListView(BuildContext context, Brand brand) {
+  void _goToPerfumeListView(
+    BuildContext context,
+    Brand brand,
+    List<Perfume> perfumes,
+  ) {
     Navigator.pushNamed(
       context,
       '/main/perfumes',
       arguments: {
         "brand": brand,
+        "perfumes": perfumes,
+      },
+    );
+  }
+
+  /// 디깅의 추천 향수 -> 향수 목록 화면
+  void _goToPerfumeListViewWithTitleAndPerfumes(
+    BuildContext context,
+    String title,
+    List<Perfume> perfumes,
+  ) {
+    Navigator.pushNamed(
+      context,
+      '/main/perfumes',
+      arguments: {
+        "title": title,
+        "perfumes": perfumes,
       },
     );
   }
