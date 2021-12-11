@@ -1,27 +1,37 @@
 import 'package:digging/domain/brand.dart';
+import 'package:digging/domain/notegroup.dart';
 import 'package:digging/domain/perfume.dart';
 import 'package:flutter/material.dart';
 
 /// 1. brand 선택해서 오는 경우
-/// 2. 향수 선택해서 오는 경우
+/// 2. 노트그룹 선택해서 오는 경우
 class MainPerfumeListView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _MainPerfumeListView();
 }
 
 class _MainPerfumeListView extends State<MainPerfumeListView> {
+  late String title;
+
   @override
   Widget build(BuildContext context) {
     Map<String, Object>? arguments =
         (ModalRoute.of(context)!.settings).arguments as Map<String, Object>?;
-    Brand brand = arguments != null && arguments.containsKey('brand')
+    Brand? brand = arguments != null && arguments.containsKey('brand')
         ? arguments['brand'] as Brand
-        : Brand.getBrands().first;
+        : null;
+    NoteGroup? noteGroup = arguments != null && arguments.containsKey('noteGroup')
+        ? arguments['noteGroup'] as NoteGroup
+        : null;
+
+    setState(() {
+      title = brand?.name ?? noteGroup?.name ?? "";
+    });
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          brand.name,
+          title,
           style: TextStyle(
             fontSize: 16,
             color: Color(0xff1b1b1b),
