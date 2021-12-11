@@ -62,6 +62,7 @@ flutter:
     - images/note-groups/white_flowers.png
     - images/note-groups/woods.png
     - images/onboarding/selector_gender.png
+    - images/onboarding/background_description.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
