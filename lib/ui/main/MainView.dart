@@ -224,12 +224,21 @@ Widget toBrandWidget(BuildContext context, Brand brand) => GestureDetector(
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ClipOval(
-          child: Image.network(
-            brand.logoImageUrl,
-            fit: BoxFit.fitWidth,
-            height: 70,
-            width: 70,
+        child: Container(
+          height: 70,
+          width: 70,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(
+                brand.logoImageUrl,
+              ),
+              fit: BoxFit.cover,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(50.0)),
+            border: Border.all(
+              color: Color(0xffc7c7c7),
+              width: 0.5,
+            ),
           ),
         ),
       ),
@@ -272,29 +281,6 @@ Widget getRecommendedPerfumeWidget() => Container(
       ),
     );
 
-Widget toPerfumeWidget(Perfume perfume) => Container(
-      width: 90,
-      child: Column(
-        children: [
-          Image.network(
-            perfume.imageUrl,
-            height: 90,
-            fit: BoxFit.fill,
-          ),
-          Text(
-            perfume.brandName,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          Text(
-            perfume.name,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
-
 Widget getRecommendedItem(
   String title,
   List<Perfume> perfumes,
@@ -305,49 +291,91 @@ Widget getRecommendedItem(
         right: 20,
         bottom: 30,
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
           color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 20,
-              horizontal: 30,
-            ),
-            child: Container(
-              height: 226,
-              width: 335,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 30),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            title,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 30,
+            horizontal: 20,
+          ),
+          child: Container(
+            height: 226,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: Color(0xffc7c7c7),
-                        ),
-                      ],
-                    ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xffc7c7c7),
+                      ),
+                    ],
                   ),
-                  Row(
+                ),
+                Expanded(
+                  child: GridView.count(
+                    physics: NeverScrollableScrollPhysics(),
+                    crossAxisCount: 3,
+                    childAspectRatio: 150 / 90,
+                    crossAxisSpacing: 12,
                     children: perfumes.map((e) => toPerfumeWidget(e)).toList(),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
+      ),
+    );
+
+Widget toPerfumeWidget(Perfume perfume) => Container(
+      child: Column(
+        children: [
+          Container(
+            height: 90,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                  perfume.imageUrl,
+                ),
+                fit: BoxFit.fitHeight,
+              ),
+            ),
+          ),
+          Container(height: 8),
+          Text(
+            perfume.brandName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 12,
+              color: Color(0xffababab),
+            ),
+          ),
+          Text(
+            perfume.name,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
 
@@ -411,7 +439,7 @@ Widget getFavoriteNotePerfume(BuildContext context) {
   );
 }
 
-goToPerfumeListView(BuildContext context) {
+void goToPerfumeListView(BuildContext context) {
   Navigator.pushNamed(
     context,
     '/main/perfumes',
@@ -419,10 +447,10 @@ goToPerfumeListView(BuildContext context) {
   );
 }
 
-goToPerfumeDetailView(BuildContext context) {
+void goToPerfumeDetailView(BuildContext context) {
   Navigator.pushNamed(context, '/perfume/detail');
 }
 
-goToSearchView(BuildContext context) {
+void goToSearchView(BuildContext context) {
   Navigator.pushReplacementNamed(context, '/search');
 }
