@@ -1,17 +1,30 @@
+import 'package:digging/domain/brand.dart';
 import 'package:digging/domain/perfume.dart';
 import 'package:flutter/material.dart';
 
 /// 1. brand 선택해서 오는 경우
 /// 2. 향수 선택해서 오는 경우
-class MainPerfumeListView extends StatelessWidget {
+class MainPerfumeListView extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _MainPerfumeListView();
+}
+
+class _MainPerfumeListView extends State<MainPerfumeListView> {
   @override
   Widget build(BuildContext context) {
+    Map<String, Object>? arguments =
+        (ModalRoute.of(context)!.settings).arguments as Map<String, Object>?;
+    Brand brand = arguments != null && arguments.containsKey('brand')
+        ? arguments['brand'] as Brand
+        : Brand.getBrands().first;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '브랜드이름',
+          brand.name,
           style: TextStyle(
             fontSize: 16,
+            color: Color(0xff1b1b1b),
           ),
         ),
         backgroundColor: Color(0xfff3fbff),

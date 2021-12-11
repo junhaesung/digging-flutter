@@ -73,113 +73,113 @@ class _MainView extends State<MainView> {
 Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) {
   Perfume perfume = perfumes.first;
   return Container(
-      // height: 382,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          top: 12,
-          left: 34,
-          right: 34,
-          bottom: 20,
-        ),
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      offset: Offset(0.0, 1.0),
-                      blurRadius: 6.0,
-                    ),
-                  ]),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 16,
-                  left: 21,
-                  right: 21,
-                ),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        _goToPerfumeDetailView(context, perfumes.first);
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Color(0xffe2b949),
-                                ),
-                                Text(
-                                  ' For you',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: Image.network(
-                                perfume.imageUrl,
-                                height: 189,
-                                fit: BoxFit.fill,
+    // height: 382,
+    child: Padding(
+      padding: const EdgeInsets.only(
+        top: 12,
+        left: 34,
+        right: 34,
+        bottom: 20,
+      ),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    offset: Offset(0.0, 1.0),
+                    blurRadius: 6.0,
+                  ),
+                ]),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 16,
+                left: 21,
+                right: 21,
+              ),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      _goToPerfumeDetailView(context, perfumes.first);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                color: Color(0xffe2b949),
                               ),
+                              Text(
+                                ' For you',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Image.network(
+                              perfume.imageUrl,
+                              height: 189,
+                              fit: BoxFit.fill,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 6, bottom: 15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Text(
-                                    perfume.brandName,
-                                    style: TextStyle(
-                                      color: Color(0xffc7c7c7),
-                                      fontSize: 12,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                Text(
-                                  perfume.name,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6, bottom: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Text(
+                                  perfume.brandName,
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    color: Color(0xffc7c7c7),
+                                    fontSize: 12,
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                              ),
+                              Text(
+                                perfume.name,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: DotsIndicator(dotsCount: 3, position: 0),
-            ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: DotsIndicator(dotsCount: 3, position: 0),
+          ),
+        ],
       ),
-    );
+    ),
+  );
 }
 
 /// 인기브랜드
@@ -222,7 +222,7 @@ List<Widget> getBrandWidgets(BuildContext context) =>
 
 Widget toBrandWidget(BuildContext context, Brand brand) => GestureDetector(
       onTap: () {
-        goToPerfumeListView(context);
+        _goToPerfumeListView(context, brand);
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -412,7 +412,7 @@ Widget getFavoriteNotePerfume(BuildContext context) {
           children: [
             GestureDetector(
               onTap: () {
-                goToPerfumeListView(context);
+                _goToPerfumeDetailViewWithoutData(context);
               },
               child: Column(
                 children: [
@@ -424,7 +424,7 @@ Widget getFavoriteNotePerfume(BuildContext context) {
             ),
             GestureDetector(
               onTap: () {
-                goToPerfumeListView(context);
+                _goToPerfumeDetailViewWithoutData(context);
               },
               child: Column(
                 children: [
@@ -441,12 +441,18 @@ Widget getFavoriteNotePerfume(BuildContext context) {
   );
 }
 
-void goToPerfumeListView(BuildContext context) {
+void _goToPerfumeListView(BuildContext context, Brand brand) {
   Navigator.pushNamed(
     context,
     '/main/perfumes',
-    arguments: {"key", "value"},
+    arguments: {
+      "brand": brand,
+    },
   );
+}
+
+void _goToPerfumeDetailViewWithoutData(BuildContext context) {
+  Navigator.pushNamed(context, '/perfume/detail');
 }
 
 void _goToPerfumeDetailView(
