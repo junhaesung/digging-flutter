@@ -37,7 +37,10 @@ class SplashView extends StatelessWidget {
 
   goToOnboardDescription(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushNamed(context, '/onboard/description');
+      while (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+      Navigator.pushReplacementNamed(context, '/onboard/description');
     });
   }
 }
