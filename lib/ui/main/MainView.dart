@@ -9,7 +9,6 @@ class MainView extends StatefulWidget {
 }
 
 class _MainView extends State<MainView> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,8 +70,9 @@ class _MainView extends State<MainView> {
 }
 
 /// For you
-Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) =>
-    Container(
+Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) {
+  Perfume perfume = perfumes.first;
+  return Container(
       // height: 382,
       child: Padding(
         padding: const EdgeInsets.only(
@@ -104,7 +104,7 @@ Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) =>
                   children: [
                     GestureDetector(
                       onTap: () {
-                        goToPerfumeDetailView(context);
+                        _goToPerfumeDetailView(context, perfumes.first);
                       },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,7 +131,7 @@ Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) =>
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: 12),
                               child: Image.network(
-                                perfumes[0].imageUrl,
+                                perfume.imageUrl,
                                 height: 189,
                                 fit: BoxFit.fill,
                               ),
@@ -145,7 +145,7 @@ Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) =>
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 8.0),
                                   child: Text(
-                                    perfumes[0].brandName,
+                                    perfume.brandName,
                                     style: TextStyle(
                                       color: Color(0xffc7c7c7),
                                       fontSize: 12,
@@ -155,7 +155,7 @@ Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) =>
                                   ),
                                 ),
                                 Text(
-                                  perfumes[0].name,
+                                  perfume.name,
                                   style: TextStyle(
                                     fontSize: 16,
                                   ),
@@ -180,6 +180,7 @@ Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) =>
         ),
       ),
     );
+}
 
 /// 인기브랜드
 Widget getPopularBrandWidget(BuildContext context) {
@@ -448,8 +449,17 @@ void goToPerfumeListView(BuildContext context) {
   );
 }
 
-void goToPerfumeDetailView(BuildContext context) {
-  Navigator.pushNamed(context, '/perfume/detail');
+void _goToPerfumeDetailView(
+  BuildContext context,
+  Perfume perfume,
+) {
+  Navigator.pushNamed(
+    context,
+    '/perfume/detail',
+    arguments: {
+      "perfume": perfume,
+    },
+  );
 }
 
 void goToSearchView(BuildContext context) {

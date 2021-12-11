@@ -132,7 +132,7 @@ class SearchPerfumeListView extends StatelessWidget {
       context,
       '/perfume/detail',
       arguments: {
-        "perfume": Perfume,
+        "perfume": perfume,
       },
     );
   }

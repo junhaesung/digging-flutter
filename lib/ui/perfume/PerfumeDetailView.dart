@@ -1,12 +1,19 @@
+import 'package:digging/domain/perfume.dart';
 import 'package:flutter/material.dart';
 
 class PerfumeDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Map<String, Object>? arguments =
+        (ModalRoute.of(context)!.settings).arguments as Map<String, Object>?;
+    Perfume perfume = arguments != null && arguments.containsKey('perfume')
+        ? arguments['perfume'] as Perfume
+        : Perfume.getPerfumes(1).first;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Philosykos Eau de Toiletteaa aaaa',
+          perfume.name,
           style: TextStyle(
             color: Color(0xff1b1b1b),
           ),
@@ -30,8 +37,7 @@ class PerfumeDetailView extends StatelessWidget {
           // 향수 이미지
           Container(
             height: 375,
-            child: Image.network(
-                'https://fimgs.net/mdimg/perfume/375x500.69123.jpg'),
+            child: Image.network(perfume.imageUrl),
           ),
           // 향수 이름, 브랜드 이름
           Container(
@@ -40,8 +46,8 @@ class PerfumeDetailView extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    Text('DIPTYQUE'),
-                    Text('Philosykos Eau de Toiletteaa aaaa'),
+                    Text(perfume.brandName),
+                    Text(perfume.name),
                     Text('3명이 이 향수에 관심있어요.')
                   ],
                 ),

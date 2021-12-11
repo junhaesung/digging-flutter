@@ -52,7 +52,7 @@ class MainPerfumeListView extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12),
       child: GestureDetector(
         onTap: () {
-          _goToPerfumeDetail(context);
+          _goToPerfumeDetail(context, perfume);
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
@@ -103,7 +103,13 @@ class MainPerfumeListView extends StatelessWidget {
     );
   }
 
-  void _goToPerfumeDetail(BuildContext context) {
-    Navigator.pushNamed(context, '/perfume/detail');
+  void _goToPerfumeDetail(BuildContext context, Perfume perfume) {
+    Navigator.pushNamed(
+      context,
+      '/perfume/detail',
+      arguments: {
+        "perfume": perfume,
+      },
+    );
   }
 }
