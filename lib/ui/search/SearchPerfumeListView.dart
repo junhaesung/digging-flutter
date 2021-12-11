@@ -1,13 +1,21 @@
+import 'package:digging/domain/note.dart';
 import 'package:digging/domain/perfume.dart';
 import 'package:flutter/material.dart';
 
-class PerfumeListView extends StatelessWidget {
+class SearchPerfumeListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Map<String, Object>? arguments =
+        (ModalRoute.of(context)!.settings).arguments as Map<String, Object>?;
+    Note note = arguments != null && arguments.containsKey('note')
+        ? arguments['note'] as Note
+        : Note.getNotes(1).first;
+    List<Perfume> perfumes = Perfume.getPerfumes(10);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          '노트 이름',
+          note.name,
           style: TextStyle(
             fontSize: 16,
             color: Color(0xff1b1b1b),
@@ -44,7 +52,7 @@ class PerfumeListView extends StatelessWidget {
                         child: Container(
                           color: Color(0xfffffcef),
                           child: Text(
-                            'Bergamot',
+                            note.name,
                             style: TextStyle(
                               fontSize: 14,
                               color: Color(0xfffbd857),
@@ -59,7 +67,7 @@ class PerfumeListView extends StatelessWidget {
                   child: GridView.count(
                     crossAxisCount: 2,
                     childAspectRatio: 162 / 231,
-                    children: Perfume.getPerfumes(10)
+                    children: perfumes
                         .map((e) => _toPerfumeWidget(context, e))
                         .toList(),
                   ),
@@ -75,7 +83,7 @@ class PerfumeListView extends StatelessWidget {
   Widget _toPerfumeWidget(BuildContext context, Perfume perfume) {
     return GestureDetector(
       onTap: () {
-        _goToPerfumeDetailView(context);
+        _goToPerfumeDetailView(context, perfume);
       },
       child: Padding(
         padding: const EdgeInsets.all(6.0),
@@ -116,7 +124,16 @@ class PerfumeListView extends StatelessWidget {
     );
   }
 
-  void _goToPerfumeDetailView(BuildContext context) {
-    Navigator.pushNamed(context, '/perfume/detail');
+  void _goToPerfumeDetailView(
+    BuildContext context,
+    Perfume perfume,
+  ) {
+    Navigator.pushNamed(
+      context,
+      '/perfume/detail',
+      arguments: {
+        "perfume": Perfume,
+      },
+    );
   }
 }

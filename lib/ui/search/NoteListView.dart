@@ -14,9 +14,10 @@ class _NoteListView extends State<NoteListView> {
   Widget build(BuildContext context) {
     Map<String, Object>? arguments =
         (ModalRoute.of(context)!.settings).arguments as Map<String, Object>?;
-    NoteGroup noteGroup = arguments != null && arguments.containsKey('noteGroup')
-        ? arguments['noteGroup'] as NoteGroup
-        : NoteGroup.getNoteGroups()[0];
+    NoteGroup noteGroup =
+        arguments != null && arguments.containsKey('noteGroup')
+            ? arguments['noteGroup'] as NoteGroup
+            : NoteGroup.getNoteGroups()[0];
     List<Note> notes = arguments != null && arguments.containsKey('notes')
         ? arguments['notes'] as List<Note>
         : Note.getNotes(10);
@@ -119,7 +120,7 @@ class _NoteListView extends State<NoteListView> {
       padding: const EdgeInsets.only(bottom: 20),
       child: GestureDetector(
         onTap: () {
-          _goToPerfumeDetailView(context);
+          _goToPerfumeDetailView(context, note);
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
@@ -145,7 +146,13 @@ class _NoteListView extends State<NoteListView> {
   }
 
   /// 향수 목록 화면으로 이동
-  void _goToPerfumeDetailView(context) {
-    Navigator.pushNamed(context, '/search/perfumes');
+  void _goToPerfumeDetailView(context, Note note) {
+    Navigator.pushNamed(
+      context,
+      '/search/perfumes',
+      arguments: {
+        "note": note,
+      },
+    );
   }
 }
