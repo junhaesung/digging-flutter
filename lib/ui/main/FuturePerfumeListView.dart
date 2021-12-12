@@ -99,20 +99,22 @@ class _FuturePerfumeListView extends State<FuturePerfumeListView> {
         onTap: () {
           _goToPerfumeDetail(context, perfume);
         },
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Container(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
             color: Colors.white,
-            height: 100,
-            child: Padding(
-              padding: const EdgeInsets.all(7.0),
-              child: Row(
-                children: [
-                  Image.network(
-                    perfume.imageUrl,
-                    fit: BoxFit.fitHeight,
-                  ),
-                  Padding(
+          ),
+          height: 100,
+          child: Padding(
+            padding: const EdgeInsets.all(7.0),
+            child: Row(
+              children: [
+                Image.network(
+                  perfume.imageUrl,
+                  fit: BoxFit.fitHeight,
+                ),
+                Expanded(
+                  child: Padding(
                     padding: const EdgeInsets.only(left: 23),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,6 +122,8 @@ class _FuturePerfumeListView extends State<FuturePerfumeListView> {
                       children: [
                         Text(
                           perfume.brandName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -131,6 +135,8 @@ class _FuturePerfumeListView extends State<FuturePerfumeListView> {
                         ),
                         Text(
                           perfume.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -139,8 +145,8 @@ class _FuturePerfumeListView extends State<FuturePerfumeListView> {
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
