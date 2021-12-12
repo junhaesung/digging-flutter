@@ -1,4 +1,5 @@
 import 'package:digging/domain/brand.dart';
+import 'package:digging/domain/notegroup.dart';
 import 'package:digging/domain/perfume.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,17 @@ class MainView extends StatefulWidget {
 }
 
 class _MainView extends State<MainView> {
+  int _selectedNoteGroupId = 0;
+
   @override
   Widget build(BuildContext context) {
+    List<NoteGroup> noteGroups =
+        NoteGroup.getCategorizedNoteGroups().take(3).toList();
+    if (_selectedNoteGroupId == 0) {
+      _selectedNoteGroupId = noteGroups.first.id;
+    }
+    List<Perfume> perfumes = Perfume.getPerfumes(10).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -37,7 +47,7 @@ class _MainView extends State<MainView> {
             // 디깅의 추천 향수
             getRecommendedPerfumeWidget(),
             // 내가 좋아할 노트
-            getFavoriteNotePerfume(context),
+            getFavoriteNotePerfume(context, noteGroups, perfumes),
           ],
         ),
       ),
@@ -52,7 +62,7 @@ class _MainView extends State<MainView> {
             // do nothing
           }
           if (index == 1) {
-            goToSearchView(context);
+            _goToSearchView(context);
           }
         },
         items: [
@@ -308,8 +318,6 @@ class _MainView extends State<MainView> {
   ) =>
       Padding(
         padding: const EdgeInsets.only(
-          left: 20,
-          right: 20,
           bottom: 30,
         ),
         child: GestureDetector(
@@ -417,63 +425,103 @@ class _MainView extends State<MainView> {
         ),
       );
 
-  Widget getFavoriteNotePerfume(BuildContext context) {
-    return Column(
-      children: [
-        Text('내가 좋아할 노트'),
-        Container(
-          height: 100,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
+  /// 내가 좋아할 노트
+  Widget getFavoriteNotePerfume(
+    BuildContext context,
+    List<NoteGroup> noteGroups,
+    List<Perfume> perfumes, // TODO: noteGroups.perfumes
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 30,
+        bottom: 30,
+        left: 12,
+      ),
+      child: Container(
+        height: 321,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('FLOWERS'),
+              Text(
+                '내가 좋아할 노트',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff1b1b1b),
+                ),
+              ),
+              Container(height: 16),
+              Container(
+                height: 26,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: noteGroups.length,
+                  separatorBuilder: (context, index) => Container(width: 10),
+                  itemBuilder: (context, index) {
+                    NoteGroup noteGroup = noteGroups[index];
+                    var selected = noteGroup.id == _selectedNoteGroupId;
+                    return GestureDetector(
+                      onTap: () =>
+                          setState(() => _selectedNoteGroupId = noteGroup.id),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color:
+                              selected ? Color(0xffffeef4) : Color(0xfff3f3f3),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 4,
+                            horizontal: 12,
+                          ),
+                          child: Center(
+                            child: Text(
+                              noteGroup.name,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: selected
+                                    ? Color(0xffff5894)
+                                    : Color(0xff888888),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Container(
+                height: 32,
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('NATURAL & SYNTHETIC'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('CITRUS'),
+                padding: const EdgeInsets.only(
+                  right: 20.0,
+                ),
+                child: Container(
+                  height: 161,
+                  child: Row(
+                    children: [0, 1]
+                        .map((e) => _toNoteGroupPerfumeWidget(
+                              context,
+                              noteGroups[e],
+                              perfumes.getRange(e * 3, (e + 1) * 3).toList(),
+                            ))
+                        .toList(),
+                  ),
+                ),
               ),
             ],
           ),
         ),
-        Container(
-          height: 200,
-          child: GridView.count(
-            crossAxisCount: 2,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  _goToPerfumeDetailViewWithoutData(context);
-                },
-                child: Column(
-                  children: [
-                    Text('image'),
-                    Text('Note Collection'),
-                    Text('2줄까지'),
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  _goToPerfumeDetailViewWithoutData(context);
-                },
-                child: Column(
-                  children: [
-                    Text('image'),
-                    Text('Note Collection'),
-                    Text('2줄까지'),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -525,7 +573,78 @@ class _MainView extends State<MainView> {
     );
   }
 
-  void goToSearchView(BuildContext context) {
+  void _goToSearchView(BuildContext context) {
     Navigator.pushReplacementNamed(context, '/search');
   }
+
+  Widget _toNoteGroupPerfumeWidget(
+    BuildContext context,
+    NoteGroup noteGroup,
+    List<Perfume> perfumes,
+  ) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: GestureDetector(
+          onTap: () {
+            _goToPerfumeDetailViewWithoutData(context);
+          },
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.white,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 100,
+                          child: Image.network(
+                            perfumes[0].imageUrl,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                        Container(width: 10),
+                        Column(
+                          children: [
+                            Container(
+                              width: 35,
+                              height: 50,
+                              child: Image.network(
+                                perfumes[1].imageUrl,
+                              ),
+                            ),
+                            Container(
+                              width: 35,
+                              height: 50,
+                              child: Image.network(
+                                perfumes[2].imageUrl,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(height: 12),
+                Text(
+                  noteGroup.name,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Color(0xff1b1b1b),
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
 }

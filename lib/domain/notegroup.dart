@@ -8,7 +8,7 @@ class NoteGroup {
   NoteGroup(this.id, this.name, this.description, this.customName, this.assetImageName);
 
   static List<NoteGroup> _sampleNoteGroups = [
-    NoteGroup(21180, 'CITRUS SMELLS', '시트러스는 달콤하면서도 신선한 감귤류의 향을 포함한다.', 'citrus_yellow', 'images/note-groups/citrus.png'),
+    NoteGroup(21180, 'CITRUS', '시트러스는 달콤하면서도 신선한 감귤류의 향을 포함한다.', 'citrus_yellow', 'images/note-groups/citrus.png'),
     NoteGroup(21181, 'FRUITS & VEGETABLES', '시트러스는 달콤하면서도 신선한 감귤류의 향을 포함한다.', 'fruits&vegetables _purple', 'images/note-groups/fruits.png'),
     NoteGroup(21182, 'FLOWERS', '시트러스는 달콤하면서도 신선한 감귤류의 향을 포함한다.', 'flowers_pink', 'images/note-groups/flowers.png'),
     NoteGroup(21183, 'WHITE FLOWERS', '시트러스는 달콤하면서도 신선한 감귤류의 향을 포함한다.', 'whiteFlowers_skyblue', 'images/note-groups/white_flowers.png'),
