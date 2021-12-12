@@ -1,6 +1,7 @@
 import 'package:digging/domain/brand.dart';
 import 'package:digging/domain/notegroup.dart';
 import 'package:digging/domain/perfume.dart';
+import 'package:digging/ui/main/FuturePerfumeListView.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -239,7 +240,8 @@ class _MainView extends State<MainView> {
   ) =>
       GestureDetector(
         onTap: () {
-          _goToPerfumeListView(context, brand, perfumes);
+          // _goToPerfumeListView(context, brand, perfumes);
+          _goToFuturePerfumeListView(context, brand);
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -537,6 +539,24 @@ class _MainView extends State<MainView> {
         "brand": brand,
         "perfumes": perfumes,
       },
+    );
+  }
+
+  void _goToFuturePerfumeListView(
+    BuildContext context,
+    Brand brand,
+  ) {
+    // Navigator.pushNamed(
+    //   context,
+    //   '/main/perfumes/future',
+    //   arguments: {
+    //     "brand": brand,
+    //   },
+    // );
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FuturePerfumeListView(brand.id),
+      ),
     );
   }
 
