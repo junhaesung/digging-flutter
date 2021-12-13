@@ -99,16 +99,16 @@ class SearchView extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: getBottomNavigationBar(context),
+      bottomNavigationBar: _getBottomNavigationBar(context),
     );
   }
 
-  BottomNavigationBar getBottomNavigationBar(BuildContext context) =>
+  BottomNavigationBar _getBottomNavigationBar(BuildContext context) =>
       BottomNavigationBar(
         currentIndex: 1,
         onTap: (index) {
           if (index == 0) {
-            goToMainView(context);
+            _goToMainView(context);
           }
           if (index == 1) {
             // do nothing
@@ -126,8 +126,8 @@ class SearchView extends StatelessWidget {
         ],
       );
 
-  void goToMainView(BuildContext context) {
-    Navigator.of(context).push(
+  void _goToMainView(BuildContext context) {
+    Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => MainView(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {

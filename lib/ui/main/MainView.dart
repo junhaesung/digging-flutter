@@ -572,7 +572,7 @@ class _MainView extends State<MainView> {
   }
 
   void _goToSearchView(BuildContext context) {
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => SearchView(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
