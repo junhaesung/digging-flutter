@@ -1,116 +1,132 @@
+import 'package:digging/adapter/api/DiggingApi.dart';
+import 'package:digging/adapter/api/model/NoteSImple.dart';
 import 'package:digging/domain/notegroup.dart';
+import 'package:digging/ui/search/SearchPerfumeListView.dart';
 import 'package:flutter/material.dart';
 
 import '/domain/note.dart';
 
 /// 검색화면에서 노트그룹 누르면 노트 목록 나오는 화면
 class NoteListView extends StatefulWidget {
+  final NoteGroup noteGroup;
+
+  NoteListView({required this.noteGroup});
+
   @override
-  State<StatefulWidget> createState() => _NoteListView();
+  State<StatefulWidget> createState() => _NoteListView(noteGroup);
 }
 
 class _NoteListView extends State<NoteListView> {
+  final NoteGroup _noteGroup;
+  final DiggingApi _api = DiggingApi();
+
+  _NoteListView(this._noteGroup);
+
   @override
   Widget build(BuildContext context) {
-    Map<String, Object>? arguments =
-        (ModalRoute.of(context)!.settings).arguments as Map<String, Object>?;
-    NoteGroup noteGroup =
-        arguments != null && arguments.containsKey('noteGroup')
-            ? arguments['noteGroup'] as NoteGroup
-            : NoteGroup.getNoteGroups()[0];
-    List<Note> notes = arguments != null && arguments.containsKey('notes')
-        ? arguments['notes'] as List<Note>
-        : Note.getNotes(10);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          noteGroup.name,
-          style: TextStyle(
-            fontSize: 16,
-            color: Color(0xff1b1b1b),
+    return FutureBuilder(
+      future: _api.fetchNotes(_noteGroup.id),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: LinearProgressIndicator(),
+          );
+        }
+        List<Note> notes = (snapshot.data as List<NoteSimple>)
+            .map((e) => Note(e.id, e.name))
+            .toList();
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              _noteGroup.name,
+              style: TextStyle(
+                fontSize: 16,
+                color: Color(0xff1b1b1b),
+              ),
+            ),
+            centerTitle: true,
+            toolbarHeight: 44,
+            elevation: 0.0,
+            backgroundColor: Color(0xfff8f8f8),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Color(0xff1b1b1b),
+              ),
+            ),
           ),
-        ),
-        centerTitle: true,
-        toolbarHeight: 44,
-        elevation: 0.0,
-        backgroundColor: Color(0xfff8f8f8),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Color(0xff1b1b1b),
-          ),
-        ),
-      ),
-      body: SafeArea(
-        child: Container(
-          color: Color(0xfff8f8f8),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              children: [
-                Container(
-                  height: 14,
-                ),
-                Container(
-                  height: 100,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+          body: SafeArea(
+            child: Container(
+              color: Color(0xfff8f8f8),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 14,
+                    ),
+                    Container(
+                      height: 100,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Container(
-                              height: 32,
-                              child: Image.asset(
-                                noteGroup.assetImageName,
-                                fit: BoxFit.fitHeight,
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Container(
+                                  height: 32,
+                                  child: Image.asset(
+                                    _noteGroup.assetImageName,
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
                               ),
-                            ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  _noteGroup.name,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xff11171c),
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Text(
-                              noteGroup.name,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff11171c),
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                          Container(height: 15),
+                          Text(
+                            _noteGroup.description,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xff11171c),
                             ),
                           ),
                         ],
                       ),
-                      Container(height: 15),
-                      Text(
-                        noteGroup.description,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xff11171c),
-                        ),
+                    ),
+                    Container(height: 28),
+                    Expanded(
+                      child: ListView(
+                        // physics: NeverScrollableScrollPhysics(),
+                        children:
+                            notes.map((e) => toNoteWidget(context, e)).toList(),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Container(height: 28),
-                Expanded(
-                  child: ListView(
-                    // physics: NeverScrollableScrollPhysics(),
-                    children:
-                        notes.map((e) => toNoteWidget(context, e)).toList(),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -147,12 +163,10 @@ class _NoteListView extends State<NoteListView> {
 
   /// 향수 목록 화면으로 이동
   void _goToPerfumeDetailView(context, Note note) {
-    Navigator.pushNamed(
-      context,
-      '/search/perfumes',
-      arguments: {
-        "note": note,
-      },
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SearchPerfumeListView(note: note),
+      ),
     );
   }
 }

@@ -44,4 +44,9 @@ class Note {
     notes.shuffle(Random());
     return notes.take(count).toList();
   }
+
+  @override
+  String toString() {
+    return 'Note{id: $id, name: $name}';
+  }
 }

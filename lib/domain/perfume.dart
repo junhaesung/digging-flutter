@@ -75,4 +75,9 @@ class Perfume {
     samplePerfumes.shuffle(Random());
     return samplePerfumes.take(count).toList();
   }
+
+  @override
+  String toString() {
+    return 'Perfume{id: $id, name: $name, brandName: $brandName, imageUrl: $imageUrl}';
+  }
 }

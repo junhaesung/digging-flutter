@@ -142,10 +142,11 @@ class SearchView extends StatelessWidget {
     NoteGroup noteGroup,
     List<Note> notes,
   ) {
-    Navigator.pushNamed(context, '/search/notes', arguments: {
-      "notes": notes,
-      "noteGroup": noteGroup,
-    });
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => NoteListView(noteGroup: noteGroup),
+      ),
+    );
   }
 
   Widget toNoteGroupWidget(BuildContext context, NoteGroup noteGroup) {
