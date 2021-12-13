@@ -275,11 +275,7 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
 
   /// 이 향수와 비슷한 제품
   Widget _getSimilarPerfumesWidget(PerfumeDetail perfumeDetail) {
-    List<PerfumeSimple> perfumeSimples = perfumeDetail.perfumeSimples.isNotEmpty
-        ? perfumeDetail.perfumeSimples
-        : Perfume.getPerfumes(3)
-            .map((e) => PerfumeSimple(e.id, e.name, e.brandName, e.imageUrl))
-            .toList();
+    List<PerfumeSimple> perfumeSimples = perfumeDetail.perfumeSimples;
     return Container(
       height: 375,
       child: Padding(

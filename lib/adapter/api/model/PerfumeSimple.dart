@@ -24,4 +24,9 @@ class PerfumeSimple {
       json['image'] as String,
     );
   }
+
+  @override
+  String toString() {
+    return 'PerfumeSimple{id: $id, name: $name, brandName: $brandName, thumbnailImageUrl: $thumbnailImageUrl}';
+  }
 }

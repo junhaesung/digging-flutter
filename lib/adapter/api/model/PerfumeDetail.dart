@@ -43,4 +43,9 @@ class PerfumeDetail {
           .toList(),
     );
   }
+
+  @override
+  String toString() {
+    return 'PerfumeDetail{id: $id, name: $name, description: $description, gender: $gender, imageUrl: $imageUrl, thumbnailImageUrl: $thumbnailImageUrl, brandName: $brandName, accords: $accords, notes: $notes, perfumeSimples: $perfumeSimples}';
+  }
 }

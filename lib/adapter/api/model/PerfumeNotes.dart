@@ -15,4 +15,9 @@ class PerfumeNotes {
       (json['unknown'] as List).map((e) => e as String).toList(),
     );
   }
+
+  @override
+  String toString() {
+    return 'PerfumeNotes{topNames: $topNames, middleNames: $middleNames, baseNames: $baseNames, unknownNames: $unknownNames}';
+  }
 }
