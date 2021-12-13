@@ -1,4 +1,4 @@
-import 'NoteSImple.dart';
+import 'NoteSimple.dart';
 
 class NotesData {
   List<NoteSimple> noteSimples;

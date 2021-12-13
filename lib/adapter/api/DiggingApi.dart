@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import 'model/ApiResponse.dart';
 import 'model/BrandDetail.dart';
-import 'model/NoteSImple.dart';
+import 'model/NoteSimple.dart';
 import 'model/PerfumeDetail.dart';
 
 class DiggingApi {
