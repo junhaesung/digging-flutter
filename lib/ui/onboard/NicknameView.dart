@@ -53,30 +53,34 @@ class NicknameView extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: ElevatedButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/onboard/gender-and-age');
-        },
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
-        ),
-        child: Container(
-          height: 52,
-          width: 340,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: Text(
-              "다음",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+      floatingActionButton: _floatingActionButtonWidget(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  Widget _floatingActionButtonWidget(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.pushNamed(context, '/onboard/gender-and-age');
+      },
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
+      ),
+      child: Container(
+        height: 52,
+        width: 340,
+        child: Center(
+          child: Text(
+            "다음",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
+
 }

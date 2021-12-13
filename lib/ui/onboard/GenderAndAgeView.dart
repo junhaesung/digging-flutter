@@ -152,29 +152,7 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
           ),
         ),
       ),
-      floatingActionButton: ElevatedButton(
-        onPressed: () {
-          _goToNoteGroupView(context);
-        },
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
-        ),
-        child: Container(
-          height: 52,
-          width: 340,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: Text(
-              "다음",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
+      floatingActionButton: _floatingActionButtonWidget(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
@@ -183,21 +161,46 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
       AgeGroups.getAgeGroups().map((e) => _toAgeWidget(e)).toList();
 
   Widget _toAgeWidget(AgeGroup ageGroup) => ClipOval(
-    child: Container(
-      color: Colors.white,
-      child: Center(
-        child: Text(
-          ageGroup.age.toString() + "대",
-          style: TextStyle(
-            fontSize: 14,
-            color: Color(0xff888888),
+        child: Container(
+          color: Colors.white,
+          child: Center(
+            child: Text(
+              ageGroup.age.toString() + "대",
+              style: TextStyle(
+                fontSize: 14,
+                color: Color(0xff888888),
+              ),
+            ),
           ),
         ),
-      ),
-    ),
-  );
+      );
 
   _goToNoteGroupView(BuildContext context) {
     Navigator.pushNamed(context, '/onboard/note-group');
+  }
+
+  Widget _floatingActionButtonWidget(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        _goToNoteGroupView(context);
+      },
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
+      ),
+      child: Container(
+        height: 52,
+        width: 340,
+        child: Center(
+          child: Text(
+            "다음",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

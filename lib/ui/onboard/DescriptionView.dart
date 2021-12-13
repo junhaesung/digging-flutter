@@ -14,29 +14,7 @@ class DescriptionView extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: ElevatedButton(
-        onPressed: () {
-          Navigator.pushReplacementNamed(context, '/onboard/nickname');
-        },
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
-        ),
-        child: Container(
-          height: 52,
-          width: 340,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: Text(
-              "다음",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
+      floatingActionButton: _floatingActionButtonWidget(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
@@ -84,13 +62,29 @@ class DescriptionView extends StatelessWidget {
           ),
         ],
       );
-}
 
-class FloatingActionButtonColor extends MaterialStateColor {
-  FloatingActionButtonColor() : super(_defaultColor);
-
-  static const int _defaultColor = 0xff1c1c1c;
-
-  @override
-  Color resolve(Set<MaterialState> states) => Color(_defaultColor);
+  Widget _floatingActionButtonWidget(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.pushReplacementNamed(context, '/onboard/nickname');
+      },
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
+      ),
+      child: Container(
+        height: 52,
+        width: 340,
+        child: Center(
+          child: Text(
+            "다음",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
