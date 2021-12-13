@@ -1,4 +1,6 @@
 import 'package:digging/domain/note.dart';
+import 'package:digging/ui/main/MainView.dart';
+import 'package:digging/ui/search/NoteListView.dart';
 import 'package:flutter/material.dart';
 
 import '/domain/notegroup.dart';
@@ -125,7 +127,14 @@ class SearchView extends StatelessWidget {
       );
 
   void goToMainView(BuildContext context) {
-    Navigator.pushReplacementNamed(context, '/main');
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => MainView(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return child;
+        },
+      ),
+    );
   }
 
   void goToNoteListView(

@@ -3,6 +3,7 @@ import 'package:digging/domain/notegroup.dart';
 import 'package:digging/domain/perfume.dart';
 import 'package:digging/ui/main/MainPerfumeListView.dart';
 import 'package:digging/ui/perfume/PerfumeDetailView.dart';
+import 'package:digging/ui/search/SearchView.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -571,7 +572,14 @@ class _MainView extends State<MainView> {
   }
 
   void _goToSearchView(BuildContext context) {
-    Navigator.pushReplacementNamed(context, '/search');
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => SearchView(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return child;
+        },
+      ),
+    );
   }
 
   Widget _toNoteGroupPerfumeWidget(
