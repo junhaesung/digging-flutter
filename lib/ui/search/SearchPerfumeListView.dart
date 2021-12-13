@@ -1,5 +1,6 @@
 import 'package:digging/domain/note.dart';
 import 'package:digging/domain/perfume.dart';
+import 'package:digging/ui/perfume/PerfumeDetailView.dart';
 import 'package:flutter/material.dart';
 
 class SearchPerfumeListView extends StatelessWidget {
@@ -128,12 +129,10 @@ class SearchPerfumeListView extends StatelessWidget {
     BuildContext context,
     Perfume perfume,
   ) {
-    Navigator.pushNamed(
-      context,
-      '/perfume/detail',
-      arguments: {
-        "perfume": perfume,
-      },
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => PerfumeDetailView(perfumeId: perfume.id),
+      ),
     );
   }
 }

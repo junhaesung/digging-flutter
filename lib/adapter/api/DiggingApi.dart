@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'model/ApiResponse.dart';
 import 'model/BrandDetail.dart';
+import 'model/PerfumeDetail.dart';
 
 class DiggingApi {
   String _host = "http://api.digging.me";
@@ -17,4 +18,13 @@ class DiggingApi {
         .then((value) => ApiResponse.brandData(json.decode(value.body)))
         .then((value) => value.data!.brandDetail);
   }
+
+  Future<PerfumeDetail> fetchPerfume(int perfumeId) async {
+    return http
+        .get(Uri.parse('$_host/api/v1/perfumes/$perfumeId'),
+        headers: {'Authorization': 'Bearer $_accessToken'})
+        .then((value) => ApiResponse.perfumeData(json.decode(value.body)))
+        .then((value) => value.data!.perfumeDetail);
+  }
 }
+

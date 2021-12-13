@@ -2,6 +2,7 @@ import 'package:digging/adapter/api/DiggingApi.dart';
 import 'package:digging/adapter/api/model/BrandDetail.dart';
 import 'package:digging/adapter/api/model/PerfumeSimple.dart';
 import 'package:digging/domain/perfume.dart';
+import 'package:digging/ui/perfume/PerfumeDetailView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -122,12 +123,9 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
   }
 
   Widget getBrandWidget(BuildContext context) {
-    print('getBrandWidget.brandId:$brandId');
     return FutureBuilder(
       future: api.fetchBrand(brandId!),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        print('FutureBuilder.snapshot:$snapshot');
-
         if (!snapshot.hasData) {
           return getLoadingWidget();
         }
@@ -155,12 +153,10 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
   }
 
   void _goToPerfumeDetail(BuildContext context, Perfume perfume) {
-    Navigator.pushNamed(
-      context,
-      '/perfume/detail',
-      arguments: {
-        "perfume": perfume,
-      },
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => PerfumeDetailView(perfumeId: perfume.id),
+      ),
     );
   }
 

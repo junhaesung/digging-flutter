@@ -2,6 +2,7 @@ import 'package:digging/domain/brand.dart';
 import 'package:digging/domain/notegroup.dart';
 import 'package:digging/domain/perfume.dart';
 import 'package:digging/ui/main/MainPerfumeListView.dart';
+import 'package:digging/ui/perfume/PerfumeDetailView.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -558,20 +559,14 @@ class _MainView extends State<MainView> {
     );
   }
 
-  void _goToPerfumeDetailViewWithoutData(BuildContext context) {
-    Navigator.pushNamed(context, '/perfume/detail');
-  }
-
   void _goToPerfumeDetailView(
     BuildContext context,
     Perfume perfume,
   ) {
-    Navigator.pushNamed(
-      context,
-      '/perfume/detail',
-      arguments: {
-        "perfume": perfume,
-      },
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => PerfumeDetailView(perfumeId: perfume.id),
+      ),
     );
   }
 
@@ -588,7 +583,7 @@ class _MainView extends State<MainView> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: GestureDetector(
           onTap: () {
-            _goToPerfumeDetailViewWithoutData(context);
+            _goToPerfumeDetailView(context, perfumes.first);
           },
           child: Container(
             child: Column(

@@ -14,4 +14,14 @@ class PerfumeSimple {
       json['thumbnailImageUrl'] as String,
     );
   }
+
+  /// api 변경 전까지 임시로 사용하는 메서드
+  factory PerfumeSimple.fromJson2(Map<String, dynamic> json) {
+    return PerfumeSimple(
+      json['id'] as int,
+      json['name'] as String,
+      json['brand'] as String,
+      json['image'] as String,
+    );
+  }
 }
