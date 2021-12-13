@@ -14,27 +14,7 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: DotsIndicator(dotsCount: 3, position: 1),
-        centerTitle: true,
-        backgroundColor: Color(0xffe5e5e5),
-        elevation: 0.0,
-        actions: [
-          TextButton(
-            onPressed: () {
-              _goToNoteGroupView(context);
-            },
-            child: Text(
-              '건너뛰기',
-              style: TextStyle(
-                fontSize: 14,
-                color: Color(0xff888888),
-                decoration: TextDecoration.underline,
-              ),
-            ),
-          ),
-        ],
-      ),
+      appBar: _appBarWidget(context),
       body: SafeArea(
         child: Container(
           color: Color(0xffe5e5e5),
@@ -201,6 +181,39 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
           ),
         ),
       ),
+    );
+  }
+
+  PreferredSizeWidget _appBarWidget(BuildContext context) {
+    return AppBar(
+      title: DotsIndicator(dotsCount: 3, position: 1),
+      centerTitle: true,
+      backgroundColor: Color(0xffe5e5e5),
+      elevation: 0.0,
+      leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: Color(0xff888888),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            _goToNoteGroupView(context);
+          },
+          child: Text(
+            '건너뛰기',
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xff888888),
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
