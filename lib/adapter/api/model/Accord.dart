@@ -17,4 +17,9 @@ class Accord {
       json['textColor'] as String,
     );
   }
+
+  @override
+  String toString() {
+    return 'Accord{name: $name, score: $score, opacity: $opacity, backgroundColor: $backgroundColor, textColor: $textColor}';
+  }
 }

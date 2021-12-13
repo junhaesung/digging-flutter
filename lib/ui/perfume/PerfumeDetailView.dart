@@ -53,131 +53,22 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
             child: ListView(
               children: [
                 // 향수 이미지
-                Container(
-                  height: 375,
-                  child: Image.network(perfumeDetail.imageUrl),
-                ),
+                _getPerfumeImageWidget(perfumeDetail),
                 // 향수 이름, 브랜드 이름
-                Container(
-                  height: 120,
-                  child: Row(
-                    children: [
-                      Column(
-                        children: [
-                          Text(perfumeDetail.brandName),
-                          Text(perfumeDetail.name),
-                          Text('3명이 이 향수에 관심있어요.')
-                        ],
-                      ),
-                      Text('디깅 아이콘'),
-                    ],
-                  ),
-                ),
+                _getPerfumeNameWidget(perfumeDetail),
+                Container(height: 12),
                 // 탭
+                _getTabWidget(),
                 Container(
-                  height: 48,
-                  child: Row(
-                    children: [
-                      Text('상품 정보'),
-                      Text('리뷰'),
-                    ],
-                  ),
+                  height: 8,
+                  color: Color(0xfff8f8f8),
                 ),
-                // accord
-                Container(
-                  height: 471,
-                  child: Column(
-                    children: [
-                      Text('구성 성분'),
-                      Text('Vanila'),
-                      Text('Powdery'),
-                      Text('Violet'),
-                      Text('Earthy'),
-                      Text('Sweet'),
-                      Text('Aromatic'),
-                      Text('Green'),
-                      Text('Floral'),
-                      Text('Woody'),
-                    ],
-                  ),
-                ),
+                // Accords
+                _getAccordWidget(perfumeDetail),
                 // note
-                Container(
-                  height: 375,
-                  child: Column(
-                    children: [
-                      Text('향수 노트'),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                                onPressed: () {}, child: Text('Top')),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                                onPressed: () {}, child: Text('Middle')),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                                onPressed: () {}, child: Text('Bottom')),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: 200,
-                        child: GridView.count(
-                          childAspectRatio: 100 / 45,
-                          crossAxisCount: 3,
-                          children: [
-                            Text('Note 1'),
-                            Text('Note 2'),
-                            Text('Note 3'),
-                            Text('Note 4'),
-                            Text('Note 5'),
-                            Text('더 보기'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                _getNoteWidget(perfumeDetail),
                 // 유사한 향수
-                Container(
-                  height: 375,
-                  child: Column(
-                    children: [
-                      Text('이 향수와 비슷한 제품'),
-                      Row(
-                        children: [
-                          Column(
-                            children: [
-                              Text('이미지 1'),
-                              Text('브랜드 이름 1'),
-                              Text('향수 이름 1'),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text('이미지 2'),
-                              Text('브랜드 이름 2'),
-                              Text('향수 이름 2'),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text('이미지 3'),
-                              Text('브랜드 이름 3'),
-                              Text('향수 이름 3'),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                _getSimilarPerfumesWidget(perfumeDetail),
               ],
             ),
           ),
@@ -187,20 +78,181 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
   }
 
   Widget _getLoadingWidget() => Scaffold(
-    appBar: AppBar(
-      centerTitle: true,
-      elevation: 0.0,
-      backgroundColor: Colors.white,
-      leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: Icon(
-          Icons.arrow_back_ios,
-          color: Color(0xff1b1b1b),
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 0.0,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xff1b1b1b),
+            ),
+          ),
+        ),
+        body: LinearProgressIndicator(),
+      );
+
+  /// 향수 이미지
+  Widget _getPerfumeImageWidget(PerfumeDetail perfumeDetail) {
+    return Container(
+      height: 306,
+      child: Image.network(perfumeDetail.imageUrl),
+    );
+  }
+
+  /// 향수 이름, 디깅
+  Widget _getPerfumeNameWidget(PerfumeDetail perfumeDetail) {
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    perfumeDetail.brandName,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xffc7c7c7),
+                    ),
+                  ),
+                  Text(
+                    perfumeDetail.name,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff1b1b1b),
+                    ),
+                  ),
+                  Container(height: 12),
+                  // TODO: N 명이 이 향수에 관심있어요.
+                  Text(
+                    '3명이 이 향수에 관심있어요.',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(0xff1b1b1b),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1,
+                  color: Color(0xfff0f0f0),
+                  style: BorderStyle.solid,
+                ),
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Center(
+                child: Container(
+                  height: 20,
+                  child: Image.asset(
+                    'images/icon/icon_digging.png',
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
-    ),
-    body: LinearProgressIndicator(),
-  );
+    );
+  }
+
+  /// 탭바
+  Widget _getTabWidget() {
+    return Container(
+      height: 36,
+      color: Colors.grey,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20.0),
+        child: Row(
+          children: [
+            Text('상품 정보'),
+            Text('리뷰'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 메인 어코드 정보
+  Widget _getAccordWidget(PerfumeDetail perfumeDetail) {
+    return Container(
+      child: Column(
+        children: [
+          Text('구성 성분'),
+          Column(
+            children:
+                perfumeDetail.accords.map((e) => Text(e.toString())).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 노트 정보
+  Widget _getNoteWidget(PerfumeDetail perfumeDetail) {
+    return Container(
+      height: 375,
+      child: Column(
+        children: [
+          Text('향수 노트'),
+          Row(
+            children: [
+              Text('top'),
+              Text('middle'),
+              Text('base'),
+            ],
+          ),
+          // TODO: '더 보기' 버튼 위치
+          Container(
+            height: 200,
+            child: GridView.count(
+              childAspectRatio: 100 / 45,
+              crossAxisCount: 3,
+              children: perfumeDetail.notes.topNames
+                      .take(5)
+                      .map((e) => Text(e))
+                      .toList() +
+                  [Text('더 보기')],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 이 향수와 비슷한 제품
+  Widget _getSimilarPerfumesWidget(PerfumeDetail perfumeDetail) {
+    return Container(
+      height: 375,
+      child: Column(
+        children: [
+          Text('이 향수와 비슷한 제품'),
+          Row(
+            children: perfumeDetail.perfumeSimples.map((e) {
+              return Column(
+                children: [
+                  Text(e.thumbnailImageUrl),
+                  Text(e.brandName),
+                  Text(e.name),
+                ],
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
 }

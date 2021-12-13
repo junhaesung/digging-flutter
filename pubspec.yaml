@@ -48,21 +48,9 @@ flutter:
   assets:
     - images/logo.png
     - images/splash_background.png
-    - images/note-groups/animalic.png
-    - images/note-groups/beverages.png
-    - images/note-groups/citrus.png
-    - images/note-groups/flowers.png
-    - images/note-groups/fruits.png
-    - images/note-groups/greens.png
-    - images/note-groups/natural.png
-    - images/note-groups/resins.png
-    - images/note-groups/spices.png
-    - images/note-groups/sweets.png
-    - images/note-groups/uncategorized.png
-    - images/note-groups/white_flowers.png
-    - images/note-groups/woods.png
-    - images/onboarding/selector_gender.png
-    - images/onboarding/background_description.png
+    - images/note-groups/
+    - images/icon/
+    - images/onboarding/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
