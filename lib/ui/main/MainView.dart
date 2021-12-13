@@ -1,7 +1,7 @@
 import 'package:digging/domain/brand.dart';
 import 'package:digging/domain/notegroup.dart';
 import 'package:digging/domain/perfume.dart';
-import 'package:digging/ui/main/FuturePerfumeListView.dart';
+import 'package:digging/ui/main/MainPerfumeListView.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -294,17 +294,17 @@ class _MainView extends State<MainView> {
                   getRecommendedItem(
                     context,
                     '이달의 향수',
-                    Perfume.getPerfumes(3).toList(),
+                    Perfume.getPerfumes(10).toList(),
                   ),
                   getRecommendedItem(
                     context,
                     '모든 분들에게 인기가 많아요',
-                    Perfume.getPerfumes(3).toList(),
+                    Perfume.getPerfumes(10).toList(),
                   ),
                   getRecommendedItem(
                     context,
                     '선물하기 좋은 향수',
-                    Perfume.getPerfumes(3).toList(),
+                    Perfume.getPerfumes(10).toList(),
                   ),
                 ],
               ),
@@ -527,35 +527,17 @@ class _MainView extends State<MainView> {
     );
   }
 
-  void _goToPerfumeListView(
-    BuildContext context,
-    Brand brand,
-    List<Perfume> perfumes,
-  ) {
-    Navigator.pushNamed(
-      context,
-      '/main/perfumes',
-      arguments: {
-        "brand": brand,
-        "perfumes": perfumes,
-      },
-    );
-  }
-
+  /// 인기브랜드 -> 향수 목록 화면
   void _goToFuturePerfumeListView(
     BuildContext context,
     Brand brand,
   ) {
-    // Navigator.pushNamed(
-    //   context,
-    //   '/main/perfumes/future',
-    //   arguments: {
-    //     "brand": brand,
-    //   },
-    // );
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => FuturePerfumeListView(brand.id),
+        builder: (context) => MainPerfumeListView.brand(
+          title: brand.name,
+          brandId: brand.id,
+        ),
       ),
     );
   }
@@ -566,13 +548,13 @@ class _MainView extends State<MainView> {
     String title,
     List<Perfume> perfumes,
   ) {
-    Navigator.pushNamed(
-      context,
-      '/main/perfumes',
-      arguments: {
-        "title": title,
-        "perfumes": perfumes,
-      },
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => MainPerfumeListView.recommendedPerfume(
+          title: title,
+          perfumes: perfumes,
+        ),
+      ),
     );
   }
 

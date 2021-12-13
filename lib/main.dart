@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'ui/SplashView.dart';
-import 'ui/main/MainPerfumeListView.dart';
 import 'ui/main/MainView.dart';
 import 'ui/onboard/DescriptionView.dart';
 import 'ui/onboard/GenderAndAgeView.dart';
@@ -24,7 +23,6 @@ class DiggingApp extends StatelessWidget {
       routes: {
         '/splash': (context) => SplashView(),
         '/main': (context) => MainView(),
-        '/main/perfumes': (context) => MainPerfumeListView(),
         '/perfume/detail': (context) => PerfumeDetailView(),
         '/search': (context) => SearchView(),
         '/search/notes': (context) => NoteListView(),

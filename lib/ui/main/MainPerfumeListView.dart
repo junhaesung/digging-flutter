@@ -1,63 +1,226 @@
-import 'package:digging/domain/brand.dart';
-import 'package:digging/domain/notegroup.dart';
+import 'package:digging/adapter/api/DiggingApi.dart';
+import 'package:digging/adapter/api/model/BrandDetail.dart';
+import 'package:digging/adapter/api/model/PerfumeSimple.dart';
 import 'package:digging/domain/perfume.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-/// 1. brand 선택해서 오는 경우
-/// 2. 노트그룹 선택해서 오는 경우
-/// 3. 추천 선택해서 오는 경우
 class MainPerfumeListView extends StatefulWidget {
+  final String title;
+  final int? brandId;
+  final List<Perfume>? perfumes;
+
+  /// 기본생성자
+  MainPerfumeListView._(
+    this.title,
+    this.brandId,
+    this.perfumes,
+  );
+
+  MainPerfumeListView.brand({
+    required this.title,
+    required this.brandId,
+    this.perfumes,
+  });
+
+  MainPerfumeListView.recommendedPerfume({
+    required this.title,
+    this.brandId,
+    required this.perfumes,
+  });
+
   @override
-  State<StatefulWidget> createState() => _MainPerfumeListView();
+  State<StatefulWidget> createState() => _MainPerfumeListView(
+        title,
+        brandId,
+        perfumes,
+      );
 }
 
 class _MainPerfumeListView extends State<MainPerfumeListView> {
-  late String title;
-  late List<Perfume> perfumes;
+  final DiggingApi api = DiggingApi();
+  final String title;
+  int? brandId;
+  List<Perfume>? perfumes;
+
+  _MainPerfumeListView(
+    this.title,
+    this.brandId,
+    this.perfumes,
+  ) {
+    assert(title.isNotEmpty);
+  }
 
   @override
   Widget build(BuildContext context) {
-    Map<String, Object>? arguments =
-        (ModalRoute.of(context)!.settings).arguments as Map<String, Object>?;
-    Brand? brand = arguments != null && arguments.containsKey('brand')
-        ? arguments['brand'] as Brand
-        : null;
-    NoteGroup? noteGroup =
-        arguments != null && arguments.containsKey('noteGroup')
-            ? arguments['noteGroup'] as NoteGroup
-            : null;
-    String? title = arguments != null && arguments.containsKey('title')
-        ? arguments['title'] as String
-        : null;
+    if (brandId != null) {
+      return getBrandWidget(context);
+    }
+    return getRecommendedPerfumeWidget(context, perfumes!);
+  }
 
-    this.title = brand?.name ?? noteGroup?.name ?? title ?? "";
-    this.perfumes = arguments != null && arguments.containsKey('noteGroup')
-        ? arguments['perfumes'] as List<Perfume>
-        : Perfume.getPerfumes(10);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          this.title,
-          style: TextStyle(
-            fontSize: 16,
-            color: Color(0xff1b1b1b),
+  Widget toPerfumeListItem(BuildContext context, Perfume perfume) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: GestureDetector(
+        onTap: () {
+          _goToPerfumeDetail(context, perfume);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+          ),
+          height: 100,
+          child: Padding(
+            padding: const EdgeInsets.all(7.0),
+            child: Row(
+              children: [
+                Image.network(
+                  perfume.imageUrl,
+                  fit: BoxFit.fitHeight,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 23),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          perfume.brandName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xffc7c7c7),
+                          ),
+                        ),
+                        Container(
+                          height: 4,
+                        ),
+                        Text(
+                          perfume.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-        backgroundColor: Color(0xfff3fbff),
-        elevation: 0.0,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Color(0xff1b1b1b),
-          ),
-        ),
-        toolbarHeight: 44,
       ),
-      body: SafeArea(
+    );
+  }
+
+  Widget getBrandWidget(BuildContext context) {
+    print('getBrandWidget.brandId:$brandId');
+    return FutureBuilder(
+      future: api.fetchBrand(brandId!),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        print('FutureBuilder.snapshot:$snapshot');
+
+        if (!snapshot.hasData) {
+          return getLoadingWidget();
+        }
+
+        BrandDetail brandDetail = snapshot.data;
+        List<Perfume> perfumes =
+            brandDetail.perfumes.map((e) => _toPerfume(e)).toList();
+
+        return Scaffold(
+          appBar: getAppBarWidget(context, title),
+          body: getBodyWidget(context, perfumes),
+        );
+      },
+    );
+  }
+
+  Widget getRecommendedPerfumeWidget(
+    BuildContext context,
+    List<Perfume> perfumes,
+  ) {
+    return Scaffold(
+      appBar: getAppBarWidget(context, title),
+      body: getBodyWidget(context, perfumes),
+    );
+  }
+
+  void _goToPerfumeDetail(BuildContext context, Perfume perfume) {
+    Navigator.pushNamed(
+      context,
+      '/perfume/detail',
+      arguments: {
+        "perfume": perfume,
+      },
+    );
+  }
+
+  Perfume _toPerfume(PerfumeSimple perfumeSimple) {
+    return Perfume(
+      perfumeSimple.id,
+      perfumeSimple.name,
+      perfumeSimple.brandName,
+      perfumeSimple.thumbnailImageUrl,
+    );
+  }
+
+  Widget getLoadingWidget() => Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xfff3fbff),
+          elevation: 0.0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xff1b1b1b),
+            ),
+          ),
+          toolbarHeight: 44,
+        ),
+        // body: Text('snapshot has no data. brandId: $_brandId'),
+        body: LinearProgressIndicator(),
+      );
+
+  PreferredSizeWidget getAppBarWidget(BuildContext context, String title) {
+    return AppBar(
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 16,
+          color: Color(0xff1b1b1b),
+        ),
+      ),
+      backgroundColor: Color(0xfff3fbff),
+      elevation: 0.0,
+      leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: Color(0xff1b1b1b),
+        ),
+      ),
+      toolbarHeight: 44,
+    );
+  }
+
+  Widget getBodyWidget(
+    BuildContext context,
+    List<Perfume> perfumes,
+  ) =>
+      SafeArea(
         child: Container(
           color: Color(0xfff3fbff),
           child: Padding(
@@ -72,73 +235,5 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget toPerfumeListItem(BuildContext context, Perfume perfume) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: GestureDetector(
-        onTap: () {
-          _goToPerfumeDetail(context, perfume);
-        },
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Container(
-            color: Colors.white,
-            height: 100,
-            child: Padding(
-              padding: const EdgeInsets.all(7.0),
-              child: Row(
-                children: [
-                  Image.network(
-                    perfume.imageUrl,
-                    fit: BoxFit.fitHeight,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 23),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          perfume.brandName,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xffc7c7c7),
-                          ),
-                        ),
-                        Container(
-                          height: 4,
-                        ),
-                        Text(
-                          perfume.name,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _goToPerfumeDetail(BuildContext context, Perfume perfume) {
-    Navigator.pushNamed(
-      context,
-      '/perfume/detail',
-      arguments: {
-        "perfume": perfume,
-      },
-    );
-  }
+      );
 }
