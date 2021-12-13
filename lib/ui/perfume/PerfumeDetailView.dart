@@ -1,7 +1,6 @@
 import 'package:digging/adapter/api/DiggingApi.dart';
 import 'package:digging/adapter/api/model/PerfumeDetail.dart';
 import 'package:digging/adapter/api/model/PerfumeSimple.dart';
-import 'package:digging/domain/perfume.dart';
 import 'package:flutter/material.dart';
 
 class PerfumeDetailView extends StatefulWidget {
