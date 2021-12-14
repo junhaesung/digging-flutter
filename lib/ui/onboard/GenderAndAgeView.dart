@@ -8,7 +8,6 @@ class GenderAndAgeView extends StatefulWidget {
 }
 
 class _GenderAndAgeView extends State<GenderAndAgeView> {
-  // TODO: 성별 선택 레이아웃 작성중
   var _selectedGender = 0;
   var _selectedAgeGroup = 0;
 
@@ -39,20 +38,33 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
   List<Widget> _getAgeGroupWidgets() =>
       AgeGroups.getAgeGroups().map((e) => _toAgeWidget(e)).toList();
 
-  Widget _toAgeWidget(AgeGroup ageGroup) => ClipOval(
-        child: Container(
-          color: Colors.white,
-          child: Center(
-            child: Text(
-              ageGroup.age.toString() + "대",
-              style: TextStyle(
-                fontSize: 14,
-                color: Color(0xff888888),
-              ),
-            ),
+  Widget _toAgeWidget(AgeGroup ageGroup) => GestureDetector(
+    onTap: () {
+      setState(() {
+        _selectedAgeGroup = _selectedAgeGroup != ageGroup.age ? ageGroup.age : 0;
+      });
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+              _selectedAgeGroup == ageGroup.age
+                  ? 'images/onboarding/age_selected.png'
+                  : 'images/onboarding/age_normal.png'
           ),
         ),
-      );
+      ),
+      child: Center(
+        child: Text(
+          ageGroup.age.toString() + "대",
+          style: TextStyle(
+            fontSize: 14,
+            color: Color(_selectedAgeGroup == ageGroup.age ? 0xff1b1b1b : 0xff888888),
+          ),
+        ),
+      ),
+    ),
+  );
 
   _goToNoteGroupView(BuildContext context) {
     Navigator.pushNamed(context, '/onboard/note-group');
@@ -193,6 +205,7 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
         Container(
           height: 200,
           child: GridView.count(
+            physics: NeverScrollableScrollPhysics(),
             crossAxisCount: 2,
             children: [
               _genderButtonWidget('여성'),
