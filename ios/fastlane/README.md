@@ -15,13 +15,13 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
-### ios custom_lane
+### ios ios_beta_app
 
 ```sh
-[bundle exec] fastlane ios custom_lane
+[bundle exec] fastlane ios ios_beta_app
 ```
 
-Description of what the lane does
+New iOS build for Digging app
 
 ----
 
