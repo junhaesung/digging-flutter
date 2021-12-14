@@ -8,7 +8,7 @@ class NoteGroupView extends StatefulWidget {
 }
 
 class _NoteGroupView extends State<NoteGroupView> {
-  Set<int> noteGroupIds = Set.of([]);
+  Set<int> _selectedNoteGroupIds = Set.of([]);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -135,11 +135,11 @@ class _NoteGroupView extends State<NoteGroupView> {
         padding: const EdgeInsets.symmetric(vertical: 28),
         child: Center(
             child: Text(
-              '최대 3가지 선택',
-              style: TextStyle(
-                color: Color(0xff888888),
-              ),
-            )),
+          '최대 3가지 선택',
+          style: TextStyle(
+            color: Color(0xff888888),
+          ),
+        )),
       ),
     );
   }
@@ -160,31 +160,46 @@ class _NoteGroupView extends State<NoteGroupView> {
   Widget _toNoteGroupWidget(BuildContext context, NoteGroup noteGroup) {
     return Padding(
       padding: const EdgeInsets.all(6.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: Colors.white,
-        ),
-        child: Column(
-          children: [
-            Container(height: 20),
-            Image.asset(
-              noteGroup.assetImageName,
-              height: 32,
-              fit: BoxFit.fitHeight,
-            ),
-            Container(height: 10),
-            Text(
-              noteGroup.name,
-              style: TextStyle(
-                fontSize: 12,
-                color: Color(0xff888888),
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            if (_selectedNoteGroupIds.contains(noteGroup.id)) {
+              _selectedNoteGroupIds.remove(noteGroup.id);
+            } else if (_selectedNoteGroupIds.length < 3) {
+              _selectedNoteGroupIds.add(noteGroup.id);
+            } else {
+              // do nothing
+            }
+          });
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            border: _selectedNoteGroupIds.contains(noteGroup.id)
+                ? Border.all(color: Color(0xff83daff))
+                : null,
+            color: Colors.white,
+          ),
+          child: Column(
+            children: [
+              Container(height: 20),
+              Image.asset(
+                noteGroup.assetImageName,
+                height: 32,
+                fit: BoxFit.fitHeight,
               ),
-            ),
-          ],
+              Container(height: 10),
+              Text(
+                noteGroup.name,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Color(0xff888888),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-
 }
