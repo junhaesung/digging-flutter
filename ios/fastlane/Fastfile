@@ -27,7 +27,7 @@ platform :ios do
         firebase_app_distribution(
             app: "1:708768065710:ios:c0dbc330c86fba8269e53f",
             testers: "seong0428@gmail.com",
-            release_notes: "Initial test version of the app",
+            release_notes: "Fix API request failure",
             firebase_cli_path: "/usr/local/bin/firebase",
             ipa_path: "./build/Runner/Runner.ipa"
         )
