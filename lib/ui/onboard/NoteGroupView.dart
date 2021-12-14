@@ -2,7 +2,12 @@ import 'package:digging/domain/notegroup.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
-class NoteGroupView extends StatelessWidget {
+class NoteGroupView extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _NoteGroupView();
+}
+
+class _NoteGroupView extends State<NoteGroupView> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: _appBarWidget(context),
