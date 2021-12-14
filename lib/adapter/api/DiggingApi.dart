@@ -9,7 +9,7 @@ import 'model/NoteSimple.dart';
 import 'model/PerfumeDetail.dart';
 
 class DiggingApi {
-  String _host = "http://api.digging.me";
+  String _host = "api.digging.me";
   String _accessToken =
       'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhY20tYXBpLWRldmVsb3AiLCJtZW1iZXJJZCI6MjExNzd9.sQta6Xokjdoc7Bt_KaLVYxMX8nBhqDdJvbqRX5eErms';
 
