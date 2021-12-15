@@ -19,7 +19,7 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
         child: Container(
           color: Color(0xffe5e5e5),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: ListView(
               children: [
                 _titleWidget(),
@@ -39,55 +39,61 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
       AgeGroups.getAgeGroups().map((e) => _toAgeWidget(e)).toList();
 
   Widget _toAgeWidget(AgeGroup ageGroup) => GestureDetector(
-    onTap: () {
-      setState(() {
-        _selectedAgeGroup = _selectedAgeGroup != ageGroup.age ? ageGroup.age : 0;
-      });
-    },
-    child: Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-              _selectedAgeGroup == ageGroup.age
+        onTap: () {
+          setState(() {
+            _selectedAgeGroup =
+                _selectedAgeGroup != ageGroup.age ? ageGroup.age : 0;
+          });
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(_selectedAgeGroup == ageGroup.age
                   ? 'images/onboarding/age_selected.png'
-                  : 'images/onboarding/age_normal.png'
+                  : 'images/onboarding/age_normal.png'),
+            ),
+          ),
+          child: Center(
+            child: Text(
+              ageGroup.age.toString() + "대",
+              style: TextStyle(
+                fontSize: 14,
+                color: Color(_selectedAgeGroup == ageGroup.age
+                    ? 0xff1b1b1b
+                    : 0xff888888),
+              ),
+            ),
           ),
         ),
-      ),
-      child: Center(
-        child: Text(
-          ageGroup.age.toString() + "대",
-          style: TextStyle(
-            fontSize: 14,
-            color: Color(_selectedAgeGroup == ageGroup.age ? 0xff1b1b1b : 0xff888888),
-          ),
-        ),
-      ),
-    ),
-  );
+      );
 
   _goToNoteGroupView(BuildContext context) {
     Navigator.pushNamed(context, '/onboard/note-group');
   }
 
   Widget _floatingActionButtonWidget(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        _goToNoteGroupView(context);
-      },
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 6.0,
+        horizontal: 20.0,
       ),
-      child: Container(
-        height: 52,
-        width: 340,
-        child: Center(
-          child: Text(
-            "다음",
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+      child: ElevatedButton(
+        onPressed: () {
+          _goToNoteGroupView(context);
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
+        ),
+        child: Container(
+          height: 52,
+          child: Center(
+            child: Text(
+              "다음",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -173,8 +179,6 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
     return Padding(
       padding: const EdgeInsets.only(
         top: 32,
-        left: 10,
-        right: 10,
         bottom: 44,
       ),
       child: Container(
@@ -232,14 +236,11 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
         Container(height: 28),
         Container(
           height: 100,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6.0),
-            child: GridView.count(
-              crossAxisSpacing: 8.0,
-              childAspectRatio: 1,
-              crossAxisCount: 5,
-              children: _getAgeGroupWidgets(),
-            ),
+          child: GridView.count(
+            crossAxisSpacing: 8.0,
+            childAspectRatio: 1,
+            crossAxisCount: 5,
+            children: _getAgeGroupWidgets(),
           ),
         ),
       ],
