@@ -172,17 +172,53 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
 
   /// 탭바
   Widget _getTabWidget() {
-    return Container(
-      height: 36,
-      color: Colors.grey,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20.0),
-        child: Row(
-          children: [
-            Text('상품 정보'),
-            Text('리뷰'),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 12.0,
+        left: 20.0,
+        right: 20.0,
+      ),
+      child: Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Color(0xff83daff),
+                  width: 4.0,
+                ),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 8.0,
+              ),
+              child: Text(
+                '상품 정보',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff1b1b1b),
+                ),
+              ),
+            ),
+          ),
+          Container(width: 42),
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 8.0,
+              ),
+              child: Text(
+                '리뷰',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xff1b1b1b),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
