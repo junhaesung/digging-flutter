@@ -405,7 +405,7 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
       noteNames = notes.baseNames;
     }
     if (noteNames.isEmpty) {
-      return Container();
+      return Container(height: 150);
     }
     final needsMoreButton = noteNames.length > 5;
     return Container(
