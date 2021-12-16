@@ -11,13 +11,6 @@ class MainPerfumeListView extends StatefulWidget {
   final int? brandId;
   final List<Perfume>? perfumes;
 
-  /// 기본생성자
-  MainPerfumeListView._(
-    this.title,
-    this.brandId,
-    this.perfumes,
-  );
-
   MainPerfumeListView.brand({
     required this.title,
     required this.brandId,

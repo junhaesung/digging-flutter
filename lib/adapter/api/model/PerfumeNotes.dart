@@ -20,4 +20,6 @@ class PerfumeNotes {
   String toString() {
     return 'PerfumeNotes{topNames: $topNames, middleNames: $middleNames, baseNames: $baseNames, unknownNames: $unknownNames}';
   }
+
+  bool isEmpty() => topNames.isEmpty && middleNames.isEmpty && baseNames.isEmpty;
 }

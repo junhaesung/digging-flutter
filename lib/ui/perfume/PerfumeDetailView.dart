@@ -1,6 +1,7 @@
 import 'package:digging/adapter/api/DiggingApi.dart';
 import 'package:digging/adapter/api/model/Accord.dart';
 import 'package:digging/adapter/api/model/PerfumeDetail.dart';
+import 'package:digging/adapter/api/model/PerfumeNotes.dart';
 import 'package:digging/adapter/api/model/PerfumeSimple.dart';
 import 'package:digging/util/StringToHexConverter.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class PerfumeDetailView extends StatefulWidget {
 class _PerfumeDetailView extends State<PerfumeDetailView> {
   final int perfumeId;
   final DiggingApi api = DiggingApi();
+  int _noteSelector = 0;
 
   _PerfumeDetailView(this.perfumeId);
 
@@ -311,8 +313,11 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
 
   /// 노트 정보
   Widget _getNoteWidget(PerfumeDetail perfumeDetail) {
+    // top, middle, base 노트가 모두 없으면, '향수 노트' 부분을 보여주지 않는다.
+    if (perfumeDetail.notes.isEmpty()) {
+      return Container();
+    }
     return Container(
-      height: 375,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 30.0,
@@ -330,36 +335,106 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
               ),
             ),
             Container(height: 32),
-            Row(
-              children: [
-                Text('top'),
-                Text('middle'),
-                Text('base'),
-              ],
-            ),
-            Container(height: 32),
-            // TODO: '더 보기' 버튼 위치
             Container(
-              height: 200,
-              child: GridView.count(
-                physics: NeverScrollableScrollPhysics(),
-                childAspectRatio: 100 / 45,
-                crossAxisCount: 3,
-                crossAxisSpacing: 18.0,
-                mainAxisSpacing: 18.0,
-                children: (perfumeDetail.notes.topNames
-                            .take(5)
-                            .map((e) => Text(e))
-                            .toList() +
-                        [Text('더 보기')])
-                    .map((e) => Container(
-                          color: Colors.grey,
-                          child: e,
-                        ))
-                    .toList(),
+              height: 36,
+              child: Row(
+                children: [
+                  _noteTypeSelector('Top', 0),
+                  _noteTypeSelector('Middle', 1),
+                  _noteTypeSelector('Base', 2),
+                ],
               ),
             ),
+            Container(height: 32),
+            _noteList(perfumeDetail.notes),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _noteTypeSelector(String name, int selectorValue) {
+    final selected = _noteSelector == selectorValue;
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _noteSelector = selectorValue;
+          });
+        },
+        child: Container(
+          height: 36,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            border: selected ? null : Border.all(color: Color(0xffc7c7c7)),
+            color: selected ? Color(0xff83daff) : null,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 8.0,
+              horizontal: 28.0,
+            ),
+            child: Center(
+              child: Text(
+                name,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: selected ? Colors.white : Color(0xff888888),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _noteList(PerfumeNotes notes) {
+    List<String> noteNames;
+    if (_noteSelector == 0) {
+      noteNames = notes.topNames;
+    } else if (_noteSelector == 1) {
+      noteNames = notes.middleNames;
+    } else {
+      noteNames = notes.baseNames;
+    }
+    if (noteNames.isEmpty) {
+      return Container();
+    }
+    final needsMoreButton = noteNames.length > 5;
+    return Container(
+      height: 150,
+      child: GridView.count(
+        physics: NeverScrollableScrollPhysics(),
+        childAspectRatio: 100 / 55,
+        crossAxisCount: 3,
+        crossAxisSpacing: 18.0,
+        mainAxisSpacing: 18.0,
+        children: noteNames.take(5).map((e) => _note(e)).toList() +
+            (needsMoreButton ? [_moreButton()] : []),
+      ),
+    );
+  }
+
+  Widget _note(String noteName) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4.0),
+        color: Color(0xfff8f8f8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Center(
+          child: Text(
+            noteName,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xff1b1b1b),
+            ),
+          ),
         ),
       ),
     );
@@ -442,6 +517,13 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _moreButton() {
+    return GestureDetector(
+      onTap: () {},
+      child: _note('더 보기'),
     );
   }
 }
