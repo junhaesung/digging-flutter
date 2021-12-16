@@ -1,11 +1,11 @@
-import 'package:digging/util/StringToHexConverter.dart';
+import 'package:digging/util/StringColorConverter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
 
   _test(String input, int output) {
     test('Test: $input -> $output', () {
-      final actual = StringToHexConverter.toHex(input);
+      final actual = StringColorConverter.toHex(input);
       expect(actual, output);
     });
   }

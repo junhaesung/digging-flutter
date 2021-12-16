@@ -3,7 +3,7 @@ import 'package:digging/adapter/api/model/Accord.dart';
 import 'package:digging/adapter/api/model/PerfumeDetail.dart';
 import 'package:digging/adapter/api/model/PerfumeNotes.dart';
 import 'package:digging/adapter/api/model/PerfumeSimple.dart';
-import 'package:digging/util/StringToHexConverter.dart';
+import 'package:digging/util/StringColorConverter.dart';
 import 'package:flutter/material.dart';
 
 class PerfumeDetailView extends StatefulWidget {
@@ -262,11 +262,12 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
             Container(
               height: 60,
               width: 95,
-              color:
-                  Color(StringToHexConverter.toHex(accords[0].backgroundColor)),
+              color: (accords.length >= 1)
+                  ? StringColorConverter.toColor(accords[0].backgroundColor)
+                  : Color(0xfffffdc7),
             ),
             Container(width: 8),
-            Text(accords[0].name),
+            Text((accords.length >= 1) ? accords[0].name : ''),
           ],
         ),
         Row(
@@ -274,11 +275,12 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
             Container(
               height: 60,
               width: 95,
-              color:
-                  Color(StringToHexConverter.toHex(accords[1].backgroundColor)),
+              color: (accords.length >= 2)
+                  ? StringColorConverter.toColor(accords[1].backgroundColor)
+                  : Color(0xffecdfd1),
             ),
             Container(width: 8),
-            Text(accords[1].name),
+            Text((accords.length >= 2) ? accords[1].name : ''),
           ],
         ),
         Row(
@@ -286,11 +288,12 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
             Container(
               height: 60,
               width: 95,
-              color:
-                  Color(StringToHexConverter.toHex(accords[2].backgroundColor)),
+              color: (accords.length >= 3)
+                  ? StringColorConverter.toColor(accords[2].backgroundColor)
+                  : Color(0xffcfbcdc),
             ),
             Container(width: 8),
-            Text(accords[2].name),
+            Text((accords.length >= 3) ? accords[2].name : ''),
           ],
         ),
         Row(
@@ -303,7 +306,9 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
             Container(width: 8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: accords.sublist(3).map((e) => Text(e.name)).toList(),
+              children: (accords.length >= 3)
+                  ? accords.sublist(3).map((e) => Text(e.name)).toList()
+                  : [],
             ),
           ],
         ),
@@ -444,7 +449,7 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
   Widget _getSimilarPerfumesWidget(PerfumeDetail perfumeDetail) {
     List<PerfumeSimple> perfumeSimples = perfumeDetail.perfumeSimples;
     return Container(
-      height: 375,
+      height: 300,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 30.0,
@@ -479,7 +484,6 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
                       );
                     },
                     child: Container(
-                      color: Colors.grey,
                       child: Column(
                         children: [
                           Container(
