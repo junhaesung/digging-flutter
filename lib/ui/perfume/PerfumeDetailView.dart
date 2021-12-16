@@ -1,6 +1,8 @@
 import 'package:digging/adapter/api/DiggingApi.dart';
+import 'package:digging/adapter/api/model/Accord.dart';
 import 'package:digging/adapter/api/model/PerfumeDetail.dart';
 import 'package:digging/adapter/api/model/PerfumeSimple.dart';
+import 'package:digging/util/StringToHexConverter.dart';
 import 'package:flutter/material.dart';
 
 class PerfumeDetailView extends StatefulWidget {
@@ -225,30 +227,85 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
 
   /// 메인 어코드 정보
   Widget _getAccordWidget(PerfumeDetail perfumeDetail) {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '구성 성분',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color(0xff1b1b1b),
+            ),
+          ),
+          Container(
+            height: 34,
+          ),
+          _accordList(perfumeDetail.accords)
+        ],
+      ),
+    );
+  }
+
+  Widget _accordList(List<Accord> accords) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // 첫번쨰껀 글씨 굵게
+        // 4번째부터는 회색에 매핑
+        Row(
           children: [
-            Text(
-              '구성 성분',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xff1b1b1b),
-              ),
-            ),
             Container(
-              height: 34,
+              height: 60,
+              width: 95,
+              color:
+                  Color(StringToHexConverter.toHex(accords[0].backgroundColor)),
             ),
+            Container(width: 8),
+            Text(accords[0].name),
+          ],
+        ),
+        Row(
+          children: [
+            Container(
+              height: 60,
+              width: 95,
+              color:
+                  Color(StringToHexConverter.toHex(accords[1].backgroundColor)),
+            ),
+            Container(width: 8),
+            Text(accords[1].name),
+          ],
+        ),
+        Row(
+          children: [
+            Container(
+              height: 60,
+              width: 95,
+              color:
+                  Color(StringToHexConverter.toHex(accords[2].backgroundColor)),
+            ),
+            Container(width: 8),
+            Text(accords[2].name),
+          ],
+        ),
+        Row(
+          children: [
+            Container(
+              height: 180,
+              width: 95,
+              color: Colors.grey,
+            ),
+            Container(width: 8),
             Column(
-              children:
-                  perfumeDetail.accords.map((e) => Text(e.toString())).toList(),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: accords.sublist(3).map((e) => Text(e.name)).toList(),
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 
