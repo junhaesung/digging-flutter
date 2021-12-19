@@ -1,3 +1,4 @@
+import 'package:digging/adapter/storage/secure_storage_api.dart';
 import 'package:digging/domain/brand.dart';
 import 'package:digging/domain/notegroup.dart';
 import 'package:digging/domain/perfume.dart';
@@ -664,9 +665,11 @@ class _MainView extends State<MainView> {
     );
   }
 
-  void _goToSplashView(BuildContext context) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => SplashView()),
-    );
+  void _goToSplashView(BuildContext context) async {
+    TokenStorage()
+        .delete()
+        .then((value) => Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => SplashView()),
+            ));
   }
 }
