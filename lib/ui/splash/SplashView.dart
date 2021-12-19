@@ -1,7 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:digging/adapter/api/DiggingApi.dart';
+import 'package:digging/util/device_id_resolver.dart';
 import 'package:flutter/material.dart';
 
 class SplashView extends StatelessWidget {
+  final DiggingApi _api = DiggingApi();
+
   @override
   Widget build(BuildContext context) {
     goToOnboardDescription(context);
@@ -35,12 +38,17 @@ class SplashView extends StatelessWidget {
     );
   }
 
+  _login() async {
+    final deviceId = await DeviceIdResolver.resolveDeviceId();
+    final loginResponse = await _api.login(deviceId);
+    print('accessToken: ${loginResponse.accessToken}');
+    print('memberDetail: ${loginResponse.memberDetail}');
+    // TODO: save accessToken
+  }
+
   goToOnboardDescription(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 2), () {
-      while (Navigator.canPop(context)) {
-        Navigator.pop(context);
-      }
-      Navigator.pushReplacementNamed(context, '/onboard/description');
-    });
+    await _login();
+    Navigator.pushReplacementNamed(context, '/onboard/description');
+    // Navigator.of(context).pushReplacement(NicknamePage.route());
   }
 }

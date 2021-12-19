@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:digging/adapter/api/model/LoginRequest.dart';
 import 'package:digging/adapter/api/model/PerfumeSimple.dart';
 import 'package:http/http.dart' as http;
 
 import 'model/ApiResponse.dart';
 import 'model/BrandDetail.dart';
+import 'model/LoginResponse.dart';
 import 'model/NoteSimple.dart';
 import 'model/PerfumeDetail.dart';
 
@@ -12,6 +14,22 @@ class DiggingApi {
   String _host = "api.digging.me";
   String _accessToken =
       'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhY20tYXBpLWRldmVsb3AiLCJtZW1iZXJJZCI6MjExNzd9.sQta6Xokjdoc7Bt_KaLVYxMX8nBhqDdJvbqRX5eErms';
+
+  Future<LoginResponse> login(String uuid) async {
+    final loginRequest = LoginRequest(
+      idProviderType: IdProviderType.UUID,
+      idProviderUserId: uuid,
+    );
+    return http
+        .post(
+          Uri.http(_host, '/api/v1/members/login'),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(loginRequest.toMap()),
+        )
+        .then((value) => json.decode(value.body))
+        .then((value) => ApiResponse.loginData(value))
+        .then((value) => value.data!);
+  }
 
   Future<BrandDetail> fetchBrand(int brandId) async {
     return http

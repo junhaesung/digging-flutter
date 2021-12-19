@@ -1,4 +1,5 @@
 import 'BrandData.dart';
+import 'LoginResponse.dart';
 import 'NotesData.dart';
 import 'PerfumeData.dart';
 import 'PerfumesData.dart';
@@ -39,6 +40,14 @@ class ApiResponse<T> {
       json['code'] as String,
       json['message'] as String,
       NotesData.fromJson(json['data']),
+    );
+  }
+
+  static ApiResponse<LoginResponse> loginData(Map<String, dynamic> json) {
+    return ApiResponse(
+        json['code'] as String,
+        json['message'] as String,
+        LoginResponse.fromJson(json['data']),
     );
   }
 }

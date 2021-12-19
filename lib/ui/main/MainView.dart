@@ -1,10 +1,10 @@
 import 'package:digging/domain/brand.dart';
 import 'package:digging/domain/notegroup.dart';
 import 'package:digging/domain/perfume.dart';
-import 'package:digging/ui/SplashView.dart';
 import 'package:digging/ui/main/MainPerfumeListView.dart';
 import 'package:digging/ui/perfume/PerfumeDetailView.dart';
 import 'package:digging/ui/search/SearchView.dart';
+import 'package:digging/ui/splash/SplashView.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
