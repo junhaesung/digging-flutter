@@ -1,7 +1,12 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
-class NicknameView extends StatelessWidget {
+class NicknameView extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _NicknameView();
+}
+
+class _NicknameView extends State<NicknameView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,12 +44,13 @@ class NicknameView extends StatelessWidget {
                     child: TextField(
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: '2자~6자까지 입력이 가능해요.',
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            color: Color(0xffc7c7c7),
-                          )),
+                        border: InputBorder.none,
+                        hintText: '2자~6자까지 입력이 가능해요.',
+                        hintStyle: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xffc7c7c7),
+                        ),
+                      ),
                     ),
                   ),
                 ],
