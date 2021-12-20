@@ -11,6 +11,14 @@ class ApiResponse<T> {
 
   ApiResponse(this.code, this.message, this.data);
 
+  static ApiResponse emptyData(Map<String, dynamic> json) {
+    return ApiResponse(
+      json['code'] as String,
+      json['message'] as String,
+      null,
+    );
+  }
+
   static ApiResponse<BrandData> brandData(Map<String, dynamic> json) {
     return ApiResponse(
       json['code'] as String,

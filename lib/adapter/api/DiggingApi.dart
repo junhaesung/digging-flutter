@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:digging/adapter/api/model/LoginRequest.dart';
 import 'package:digging/adapter/api/model/PerfumeSimple.dart';
+import 'package:digging/adapter/api/model/UpdateNicknameRequest.dart';
 import 'package:digging/adapter/storage/secure_storage_api.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,6 +30,23 @@ class DiggingApi {
         .then((value) => json.decode(value.body))
         .then((value) => ApiResponse.loginData(value))
         .then((value) => value.data!);
+  }
+
+  Future<ErrorCode?> update(String nickname) async {
+    final accessToken = await _getAccessToken();
+    final updateNicknameRequest = UpdateNicknameRequest(nickname);
+    return http
+        .put(
+          Uri.http(_host, '/api/v1/members/me/nickname'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $accessToken',
+          },
+          body: json.encode(updateNicknameRequest.toMap()),
+        )
+        .then((value) => json.decode(value.body))
+        .then((value) => ApiResponse.emptyData(value))
+        .then((value) => ErrorCodes.valueOf(value.code));
   }
 
   Future<BrandDetail> fetchBrand(int brandId) async {
@@ -76,6 +94,25 @@ class DiggingApi {
   }
 
   Future<String?> _getAccessToken() async {
-    return _tokenStorage.read();
+    return await _tokenStorage.read();
+  }
+}
+
+enum ErrorCode {
+  SUCCESS,
+  FAILURE,
+  NICKNAME_DUPLICATED,
+}
+
+extension ErrorCodes on ErrorCode {
+  static ErrorCode? valueOf(String value) {
+    switch (value) {
+      case "SUCCESS":
+        return null;
+      case "FAILURE":
+        return ErrorCode.FAILURE;
+      case "NICKNAME_DUPLICATED":
+        return ErrorCode.NICKNAME_DUPLICATED;
+    }
   }
 }
