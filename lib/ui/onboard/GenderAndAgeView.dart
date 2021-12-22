@@ -1,19 +1,16 @@
 import 'package:digging/domain/ageGroup.dart';
+import 'package:digging/ui/onboard/gender/gender.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class GenderAndAgeView extends StatefulWidget {
+class GenderAndAgeView extends StatelessWidget {
   static Route route() {
-    return MaterialPageRoute(builder: (_) => GenderAndAgeView());
+    return MaterialPageRoute(builder: (context) => GenderAndAgeView());
   }
 
-  @override
-  State<StatefulWidget> createState() => _GenderAndAgeView();
-}
-
-class _GenderAndAgeView extends State<GenderAndAgeView> {
-  var _selectedGender = 0;
-  var _selectedAgeGroup = 0;
+  // TODO: ageGroup bloc 사용하도록 개선
+  final _selectedAgeGroup = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -44,10 +41,10 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
 
   Widget _toAgeWidget(AgeGroup ageGroup) => GestureDetector(
         onTap: () {
-          setState(() {
-            _selectedAgeGroup =
-                _selectedAgeGroup != ageGroup.age ? ageGroup.age : 0;
-          });
+          // setState(() {
+          //   _selectedAgeGroup =
+          //       _selectedAgeGroup != ageGroup.age ? ageGroup.age : 0;
+          // });
         },
         child: Container(
           decoration: BoxDecoration(
@@ -138,47 +135,6 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
     );
   }
 
-  Widget _genderButtonWidget(String genderText) {
-    var selected = false;
-    if (_selectedGender == 1 && genderText == '여성') {
-      selected = true;
-    }
-    if (_selectedGender == 2 && genderText == '남성') {
-      selected = true;
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            var current = genderText == '여성' ? 1 : 2;
-            _selectedGender = _selectedGender != current ? current : 0;
-          });
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(selected
-                  ? 'images/onboarding/gender_selected.png'
-                  : 'images/onboarding/gender_normal.png'),
-              fit: BoxFit.fitWidth,
-            ),
-          ),
-          child: Center(
-            child: Text(
-              genderText,
-              style: TextStyle(
-                fontSize: 16,
-                color: Color(selected ? 0xff1b1b1b : 0xff888888),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _titleWidget() {
     return Padding(
       padding: const EdgeInsets.only(
@@ -199,29 +155,32 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
   }
 
   Widget _genderWidget() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '성별',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color(0xff1d1d20),
+    return BlocProvider(
+      create: (context) => GenderBloc(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '성별',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(0xff1d1d20),
+            ),
           ),
-        ),
-        Container(
-          height: 200,
-          child: GridView.count(
-            physics: NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            children: [
-              _genderButtonWidget('여성'),
-              _genderButtonWidget('남성'),
-            ],
+          Container(
+            height: 200,
+            child: GridView.count(
+              physics: NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              children: [
+                _GenderButton.female(),
+                _GenderButton.male(),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -250,4 +209,65 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
       ],
     );
   }
+}
+
+/// 성별 선택 버튼
+class _GenderButton extends StatelessWidget {
+  const _GenderButton._(this.gender);
+
+  factory _GenderButton.female() {
+    return _GenderButton._(Gender.FEMALE);
+  }
+
+  factory _GenderButton.male() {
+    return _GenderButton._(Gender.MALE);
+  }
+
+  final Gender gender;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GenderBloc, GenderState>(
+      buildWhen: (previous, current) => previous != current,
+      builder: (context, state) {
+        final genderText = this.gender.buttonName();
+        return Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: GestureDetector(
+            onTap: () {
+              context
+                .read<GenderBloc>()
+                .add(GenderChanged(gender: this.gender));
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(_getImagePath(state)),
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  genderText,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Color(_getColorValue(state)),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  String _getImagePath(GenderState state) => _isSelected(state)
+      ? 'images/onboarding/gender_selected.png'
+      : 'images/onboarding/gender_normal.png';
+
+  int _getColorValue(GenderState state) =>
+      _isSelected(state) ? 0xff1b1b1b : 0xff888888;
+
+  bool _isSelected(GenderState state) => this.gender == state.gender;
 }
