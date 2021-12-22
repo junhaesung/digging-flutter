@@ -32,7 +32,7 @@ class DiggingApi {
         .then((value) => value.data!);
   }
 
-  Future<ErrorCode?> update(String nickname) async {
+  Future<ErrorCode?> update({required String nickname}) async {
     final accessToken = await _getAccessToken();
     final updateNicknameRequest = UpdateNicknameRequest(nickname);
     return http
@@ -101,7 +101,7 @@ class DiggingApi {
 enum ErrorCode {
   SUCCESS,
   FAILURE,
-  NICKNAME_DUPLICATED,
+  MEMBER_NICKNAME_ALREADY_EXIST,
 }
 
 extension ErrorCodes on ErrorCode {
@@ -111,8 +111,11 @@ extension ErrorCodes on ErrorCode {
         return null;
       case "FAILURE":
         return ErrorCode.FAILURE;
-      case "NICKNAME_DUPLICATED":
-        return ErrorCode.NICKNAME_DUPLICATED;
+      case "MEMBER_NICKNAME_ALREADY_EXIST":
+        return ErrorCode.MEMBER_NICKNAME_ALREADY_EXIST;
+      default:
+        print('Failed to request api with unknown error. code: $value');
+        return ErrorCode.FAILURE;
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:digging/adapter/api/DiggingApi.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,14 @@ class NicknameView extends StatefulWidget {
 }
 
 class _NicknameView extends State<NicknameView> {
+  final _formKey = GlobalKey<FormState>();
+  final _api = DiggingApi();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,15 +50,41 @@ class _NicknameView extends State<NicknameView> {
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: '2자~6자까지 입력이 가능해요.',
-                        hintStyle: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xffc7c7c7),
+                    child: Form(
+                      key: _formKey,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.length < 2 || value.length > 6) {
+                            return "2자~6자까지 입력이 가능해요.";
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          _formKey.currentState?.validate();
+                        },
+                        onFieldSubmitted: (value) async {
+                          if (_formKey.currentState?.validate() == true) {
+                            final result = await _api.update(nickname: value);
+                            print('result: $result');
+                            if (result == null) {
+                              print('success');
+                            } else {
+                              print('failure. result: $result');
+                            }
+                          }
+                        },
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: '2자~6자까지 입력이 가능해요.',
+                          hintStyle: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xffc7c7c7),
+                          ),
                         ),
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.go,
+                        enableSuggestions: false,
                       ),
                     ),
                   ),
@@ -62,6 +97,11 @@ class _NicknameView extends State<NicknameView> {
       floatingActionButton: _floatingActionButtonWidget(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Widget _floatingActionButtonWidget(BuildContext context) {
