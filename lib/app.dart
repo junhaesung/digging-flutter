@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'nickname/nickname.dart';
 import 'ui/main/MainView.dart';
 import 'ui/onboard/DescriptionView.dart';
-import 'ui/onboard/GenderAndAgeView.dart';
 import 'ui/onboard/NicknameView.dart';
 import 'ui/onboard/NoteGroupView.dart';
 import 'ui/search/SearchView.dart';
@@ -31,7 +30,6 @@ class DiggingApp extends StatelessWidget {
             '/search': (context) => SearchView(),
             '/onboard/description': (context) => DescriptionView(),
             '/onboard/nickname': (context) => NicknameView(),
-            '/onboard/gender-and-age': (context) => GenderAndAgeView(),
             '/onboard/note-group': (context) => NoteGroupView(),
           },
         ),

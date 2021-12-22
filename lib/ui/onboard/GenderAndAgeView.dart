@@ -3,6 +3,10 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
 class GenderAndAgeView extends StatefulWidget {
+  static Route route() {
+    return MaterialPageRoute(builder: (_) => GenderAndAgeView());
+  }
+
   @override
   State<StatefulWidget> createState() => _GenderAndAgeView();
 }

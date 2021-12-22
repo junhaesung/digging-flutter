@@ -1,4 +1,5 @@
 import 'package:digging/adapter/api/DiggingApi.dart';
+import 'package:digging/ui/onboard/GenderAndAgeView.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -112,7 +113,7 @@ class _NicknameView extends State<NicknameView> {
       ),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/onboard/gender-and-age');
+          Navigator.of(context).push(GenderAndAgeView.route());
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
