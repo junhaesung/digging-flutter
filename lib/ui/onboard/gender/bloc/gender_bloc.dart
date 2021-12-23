@@ -35,7 +35,7 @@ class GenderBloc extends Bloc<GenderEvent, GenderState> {
     Emitter<GenderState> emit,
   ) {
     emit(state.copyWith(
-      status: GenderFormStatus.submissionInProgress
+      status: GenderFormStatus.submissionInProgress,
     ));
   }
 }

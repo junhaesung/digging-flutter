@@ -10,7 +10,7 @@ class AgeGroups {
     AgeGroup(10, "TEENAGER"),
     AgeGroup(20, "TWENTIES"),
     AgeGroup(30, "THIRTIES"),
-    AgeGroup(40, "FOURTIES"),
+    AgeGroup(40, "FORTIES"),
     AgeGroup(50, "FIFTIES"),
   ];
 

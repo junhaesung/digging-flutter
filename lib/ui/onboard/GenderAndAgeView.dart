@@ -1,16 +1,14 @@
-import 'package:digging/domain/ageGroup.dart';
 import 'package:digging/ui/onboard/gender/gender.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'age_group/age_group.dart';
+
 class GenderAndAgeView extends StatelessWidget {
   static Route route() {
     return MaterialPageRoute(builder: (context) => GenderAndAgeView());
   }
-
-  // TODO: ageGroup bloc 사용하도록 개선
-  final _selectedAgeGroup = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -36,37 +34,10 @@ class GenderAndAgeView extends StatelessWidget {
     );
   }
 
-  List<Widget> _getAgeGroupWidgets() =>
-      AgeGroups.getAgeGroups().map((e) => _toAgeWidget(e)).toList();
-
-  Widget _toAgeWidget(AgeGroup ageGroup) => GestureDetector(
-        onTap: () {
-          // setState(() {
-          //   _selectedAgeGroup =
-          //       _selectedAgeGroup != ageGroup.age ? ageGroup.age : 0;
-          // });
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(_selectedAgeGroup == ageGroup.age
-                  ? 'images/onboarding/age_selected.png'
-                  : 'images/onboarding/age_normal.png'),
-            ),
-          ),
-          child: Center(
-            child: Text(
-              ageGroup.age.toString() + "대",
-              style: TextStyle(
-                fontSize: 14,
-                color: Color(_selectedAgeGroup == ageGroup.age
-                    ? 0xff1b1b1b
-                    : 0xff888888),
-              ),
-            ),
-          ),
-        ),
-      );
+  List<Widget> _getAgeGroupWidgets() => AgeGroup.values
+      .where((e) => e != AgeGroup.UNKNOWN)
+      .map((e) => _AgeGroupButton(ageGroup: e))
+      .toList();
 
   _goToNoteGroupView(BuildContext context) {
     Navigator.pushNamed(context, '/onboard/note-group');
@@ -185,28 +156,31 @@ class GenderAndAgeView extends StatelessWidget {
   }
 
   Widget _ageGroupWidget() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '나이',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Color(0xff1d1d20),
+    return BlocProvider(
+      create: (context) => AgeGroupBloc(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '나이',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(0xff1d1d20),
+            ),
           ),
-        ),
-        Container(height: 28),
-        Container(
-          height: 100,
-          child: GridView.count(
-            crossAxisSpacing: 8.0,
-            childAspectRatio: 1,
-            crossAxisCount: 5,
-            children: _getAgeGroupWidgets(),
+          Container(height: 28),
+          Container(
+            height: 100,
+            child: GridView.count(
+              crossAxisSpacing: 8.0,
+              childAspectRatio: 1,
+              crossAxisCount: 5,
+              children: _getAgeGroupWidgets(),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -236,8 +210,8 @@ class _GenderButton extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               context
-                .read<GenderBloc>()
-                .add(GenderChanged(gender: this.gender));
+                  .read<GenderBloc>()
+                  .add(GenderChanged(gender: this.gender));
             },
             child: Container(
               decoration: BoxDecoration(
@@ -270,4 +244,52 @@ class _GenderButton extends StatelessWidget {
       _isSelected(state) ? 0xff1b1b1b : 0xff888888;
 
   bool _isSelected(GenderState state) => this.gender == state.gender;
+}
+
+/// 나이 선택 버튼
+class _AgeGroupButton extends StatelessWidget {
+  const _AgeGroupButton({
+    required this.ageGroup,
+  });
+
+  final AgeGroup ageGroup;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AgeGroupBloc, AgeGroupState>(
+      buildWhen: (previous, current) => previous != current,
+      builder: (context, state) => GestureDetector(
+        onTap: () {
+          context
+              .read<AgeGroupBloc>()
+              .add(AgeGroupChanged(ageGroup: this.ageGroup));
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(_getImagePath(state)),
+            ),
+          ),
+          child: Center(
+            child: Text(
+              "${ageGroup.getAge()}대",
+              style: TextStyle(
+                fontSize: 14,
+                color: Color(_getColorValue(state)),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  String _getImagePath(AgeGroupState state) => _isSelected(state)
+        ? 'images/onboarding/age_selected.png'
+        : 'images/onboarding/age_normal.png';
+
+  int _getColorValue(AgeGroupState state) =>
+      _isSelected(state) ? 0xff1b1b1b : 0xff888888;
+
+  bool _isSelected(AgeGroupState state) => this.ageGroup == state.ageGroup;
 }

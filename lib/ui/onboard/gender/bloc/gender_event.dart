@@ -1,6 +1,6 @@
 part of 'gender_bloc.dart';
 
-// 성별 정보 관련 이벤트
+/// 성별 정보 관련 이벤트
 abstract class GenderEvent extends Equatable {
   const GenderEvent();
 
