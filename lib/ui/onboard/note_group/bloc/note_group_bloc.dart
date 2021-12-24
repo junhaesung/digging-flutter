@@ -7,19 +7,37 @@ part 'note_group_state.dart';
 
 class NoteGroupBloc extends Bloc<NoteGroupEvent, NoteGroupState> {
   NoteGroupBloc() : super(NoteGroupState()) {
-    on<NoteGroupChanged>(_onNoteGroupChanged);
+    on<NoteGroupAdded>(_onNoteGroupAdded);
+    on<NoteGroupRemoved>(_onNoteGroupRemoved);
     on<NoteGroupSubmitted>(_onNoteGroupSubmitted);
   }
 
-  _onNoteGroupChanged(
-    NoteGroupChanged event,
+  _onNoteGroupAdded(
+    NoteGroupAdded event,
     Emitter<NoteGroupState> emit,
   ) {
-    if (event.noteGroupIds.length <= 3) {
-      emit(state.copyWith(noteGroupIds: event.noteGroupIds));
-    } else {
-      // 4번째 노트 선택했을때 잠깐 멈추면서 진동 울리고싶은데.. 어떻게하징
+    if (state.noteGroupIds.contains(event.noteGroupId)) {
+      return;
     }
+    if (state.noteGroupIds.length >= 3) {
+      // 4번째 노트 선택했을때 잠깐 멈추면서 진동 울리고싶은데.. 어떻게하징
+      return;
+    }
+    final union = state.noteGroupIds.union({event.noteGroupId});
+    final noteGroupIds = NoteGroupIds(noteGroupIds: union);
+    emit(state.copyWith(noteGroupIds: noteGroupIds));
+  }
+
+  _onNoteGroupRemoved(
+    NoteGroupRemoved event,
+    Emitter<NoteGroupState> emit,
+  ) {
+    if (!state.noteGroupIds.contains(event.noteGroupId)) {
+      return;
+    }
+    final difference = state.noteGroupIds.difference({event.noteGroupId});
+    final noteGroupIds = NoteGroupIds(noteGroupIds: difference);
+    emit(state.copyWith(noteGroupIds: noteGroupIds));
   }
 
   _onNoteGroupSubmitted(

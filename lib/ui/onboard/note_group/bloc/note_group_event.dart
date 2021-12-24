@@ -7,13 +7,22 @@ abstract class NoteGroupEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class NoteGroupChanged extends NoteGroupEvent {
-  const NoteGroupChanged({required this.noteGroupIds});
+class NoteGroupAdded extends NoteGroupEvent {
+  const NoteGroupAdded({required this.noteGroupId});
 
-  final NoteGroupIds noteGroupIds;
+  final int noteGroupId;
 
   @override
-  List<Object> get props => [noteGroupIds];
+  List<Object> get props => [noteGroupId];
+}
+
+class NoteGroupRemoved extends NoteGroupEvent {
+  const NoteGroupRemoved({required this.noteGroupId});
+
+  final int noteGroupId;
+
+  @override
+  List<Object> get props => [noteGroupId];
 }
 
 class NoteGroupSubmitted extends NoteGroupEvent {

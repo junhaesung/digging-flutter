@@ -1,12 +1,12 @@
 import 'package:digging/domain/notegroup.dart';
 import 'package:digging/ui/main/MainView.dart';
+import 'package:digging/ui/onboard/note_group/note_group.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NoteGroupView extends StatelessWidget {
   static Route route() => MaterialPageRoute(builder: (_) => NoteGroupView());
-
-  final Set<int> _selectedNoteGroupIds = Set.of([]);
 
   @override
   Widget build(BuildContext context) {
@@ -148,61 +148,79 @@ class NoteGroupView extends StatelessWidget {
   }
 
   Widget _noteGroupsWidget() {
-    return GridView.count(
-      crossAxisCount: 2,
-      childAspectRatio: 162 / 104,
-      children: getNoteGroupWidgets(context),
+    return BlocProvider<NoteGroupBloc>(
+      create: (_) => NoteGroupBloc(),
+      child: GridView.count(
+        crossAxisCount: 2,
+        childAspectRatio: 162 / 104,
+        children: getNoteGroupWidgets(),
+      ),
     );
   }
 
-  List<Widget> getNoteGroupWidgets(BuildContext context) =>
+  List<Widget> getNoteGroupWidgets() =>
       NoteGroup.getCategorizedNoteGroups()
-          .map((e) => _toNoteGroupWidget(context, e))
+          .map((e) => _NoteGroupButton(noteGroup: e))
           .toList();
+}
 
-  Widget _toNoteGroupWidget(BuildContext context, NoteGroup noteGroup) {
-    return Padding(
-      padding: const EdgeInsets.all(6.0),
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            if (_selectedNoteGroupIds.contains(noteGroup.id)) {
-              _selectedNoteGroupIds.remove(noteGroup.id);
-            } else if (_selectedNoteGroupIds.length < 3) {
-              _selectedNoteGroupIds.add(noteGroup.id);
-            } else {
-              // do nothing
-            }
-          });
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            border: _selectedNoteGroupIds.contains(noteGroup.id)
-                ? Border.all(color: Color(0xff83daff))
-                : null,
-            color: Colors.white,
-          ),
-          child: Column(
-            children: [
-              Container(height: 20),
-              Image.asset(
-                noteGroup.assetImageName,
-                height: 32,
-                fit: BoxFit.fitHeight,
+class _NoteGroupButton extends StatelessWidget {
+  _NoteGroupButton({required this.noteGroup});
+
+  final NoteGroup noteGroup;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<NoteGroupBloc, NoteGroupState>(
+      buildWhen: (previous, current) => previous != current,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: GestureDetector(
+            onTap: () {
+              final noteGroupBloc = context.read<NoteGroupBloc>();
+              if (_isSelected(state)) {
+                noteGroupBloc.add(NoteGroupRemoved(noteGroupId: noteGroup.id));
+              } else {
+                noteGroupBloc.add(NoteGroupAdded(noteGroupId: noteGroup.id));
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                border: _getBorder(state),
+                color: Colors.white,
               ),
-              Container(height: 10),
-              Text(
-                noteGroup.name,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Color(0xff888888),
-                ),
+              child: Column(
+                children: [
+                  Container(height: 20),
+                  Image.asset(
+                    noteGroup.assetImageName,
+                    height: 32,
+                    fit: BoxFit.fitHeight,
+                  ),
+                  Container(height: 10),
+                  Text(
+                    noteGroup.name,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(0xff888888),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
+  }
+
+  Border? _getBorder(NoteGroupState state) {
+    return _isSelected(state) ? Border.all(color: Color(0xff83daff)) : null;
+  }
+
+  bool _isSelected(NoteGroupState state) {
+    return state.noteGroupIds.contains(noteGroup.id);
   }
 }
