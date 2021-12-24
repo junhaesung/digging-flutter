@@ -33,6 +33,6 @@ enum GenderFormStatus {
 }
 
 extension GenderFormStatusX on GenderFormStatus {
-  bool get isSubmissionInProgress => this == GenderFormStatus.submissionInProgress;
+  bool get isSubmissionInProgress =>
+      this == GenderFormStatus.submissionInProgress;
 }
-
