@@ -2,37 +2,34 @@ import 'package:digging/domain/notegroup.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
-class NoteGroupView extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _NoteGroupView();
-}
-
-class _NoteGroupView extends State<NoteGroupView> {
-  Set<int> _selectedNoteGroupIds = Set.of([]);
+class NoteGroupView extends StatelessWidget {
+  final Set<int> _selectedNoteGroupIds = Set.of([]);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: _appBarWidget(context),
-        body: SafeArea(
-          child: Container(
-            color: Color(0xffe5e5e5),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14),
-              child: Column(
-                children: [
-                  _titleWidget(),
-                  _descriptionWidget(),
-                  Expanded(
-                    child: _noteGroupsWidget(),
-                  ),
-                ],
-              ),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _appBarWidget(context),
+      body: SafeArea(
+        child: Container(
+          color: Color(0xffe5e5e5),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            child: Column(
+              children: [
+                _titleWidget(),
+                _descriptionWidget(),
+                Expanded(
+                  child: _noteGroupsWidget(),
+                ),
+              ],
             ),
           ),
         ),
-        floatingActionButton: _floatingActionButtonWidget(context),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      );
+      ),
+      floatingActionButton: _floatingActionButtonWidget(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
 
   void _goToMainView(BuildContext context) {
     while (Navigator.canPop(context)) {
