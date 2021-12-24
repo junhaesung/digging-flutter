@@ -1,3 +1,4 @@
+import 'package:digging/ui/onboard/NoteGroupView.dart';
 import 'package:digging/ui/onboard/gender/gender.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
@@ -39,9 +40,8 @@ class GenderAndAgeView extends StatelessWidget {
       .map((e) => _AgeGroupButton(ageGroup: e))
       .toList();
 
-  _goToNoteGroupView(BuildContext context) {
-    Navigator.pushNamed(context, '/onboard/note-group');
-  }
+  _goToNoteGroupView(BuildContext context) =>
+      Navigator.of(context).push(NoteGroupView.route());
 
   Widget _floatingActionButtonWidget(BuildContext context) {
     return Padding(
@@ -285,8 +285,8 @@ class _AgeGroupButton extends StatelessWidget {
   }
 
   String _getImagePath(AgeGroupState state) => _isSelected(state)
-        ? 'images/onboarding/age_selected.png'
-        : 'images/onboarding/age_normal.png';
+      ? 'images/onboarding/age_selected.png'
+      : 'images/onboarding/age_normal.png';
 
   int _getColorValue(AgeGroupState state) =>
       _isSelected(state) ? 0xff1b1b1b : 0xff888888;

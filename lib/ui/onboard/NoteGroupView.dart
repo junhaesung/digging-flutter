@@ -4,6 +4,8 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
 class NoteGroupView extends StatelessWidget {
+  static Route route() => MaterialPageRoute(builder: (_) => NoteGroupView());
+
   final Set<int> _selectedNoteGroupIds = Set.of([]);
 
   @override
