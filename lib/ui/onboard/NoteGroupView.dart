@@ -1,4 +1,5 @@
 import 'package:digging/domain/notegroup.dart';
+import 'package:digging/ui/main/MainView.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -32,10 +33,8 @@ class NoteGroupView extends StatelessWidget {
   }
 
   void _goToMainView(BuildContext context) {
-    while (Navigator.canPop(context)) {
-      Navigator.pop(context);
-    }
-    Navigator.pushReplacementNamed(context, '/main');
+    Navigator.of(context)
+        .pushAndRemoveUntil(MainView.route(), (route) => false);
   }
 
   Widget _floatingActionButtonWidget(BuildContext context) {

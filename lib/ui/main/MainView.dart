@@ -10,6 +10,8 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
 class MainView extends StatefulWidget {
+  static Route route() => MaterialPageRoute(builder: (_) => MainView());
+
   @override
   State<StatefulWidget> createState() => _MainView();
 }
