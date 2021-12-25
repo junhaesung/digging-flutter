@@ -1,11 +1,13 @@
 import 'package:digging/domain/note.dart';
-import 'package:digging/ui/main/MainView.dart';
 import 'package:digging/ui/search/NoteListView.dart';
+import 'package:digging/ui/tab_page/bottom_tab_bar.dart';
 import 'package:flutter/material.dart';
 
 import '/domain/notegroup.dart';
 
 class SearchView extends StatelessWidget {
+  static Route route() => MaterialPageRoute(builder: (_) => SearchView());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,41 +101,7 @@ class SearchView extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: _getBottomNavigationBar(context),
-    );
-  }
-
-  BottomNavigationBar _getBottomNavigationBar(BuildContext context) =>
-      BottomNavigationBar(
-        currentIndex: 1,
-        onTap: (index) {
-          if (index == 0) {
-            _goToMainView(context);
-          }
-          if (index == 1) {
-            // do nothing
-          }
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'search',
-          ),
-        ],
-      );
-
-  void _goToMainView(BuildContext context) {
-    Navigator.of(context).pushReplacement(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => MainView(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return child;
-        },
-      ),
+      bottomNavigationBar: BottomTabBar(),
     );
   }
 

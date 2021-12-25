@@ -7,7 +7,7 @@ import 'package:digging/session/bloc/session_bloc.dart';
 import 'package:digging/ui/main/MainPerfumeListView.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
 import 'package:digging/ui/perfume/PerfumeDetailView.dart';
-import 'package:digging/ui/search/SearchView.dart';
+import 'package:digging/ui/tab_page/bottom_tab_bar.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,9 +30,8 @@ class _MainView extends State<MainView> {
     }
     List<Perfume> perfumes = Perfume.getPerfumes(10).toList();
 
-    return BlocProvider<OnboardBloc>(
-      create: (context) => context.read<OnboardBloc>(),
-      child: Scaffold(
+    return BlocBuilder<OnboardBloc, OnboardState>(
+      builder: (context, state) => Scaffold(
         appBar: AppBar(
           title: Row(
             children: [
@@ -71,33 +70,10 @@ class _MainView extends State<MainView> {
             ],
           ),
         ),
-        bottomNavigationBar: getBottomNavigationBar(context),
+        bottomNavigationBar: BottomTabBar(),
       ),
     );
   }
-
-  BottomNavigationBar getBottomNavigationBar(BuildContext context) =>
-      BottomNavigationBar(
-        onTap: (index) {
-          if (index == 0) {
-            // do nothing
-          }
-          if (index == 1) {
-            _goToSearchView(context);
-          }
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'search',
-          ),
-          // TODO: digging view
-        ],
-      );
 
   /// For you
   Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) {
@@ -662,14 +638,15 @@ class _MainView extends State<MainView> {
   }
 
   void _goToSearchView(BuildContext context) {
-    Navigator.of(context).pushReplacement(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => SearchView(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return child;
-        },
-      ),
-    );
+    // Navigator.of(context).pushReplacement(
+    //   PageRouteBuilder(
+    //     pageBuilder: (context, animation, secondaryAnimation) => SearchView(),
+    //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
+    //       return child;
+    //     },
+    //   ),
+    // );
+    // Navigator.of(context).pushReplacement(SearchView.route());
   }
 
   void _goToSplashView(BuildContext context) async {
