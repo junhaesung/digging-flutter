@@ -1,1 +1,2 @@
 - 화면 Navigation 방식 변경
+- api path 수정
