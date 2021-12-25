@@ -19,3 +19,7 @@ class MainRequested extends SessionEvent {
   @override
   List<Object> get props => [memberDetail];
 }
+
+class WithdrawRequested extends SessionEvent {
+  const WithdrawRequested();
+}

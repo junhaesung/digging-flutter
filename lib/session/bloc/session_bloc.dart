@@ -15,6 +15,7 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     on<LoadingRequested>(_onLoadingRequested);
     on<OnboardingRequested>(_onOnboardingRequested);
     on<MainRequested>(_onMainRequested);
+    on<WithdrawRequested>(_onWithdrawRequested);
     this.add(LoadingRequested());
   }
 
@@ -53,5 +54,19 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
   ) async {
     print('_onMainRequested. \nevent: $event, \nstate: $state');
     emit(Authenticated(memberDetail: event.memberDetail));
+  }
+
+  Future<void> _onWithdrawRequested(
+    WithdrawRequested event,
+    Emitter<SessionState> emit,
+  ) async {
+    print('_onWithdrawRequested. \nevent: $event, \nstate: $state');
+    try {
+      await _authRepository.withdraw();
+    } catch (e) {
+      print('withdraw failed. $e');
+      emit(Unknown());
+    }
+    add(LoadingRequested());
   }
 }

@@ -1,5 +1,4 @@
 import 'package:digging/adapter/api/DiggingApi.dart';
-import 'package:digging/adapter/storage/secure_storage_api.dart';
 import 'package:digging/domain/brand.dart';
 import 'package:digging/domain/notegroup.dart';
 import 'package:digging/domain/perfume.dart';
@@ -637,22 +636,7 @@ class _MainView extends State<MainView> {
     );
   }
 
-  void _goToSearchView(BuildContext context) {
-    // Navigator.of(context).pushReplacement(
-    //   PageRouteBuilder(
-    //     pageBuilder: (context, animation, secondaryAnimation) => SearchView(),
-    //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-    //       return child;
-    //     },
-    //   ),
-    // );
-    // Navigator.of(context).pushReplacement(SearchView.route());
-  }
-
   void _goToSplashView(BuildContext context) async {
-    await _api.withdraw();
-    TokenStorage()
-        .delete()
-        .then((value) => context.read<SessionBloc>().add(LoadingRequested()));
+    context.read<SessionBloc>().add(WithdrawRequested());
   }
 }
