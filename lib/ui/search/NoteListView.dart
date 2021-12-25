@@ -29,7 +29,11 @@ class _NoteListView extends State<NoteListView> {
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(
+              toolbarHeight: 44,
+              elevation: 0.0,
+              backgroundColor: Color(0xfff8f8f8),
+            ),
             body: LinearProgressIndicator(),
           );
         }
