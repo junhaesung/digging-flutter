@@ -25,6 +25,10 @@ class NoteGroupRemoved extends NoteGroupEvent {
   List<Object> get props => [noteGroupId];
 }
 
+class NoteGroupReset extends NoteGroupEvent {
+  const NoteGroupReset();
+}
+
 class NoteGroupSubmitted extends NoteGroupEvent {
   const NoteGroupSubmitted();
 }

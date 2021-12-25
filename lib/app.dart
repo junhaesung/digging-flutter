@@ -22,6 +22,15 @@ class DiggingApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sessionBloc = SessionBloc(authRepository: authRepository);
+    final onboardBloc = OnboardBloc(
+      sessionBloc: sessionBloc,
+      onboardRepository: onboardRepository,
+    );
+    final genderBloc = GenderBloc(onboardBloc: onboardBloc);
+    final ageGroupBloc = AgeGroupBloc(onboardBloc: onboardBloc);
+    final noteGroupBloc = NoteGroupBloc(onboardBloc: onboardBloc);
+
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<OnboardRepository>(
@@ -30,34 +39,17 @@ class DiggingApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<GenderBloc>(
-            create: (_) => GenderBloc(),
-          ),
-          BlocProvider<AgeGroupBloc>(
-            create: (_) => AgeGroupBloc(),
-          ),
-          BlocProvider<NoteGroupBloc>(
-            create: (_) => NoteGroupBloc(),
-          ),
-          BlocProvider<SessionBloc>(
-            create: (_) => SessionBloc(
-              authRepository: authRepository,
-            ),
-          ),
+          BlocProvider<SessionBloc>(create: (_) => sessionBloc),
+          BlocProvider<OnboardBloc>(create: (_) => onboardBloc),
+          BlocProvider<GenderBloc>(create: (_) => genderBloc),
+          BlocProvider<AgeGroupBloc>(create: (_) => ageGroupBloc),
+          BlocProvider<NoteGroupBloc>(create: (_) => noteGroupBloc),
         ],
-        child: BlocProvider<OnboardBloc>(
-          create: (context) {
-            return OnboardBloc(
-              onboardRepository: onboardRepository,
-              sessionBloc: context.read<SessionBloc>(),
-            );
+        child: MaterialApp(
+          home: AppNavigator(),
+          routes: {
+            '/search': (context) => SearchView(),
           },
-          child: MaterialApp(
-            home: AppNavigator(),
-            routes: {
-              '/search': (context) => SearchView(),
-            },
-          ),
         ),
       ),
     );

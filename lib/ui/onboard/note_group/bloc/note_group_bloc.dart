@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
 import 'package:digging/ui/onboard/note_group/note_group.dart';
+import 'package:digging/ui/onboard/repository/repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,11 +10,21 @@ part 'note_group_event.dart';
 part 'note_group_state.dart';
 
 class NoteGroupBloc extends Bloc<NoteGroupEvent, NoteGroupState> {
-  NoteGroupBloc() : super(NoteGroupState()) {
+  NoteGroupBloc({
+    required OnboardBloc onboardBloc,
+  })  : _onboardBloc = onboardBloc,
+        super(NoteGroupState()) {
     on<NoteGroupAdded>(_onNoteGroupAdded);
     on<NoteGroupRemoved>(_onNoteGroupRemoved);
+    on<NoteGroupReset>(_onNoteGroupReset);
     on<NoteGroupSubmitted>(_onNoteGroupSubmitted);
+    _onboardStateSubscription = _onboardBloc.stream
+        .where((state) => state.status == OnboardStatus.ready)
+        .listen((state) => add(NoteGroupReset()));
   }
+
+  final OnboardBloc _onboardBloc;
+  late StreamSubscription<OnboardState> _onboardStateSubscription;
 
   _onNoteGroupAdded(
     NoteGroupAdded event,
@@ -40,6 +54,16 @@ class NoteGroupBloc extends Bloc<NoteGroupEvent, NoteGroupState> {
     emit(state.copyWith(noteGroupIds: noteGroupIds));
   }
 
+  FutureOr<void> _onNoteGroupReset(
+      NoteGroupReset event,
+      Emitter<NoteGroupState> emit,
+  ) {
+    emit(state.copyWith(
+      noteGroupIds: const NoteGroupIds(noteGroupIds: {}),
+      status: NoteGroupFormStatus.valid,
+    ));
+  }
+
   _onNoteGroupSubmitted(
     NoteGroupSubmitted event,
     Emitter<NoteGroupState> emit,
@@ -47,5 +71,11 @@ class NoteGroupBloc extends Bloc<NoteGroupEvent, NoteGroupState> {
     emit(state.copyWith(
       status: NoteGroupFormStatus.submissionInProgress,
     ));
+  }
+
+  @override
+  Future<void> close() async {
+    _onboardStateSubscription.cancel();
+    super.close();
   }
 }
