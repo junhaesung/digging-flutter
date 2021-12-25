@@ -7,29 +7,53 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'age_group/age_group.dart';
 
-class GenderAndAgeView extends StatelessWidget {
+class GenderAndAgeView extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _GenderAndAgeView();
+}
+
+class _GenderAndAgeView extends State<GenderAndAgeView> {
+  bool isNextButtonAvailable = false;
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<OnboardBloc, OnboardState>(
-      builder: (context, state) => Scaffold(
-        appBar: _appBarWidget(context),
-        body: SafeArea(
-          child: Container(
-            color: Color(0xffe5e5e5),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: ListView(
-                children: [
-                  _titleWidget(),
-                  _genderWidget(),
-                  _ageGroupWidget(),
-                ],
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<GenderBloc, GenderState>(listener: (context, state) {
+          setState(() {
+            isNextButtonAvailable = state.gender != Gender.UNKNOWN
+                && context.read<AgeGroupBloc>().state.ageGroup != AgeGroup.UNKNOWN;
+          });
+        }),
+        BlocListener<AgeGroupBloc, AgeGroupState>(listener: (context, state) {
+          setState(() {
+            isNextButtonAvailable = state.ageGroup != AgeGroup.UNKNOWN
+                && context.read<GenderBloc>().state.gender != Gender.UNKNOWN;
+          });
+        }),
+      ],
+      child: BlocBuilder<OnboardBloc, OnboardState>(
+        builder: (context, state) => Scaffold(
+          appBar: _appBarWidget(context),
+          body: SafeArea(
+            child: Container(
+              color: Color(0xffe5e5e5),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: ListView(
+                  children: [
+                    _titleWidget(),
+                    _genderWidget(),
+                    _ageGroupWidget(),
+                  ],
+                ),
               ),
             ),
           ),
+          floatingActionButton: _floatingActionButtonWidget(context),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
         ),
-        floatingActionButton: _floatingActionButtonWidget(context),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }
@@ -40,14 +64,21 @@ class GenderAndAgeView extends StatelessWidget {
       .toList();
 
   void _goToNextPage(BuildContext context) {
-    context.read<OnboardBloc>().add(OnboardStatusChanged(status: OnboardStatus.noteGroup));
+    context
+        .read<OnboardBloc>()
+        .add(OnboardStatusChanged(status: OnboardStatus.noteGroup));
   }
 
   void _goToPreviousPage(BuildContext context) {
-    context.read<OnboardBloc>().add(OnboardStatusChanged(status: OnboardStatus.nickname));
+    context
+        .read<OnboardBloc>()
+        .add(OnboardStatusChanged(status: OnboardStatus.nickname));
   }
 
   Widget _floatingActionButtonWidget(BuildContext context) {
+    final gender = context.read<GenderBloc>().state.gender;
+    final ageGroup = context.read<AgeGroupBloc>().state.ageGroup;
+    final isValid = gender != Gender.UNKNOWN && ageGroup != AgeGroup.UNKNOWN;
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 6.0,
@@ -55,10 +86,15 @@ class GenderAndAgeView extends StatelessWidget {
       ),
       child: ElevatedButton(
         onPressed: () {
-          _goToNextPage(context);
+          if (isValid) {
+            _goToNextPage(context);
+          }
         },
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
+          backgroundColor: MaterialStateProperty.all(
+            Color(isValid ? 0xff1c1c1c : 0xc7c7c7),
+          ),
+          enableFeedback: false,
         ),
         child: Container(
           height: 52,
