@@ -1,21 +1,26 @@
+import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
+import 'package:digging/ui/onboard/repository/onboard_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DescriptionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _getDescriptionWidget(),
-            ],
+    return BlocBuilder<OnboardBloc, OnboardState>(
+      builder: (context, state) => Scaffold(
+        body: SafeArea(
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _getDescriptionWidget(),
+              ],
+            ),
           ),
         ),
+        floatingActionButton: _floatingActionButtonWidget(context),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
-      floatingActionButton: _floatingActionButtonWidget(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -70,9 +75,7 @@ class DescriptionView extends StatelessWidget {
         horizontal: 20.0,
       ),
       child: ElevatedButton(
-        onPressed: () {
-          Navigator.pushReplacementNamed(context, '/onboard/nickname');
-        },
+        onPressed: () => _goToNextPage(context),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
         ),
@@ -91,5 +94,11 @@ class DescriptionView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _goToNextPage(BuildContext context) {
+    context
+        .read<OnboardBloc>()
+        .add(OnboardStatusChanged(status: OnboardStatus.nickname));
   }
 }

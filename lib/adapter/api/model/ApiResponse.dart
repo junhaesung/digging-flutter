@@ -1,3 +1,5 @@
+import 'package:digging/adapter/api/model/member_data.dart';
+
 import 'BrandData.dart';
 import 'LoginResponse.dart';
 import 'NotesData.dart';
@@ -16,6 +18,14 @@ class ApiResponse<T> {
       json['code'] as String,
       json['message'] as String,
       null,
+    );
+  }
+
+  static ApiResponse<MemberData> memberData(Map<String, dynamic> json) {
+    return ApiResponse(
+      json['code'] as String,
+      json['message'] as String,
+      MemberData.fromJson(json['data']),
     );
   }
 
@@ -53,9 +63,14 @@ class ApiResponse<T> {
 
   static ApiResponse<LoginResponse> loginData(Map<String, dynamic> json) {
     return ApiResponse(
-        json['code'] as String,
-        json['message'] as String,
-        LoginResponse.fromJson(json['data']),
+      json['code'] as String,
+      json['message'] as String,
+      LoginResponse.fromJson(json['data']),
     );
+  }
+
+  @override
+  String toString() {
+    return 'ApiResponse{code: $code, message: $message, data: $data}';
   }
 }

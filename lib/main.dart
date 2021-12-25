@@ -1,10 +1,14 @@
+import 'package:digging/auth/auth.dart';
+import 'package:digging/ui/onboard/repository/onboard_repository.dart';
 import 'package:flutter/material.dart';
 
 import 'app.dart';
-import 'nickname/nickname.dart';
 
 void main() {
-  runApp(DiggingApp(
-    nicknameRepository: NicknameRepository(),
-  ));
+  runApp(
+    DiggingApp(
+      onboardRepository: OnboardRepository(),
+      authRepository: AuthRepository(),
+    ),
+  );
 }

@@ -1,42 +1,55 @@
 import 'package:digging/domain/notegroup.dart';
-import 'package:digging/ui/main/MainView.dart';
+import 'package:digging/ui/onboard/age_group/age_group.dart';
+import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
+import 'package:digging/ui/onboard/gender/gender.dart';
 import 'package:digging/ui/onboard/note_group/note_group.dart';
+import 'package:digging/ui/onboard/repository/repository.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NoteGroupView extends StatelessWidget {
-  static Route route() => MaterialPageRoute(builder: (_) => NoteGroupView());
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBarWidget(context),
-      body: SafeArea(
-        child: Container(
-          color: Color(0xffe5e5e5),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-            child: Column(
-              children: [
-                _titleWidget(),
-                _descriptionWidget(),
-                Expanded(
-                  child: _noteGroupsWidget(),
-                ),
-              ],
+    return BlocProvider<OnboardBloc>(
+      create: (context) => context.read<OnboardBloc>(),
+      child: Scaffold(
+        appBar: _appBarWidget(context),
+        body: SafeArea(
+          child: Container(
+            color: Color(0xffe5e5e5),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14),
+              child: Column(
+                children: [
+                  _titleWidget(),
+                  _descriptionWidget(),
+                  Expanded(
+                    child: _noteGroupsWidget(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
+        floatingActionButton: _floatingActionButtonWidget(context),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
-      floatingActionButton: _floatingActionButtonWidget(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-  void _goToMainView(BuildContext context) {
-    Navigator.of(context)
-        .pushAndRemoveUntil(MainView.route(), (route) => false);
+  void _goToPreviousPage(BuildContext context) {
+    context.read<OnboardBloc>().add(OnboardStatusChanged(status: OnboardStatus.genderAndAge));
+  }
+
+  void _submitOnboard(BuildContext context) {
+    context.read<OnboardBloc>().add(
+          OnboardSubmitted(
+            gender: context.read<GenderBloc>().state.gender,
+            ageGroup: context.read<AgeGroupBloc>().state.ageGroup,
+            noteGroupIds: context.read<NoteGroupBloc>().state.noteGroupIds,
+          ),
+        );
   }
 
   Widget _floatingActionButtonWidget(BuildContext context) {
@@ -46,9 +59,7 @@ class NoteGroupView extends StatelessWidget {
         horizontal: 20.0,
       ),
       child: ElevatedButton(
-        onPressed: () {
-          _goToMainView(context);
-        },
+        onPressed: () => _submitOnboard(context),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
         ),
@@ -76,9 +87,7 @@ class NoteGroupView extends StatelessWidget {
       backgroundColor: Color(0xffe5e5e5),
       elevation: 0.0,
       leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
+        onPressed: () => _goToPreviousPage(context),
         icon: Icon(
           Icons.arrow_back_ios,
           color: Color(0xff888888),
@@ -86,11 +95,7 @@ class NoteGroupView extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () {
-            // TODO: api 요청
-            // 메인페이지 이동
-            _goToMainView(context);
-          },
+          onPressed: () => _submitOnboard(context),
           child: Text(
             '건너뛰기',
             style: TextStyle(
@@ -148,20 +153,16 @@ class NoteGroupView extends StatelessWidget {
   }
 
   Widget _noteGroupsWidget() {
-    return BlocProvider<NoteGroupBloc>(
-      create: (_) => NoteGroupBloc(),
-      child: GridView.count(
-        crossAxisCount: 2,
-        childAspectRatio: 162 / 104,
-        children: getNoteGroupWidgets(),
-      ),
+    return GridView.count(
+      crossAxisCount: 2,
+      childAspectRatio: 162 / 104,
+      children: getNoteGroupWidgets(),
     );
   }
 
-  List<Widget> getNoteGroupWidgets() =>
-      NoteGroup.getCategorizedNoteGroups()
-          .map((e) => _NoteGroupButton(noteGroup: e))
-          .toList();
+  List<Widget> getNoteGroupWidgets() => NoteGroup.getCategorizedNoteGroups()
+      .map((e) => _NoteGroupButton(noteGroup: e))
+      .toList();
 }
 
 class _NoteGroupButton extends StatelessWidget {

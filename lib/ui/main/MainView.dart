@@ -1,23 +1,25 @@
+import 'package:digging/adapter/api/DiggingApi.dart';
 import 'package:digging/adapter/storage/secure_storage_api.dart';
 import 'package:digging/domain/brand.dart';
 import 'package:digging/domain/notegroup.dart';
 import 'package:digging/domain/perfume.dart';
+import 'package:digging/session/bloc/session_bloc.dart';
 import 'package:digging/ui/main/MainPerfumeListView.dart';
+import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
 import 'package:digging/ui/perfume/PerfumeDetailView.dart';
 import 'package:digging/ui/search/SearchView.dart';
-import 'package:digging/ui/splash/SplashView.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainView extends StatefulWidget {
-  static Route route() => MaterialPageRoute(builder: (_) => MainView());
-
   @override
   State<StatefulWidget> createState() => _MainView();
 }
 
 class _MainView extends State<MainView> {
   int _selectedNoteGroupId = 0;
+  final DiggingApi _api = const DiggingApi();
 
   @override
   Widget build(BuildContext context) {
@@ -28,46 +30,49 @@ class _MainView extends State<MainView> {
     }
     List<Perfume> perfumes = Perfume.getPerfumes(10).toList();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Text('digg'),
-            Text(
-              'ing',
-              style: TextStyle(
-                fontStyle: FontStyle.italic,
+    return BlocProvider<OnboardBloc>(
+      create: (context) => context.read<OnboardBloc>(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            children: [
+              Text('digg'),
+              Text(
+                'ing',
+                style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                ),
               ),
+            ],
+          ),
+          backgroundColor: Color(0xff83daff),
+          elevation: 0.0,
+          // FIXME: (테스트) splash 화면 이동하는 버튼
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () {
+                _goToSplashView(context);
+              },
             ),
           ],
         ),
-        backgroundColor: Color(0xff83daff),
-        elevation: 0.0,
-        // FIXME: (테스트) splash 화면 이동하는 버튼
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () {
-              _goToSplashView(context);
-            },
-          )
-        ],
-      ),
-      body: SafeArea(
-        child: ListView(
-          children: [
-            // For you
-            getForYouWidget(context, Perfume.getPerfumes(1)),
-            // 인기브랜드
-            getPopularBrandWidget(context),
-            // 디깅의 추천 향수
-            getRecommendedPerfumeWidget(),
-            // 내가 좋아할 노트
-            getFavoriteNotePerfume(context, noteGroups, perfumes),
-          ],
+        body: SafeArea(
+          child: ListView(
+            children: [
+              // For you
+              getForYouWidget(context, Perfume.getPerfumes(1)),
+              // 인기브랜드
+              getPopularBrandWidget(context),
+              // 디깅의 추천 향수
+              getRecommendedPerfumeWidget(),
+              // 내가 좋아할 노트
+              getFavoriteNotePerfume(context, noteGroups, perfumes),
+            ],
+          ),
         ),
+        bottomNavigationBar: getBottomNavigationBar(context),
       ),
-      bottomNavigationBar: getBottomNavigationBar(context),
     );
   }
 
@@ -668,10 +673,9 @@ class _MainView extends State<MainView> {
   }
 
   void _goToSplashView(BuildContext context) async {
+    await _api.withdraw();
     TokenStorage()
         .delete()
-        .then((value) => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => SplashView()),
-            ));
+        .then((value) => context.read<SessionBloc>().add(LoadingRequested()));
   }
 }

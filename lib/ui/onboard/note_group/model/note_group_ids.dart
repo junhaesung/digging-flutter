@@ -17,6 +17,8 @@ class NoteGroupIds extends Equatable {
 
   Set<int> difference(Set<Object?> other) => noteGroupIds.difference(other);
 
+  Set<int> toSet() => noteGroupIds.toSet();
+
   @override
   List<Object?> get props => [noteGroupIds];
 }

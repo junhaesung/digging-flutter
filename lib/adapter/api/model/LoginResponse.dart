@@ -12,7 +12,7 @@ class LoginResponse {
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
       memberDetail: MemberDetail.fromJson(json['member']),
-      accessToken: json['accessToken'],
+      accessToken: json['accessToken'] as String,
     );
   }
 

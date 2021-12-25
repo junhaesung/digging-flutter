@@ -1,33 +1,63 @@
+import 'package:digging/auth/auth.dart';
+import 'package:digging/session/bloc/session_bloc.dart';
+import 'package:digging/ui/app_navigator.dart';
+import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
+import 'package:digging/ui/onboard/repository/onboard_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'nickname/nickname.dart';
-import 'ui/onboard/DescriptionView.dart';
-import 'ui/onboard/NicknameView.dart';
+import 'ui/onboard/age_group/age_group.dart';
+import 'ui/onboard/gender/gender.dart';
+import 'ui/onboard/note_group/note_group.dart';
 import 'ui/search/SearchView.dart';
-import 'ui/splash/SplashView.dart';
 
 class DiggingApp extends StatelessWidget {
-  final NicknameRepository nicknameRepository;
+  DiggingApp({
+    required this.onboardRepository,
+    required this.authRepository,
+  });
 
-  DiggingApp({required this.nicknameRepository});
+  final OnboardRepository onboardRepository;
+  final AuthRepository authRepository;
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: nicknameRepository,
-      child: BlocProvider(
-        create: (_) => NicknameBloc(
-          nicknameRepository: RepositoryProvider.of<NicknameRepository>(context),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<OnboardRepository>(
+          create: (_) => onboardRepository,
         ),
-        child: MaterialApp(
-          initialRoute: '/splash',
-          routes: {
-            '/splash': (context) => SplashView(),
-            '/search': (context) => SearchView(),
-            '/onboard/description': (context) => DescriptionView(),
-            '/onboard/nickname': (context) => NicknameView(),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<GenderBloc>(
+            create: (_) => GenderBloc(),
+          ),
+          BlocProvider<AgeGroupBloc>(
+            create: (_) => AgeGroupBloc(),
+          ),
+          BlocProvider<NoteGroupBloc>(
+            create: (_) => NoteGroupBloc(),
+          ),
+          BlocProvider<SessionBloc>(
+            create: (_) => SessionBloc(
+              authRepository: authRepository,
+            ),
+          ),
+        ],
+        child: BlocProvider<OnboardBloc>(
+          create: (context) {
+            return OnboardBloc(
+              onboardRepository: onboardRepository,
+              sessionBloc: context.read<SessionBloc>(),
+            );
           },
+          child: MaterialApp(
+            home: AppNavigator(),
+            routes: {
+              '/search': (context) => SearchView(),
+            },
+          ),
         ),
       ),
     );

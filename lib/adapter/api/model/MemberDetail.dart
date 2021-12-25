@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import 'NoteGroupSimple.dart';
 
-class MemberDetail {
+class MemberDetail extends Equatable {
   final int id;
   final String status;
   final String ageGroup;
@@ -20,7 +22,9 @@ class MemberDetail {
       id: json['id'] as int,
       status: json['status'] as String,
       ageGroup: json['ageGroup'] as String,
-      noteGroups: (json['noteGroups'] as List).map((e) => NoteGroupSimple.fromJson(e)).toList(),
+      noteGroups: (json['noteGroups'] as List)
+          .map((e) => NoteGroupSimple.fromJson(e))
+          .toList(),
       nickname: json['nickname'] as String?,
     );
   }
@@ -29,4 +33,7 @@ class MemberDetail {
   String toString() {
     return 'MemberDetail{id: $id, status: $status, ageGroup: $ageGroup, noteGroups: $noteGroups, nickname: $nickname}';
   }
+
+  @override
+  List<Object?> get props => [id, status];
 }

@@ -1,5 +1,6 @@
-import 'package:digging/ui/onboard/NoteGroupView.dart';
+import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
 import 'package:digging/ui/onboard/gender/gender.dart';
+import 'package:digging/ui/onboard/repository/onboard_repository.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,31 +8,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'age_group/age_group.dart';
 
 class GenderAndAgeView extends StatelessWidget {
-  static Route route() {
-    return MaterialPageRoute(builder: (context) => GenderAndAgeView());
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBarWidget(context),
-      body: SafeArea(
-        child: Container(
-          color: Color(0xffe5e5e5),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: ListView(
-              children: [
-                _titleWidget(),
-                _genderWidget(),
-                _ageGroupWidget(),
-              ],
+    return BlocBuilder<OnboardBloc, OnboardState>(
+      builder: (context, state) => Scaffold(
+        appBar: _appBarWidget(context),
+        body: SafeArea(
+          child: Container(
+            color: Color(0xffe5e5e5),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: ListView(
+                children: [
+                  _titleWidget(),
+                  _genderWidget(),
+                  _ageGroupWidget(),
+                ],
+              ),
             ),
           ),
         ),
+        floatingActionButton: _floatingActionButtonWidget(context),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
-      floatingActionButton: _floatingActionButtonWidget(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -40,8 +39,13 @@ class GenderAndAgeView extends StatelessWidget {
       .map((e) => _AgeGroupButton(ageGroup: e))
       .toList();
 
-  _goToNoteGroupView(BuildContext context) =>
-      Navigator.of(context).push(NoteGroupView.route());
+  void _goToNextPage(BuildContext context) {
+    context.read<OnboardBloc>().add(OnboardStatusChanged(status: OnboardStatus.noteGroup));
+  }
+
+  void _goToPreviousPage(BuildContext context) {
+    context.read<OnboardBloc>().add(OnboardStatusChanged(status: OnboardStatus.nickname));
+  }
 
   Widget _floatingActionButtonWidget(BuildContext context) {
     return Padding(
@@ -51,7 +55,7 @@ class GenderAndAgeView extends StatelessWidget {
       ),
       child: ElevatedButton(
         onPressed: () {
-          _goToNoteGroupView(context);
+          _goToNextPage(context);
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
@@ -81,7 +85,7 @@ class GenderAndAgeView extends StatelessWidget {
       elevation: 0.0,
       leading: IconButton(
         onPressed: () {
-          Navigator.pop(context);
+          _goToPreviousPage(context);
         },
         icon: Icon(
           Icons.arrow_back_ios,
@@ -91,7 +95,7 @@ class GenderAndAgeView extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            _goToNoteGroupView(context);
+            _goToNextPage(context);
           },
           child: Text(
             '건너뛰기',
@@ -126,61 +130,55 @@ class GenderAndAgeView extends StatelessWidget {
   }
 
   Widget _genderWidget() {
-    return BlocProvider(
-      create: (context) => GenderBloc(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '성별',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff1d1d20),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '성별',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color(0xff1d1d20),
           ),
-          Container(
-            height: 200,
-            child: GridView.count(
-              physics: NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              children: [
-                _GenderButton.female(),
-                _GenderButton.male(),
-              ],
-            ),
+        ),
+        Container(
+          height: 200,
+          child: GridView.count(
+            physics: NeverScrollableScrollPhysics(),
+            crossAxisCount: 2,
+            children: [
+              _GenderButton.female(),
+              _GenderButton.male(),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _ageGroupWidget() {
-    return BlocProvider(
-      create: (context) => AgeGroupBloc(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '나이',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff1d1d20),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '나이',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color(0xff1d1d20),
           ),
-          Container(height: 28),
-          Container(
-            height: 100,
-            child: GridView.count(
-              crossAxisSpacing: 8.0,
-              childAspectRatio: 1,
-              crossAxisCount: 5,
-              children: _getAgeGroupWidgets(),
-            ),
+        ),
+        Container(height: 28),
+        Container(
+          height: 100,
+          child: GridView.count(
+            crossAxisSpacing: 8.0,
+            childAspectRatio: 1,
+            crossAxisCount: 5,
+            children: _getAgeGroupWidgets(),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TokenStorage {
-  final _storage = new FlutterSecureStorage();
+  const TokenStorage();
+
+  final _storage = const FlutterSecureStorage();
   final _key = 'DIGGING_API_ACCESS_TOKEN';
 
   Future<String?> read() async {
@@ -9,7 +11,6 @@ class TokenStorage {
       key: _key,
       aOptions: _getAndroidOptions(),
     );
-    print('read: $value');
     return value;
   }
 
@@ -19,7 +20,6 @@ class TokenStorage {
       value: accessToken,
       aOptions: _getAndroidOptions(),
     );
-    print('write: $accessToken');
   }
 
   Future<void> delete() async {
@@ -27,7 +27,6 @@ class TokenStorage {
       key: _key,
       aOptions: _getAndroidOptions(),
     );
-    print('delete');
   }
 
   AndroidOptions _getAndroidOptions() {
