@@ -22,8 +22,7 @@ class DiggingApi {
 
   final TokenStorage _tokenStorage = const TokenStorage();
 
-  // final String _host = "api.digging.me";
-  final String _host = "localhost:8080";
+  final String _host = "api.digging.me";
 
   /// 로그인
   Future<LoginResponse> login(String uuid) async {
