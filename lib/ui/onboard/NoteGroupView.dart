@@ -11,9 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class NoteGroupView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<OnboardBloc>(
-      create: (context) => context.read<OnboardBloc>(),
-      child: Scaffold(
+    return BlocBuilder<OnboardBloc, OnboardState>(
+      builder: (context, state) => Scaffold(
         appBar: _appBarWidget(context),
         body: SafeArea(
           child: Container(
@@ -32,14 +31,20 @@ class NoteGroupView extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: _floatingActionButtonWidget(context),
+        floatingActionButton: BlocBuilder<NoteGroupBloc, NoteGroupState>(
+          builder: (context, state) => _FloatingActionButton(
+            isAvailable: context.read<NoteGroupBloc>().state.noteGroupIds.isNotEmpty,
+          ),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }
 
   void _goToPreviousPage(BuildContext context) {
-    context.read<OnboardBloc>().add(OnboardStatusChanged(status: OnboardStatus.genderAndAge));
+    context
+        .read<OnboardBloc>()
+        .add(OnboardStatusChanged(status: OnboardStatus.genderAndAge));
   }
 
   void _submitOnboard(BuildContext context) {
@@ -50,34 +55,6 @@ class NoteGroupView extends StatelessWidget {
             noteGroupIds: context.read<NoteGroupBloc>().state.noteGroupIds,
           ),
         );
-  }
-
-  Widget _floatingActionButtonWidget(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 6.0,
-        horizontal: 20.0,
-      ),
-      child: ElevatedButton(
-        onPressed: () => _submitOnboard(context),
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
-        ),
-        child: Container(
-          height: 52,
-          child: Center(
-            child: Text(
-              "선택 완료",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 
   PreferredSizeWidget _appBarWidget(BuildContext context) {
@@ -163,6 +140,56 @@ class NoteGroupView extends StatelessWidget {
   List<Widget> getNoteGroupWidgets() => NoteGroup.getCategorizedNoteGroups()
       .map((e) => _NoteGroupButton(noteGroup: e))
       .toList();
+}
+
+class _FloatingActionButton extends StatelessWidget {
+  const _FloatingActionButton({required this.isAvailable});
+
+  final isAvailable;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 6.0,
+        horizontal: 20.0,
+      ),
+      child: ElevatedButton(
+        onPressed: () {
+          if (isAvailable) {
+            _submitOnboard(context);
+          }
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(
+              Color(isAvailable ? 0xff1c1c1c : 0xffc7c7c7)),
+        ),
+        child: Container(
+          height: 52,
+          child: Center(
+            child: Text(
+              "선택 완료",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _submitOnboard(BuildContext context) {
+    context.read<OnboardBloc>().add(
+      OnboardSubmitted(
+        gender: context.read<GenderBloc>().state.gender,
+        ageGroup: context.read<AgeGroupBloc>().state.ageGroup,
+        noteGroupIds: context.read<NoteGroupBloc>().state.noteGroupIds,
+      ),
+    );
+  }
 }
 
 class _NoteGroupButton extends StatelessWidget {

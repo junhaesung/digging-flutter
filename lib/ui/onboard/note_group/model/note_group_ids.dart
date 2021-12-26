@@ -7,6 +7,10 @@ class NoteGroupIds extends Equatable {
 
   int get length => noteGroupIds.length;
 
+  bool get isEmpty => noteGroupIds.isEmpty;
+
+  bool get isNotEmpty => noteGroupIds.isNotEmpty;
+
   bool contains(Object? value) => noteGroupIds.contains(value);
 
   bool add(int value) => noteGroupIds.add(value);
