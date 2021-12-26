@@ -7,6 +7,12 @@ import 'package:digging/util/StringColorConverter.dart';
 import 'package:flutter/material.dart';
 
 class PerfumeDetailView extends StatefulWidget {
+  static Route route({required int perfumeId}) {
+    return MaterialPageRoute(
+      builder: (context) => PerfumeDetailView(perfumeId: perfumeId),
+    );
+  }
+
   final int perfumeId;
 
   PerfumeDetailView({required this.perfumeId});

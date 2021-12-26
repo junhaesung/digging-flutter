@@ -1,5 +1,5 @@
 import 'package:digging/ui/main/MainView.dart';
-import 'package:digging/ui/search/SearchView.dart';
+import 'package:digging/ui/search/view/SearchView.dart';
 import 'package:digging/ui/tab_page/tab_page_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,4 +1,5 @@
 import 'package:digging/adapter/api/model/member_data.dart';
+import 'package:digging/adapter/api/model/search_response.dart';
 
 import 'BrandData.dart';
 import 'LoginResponse.dart';
@@ -66,6 +67,14 @@ class ApiResponse<T> {
       json['code'] as String,
       json['message'] as String,
       LoginResponse.fromJson(json['data']),
+    );
+  }
+
+  static ApiResponse<SearchResponse> searchData(Map<String, dynamic> json) {
+    return ApiResponse(
+      json['code'] as String,
+      json['message'] as String,
+      SearchResponse.fromJson(json['data']),
     );
   }
 

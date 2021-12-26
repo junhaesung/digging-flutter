@@ -1,4 +1,4 @@
-import 'package:digging/ui/loading_view.dart';
+import 'package:digging/ui/circular_loading_view.dart';
 import 'package:digging/ui/onboard/DescriptionView.dart';
 import 'package:digging/ui/onboard/GenderAndAgeView.dart';
 import 'package:digging/ui/onboard/NicknameView.dart';
@@ -38,7 +38,7 @@ class OnboardNavigator extends StatelessWidget {
       pages.add(MaterialPage(child: NoteGroupView()));
     }
     if (pages.isEmpty) {
-      pages.add(MaterialPage(child: LoadingView()));
+      pages.add(MaterialPage(child: CircularLoadingView()));
     }
     return pages.toList();
   }

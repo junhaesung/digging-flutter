@@ -4,6 +4,8 @@ import 'package:digging/adapter/api/model/LoginRequest.dart';
 import 'package:digging/adapter/api/model/MemberDetail.dart';
 import 'package:digging/adapter/api/model/PerfumeSimple.dart';
 import 'package:digging/adapter/api/model/UpdateNicknameRequest.dart';
+import 'package:digging/adapter/api/model/search_request.dart';
+import 'package:digging/adapter/api/model/search_response.dart';
 import 'package:digging/adapter/storage/secure_storage_api.dart';
 import 'package:digging/ui/onboard/age_group/age_group.dart';
 import 'package:digging/ui/onboard/gender/gender.dart';
@@ -165,6 +167,67 @@ class DiggingApi {
         )
         .then((value) => ApiResponse.notesData(json.decode(value.body)))
         .then((value) => value.data!.noteSimples);
+  }
+
+  /// 통합검색
+  Future<SearchResponse> searchAll({
+    required String keyword,
+    int page = 0,
+  }) async {
+    return _search(
+      keyword: keyword,
+      type: 'ALL',
+      page: page,
+    );
+  }
+
+  /// 브랜드별 검색
+  Future<SearchResponse> searchBrand({
+    required String keyword,
+    int page = 0,
+  }) async {
+    return _search(
+      keyword: keyword,
+      type: 'BRAND',
+      page: page,
+    );
+  }
+
+  /// 향수별 검색
+  Future<SearchResponse> searchPerfume({
+    required String keyword,
+    int page = 0,
+  }) async {
+    return _search(
+      keyword: keyword,
+      type: 'PERFUME',
+      page: page,
+    );
+  }
+
+  Future<SearchResponse> _search({
+    required String keyword,
+    required String type,
+    int page = 0,
+  }) async {
+    final accessToken = await _getAccessToken();
+    final SearchRequest searchRequest = SearchRequest(
+      name: keyword,
+      type: type,
+      page: page,
+      size: 20,
+    );
+    return http
+        .post(
+          Uri.http(_host, '/api/v1/search'),
+          headers: {
+            'Authorization': 'Bearer $accessToken',
+            'Content-Type': 'application/json',
+          },
+          body: json.encode(searchRequest.toMap()),
+        )
+        .then((value) => ApiResponse.searchData(json.decode(value.body)))
+        .then((value) => value.data!);
   }
 
   Future<String?> _getAccessToken() async {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LoadingView extends StatelessWidget {
+class CircularLoadingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

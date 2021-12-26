@@ -1,7 +1,8 @@
 import 'package:digging/adapter/api/DiggingApi.dart';
 import 'package:digging/adapter/api/model/NoteSimple.dart';
 import 'package:digging/domain/notegroup.dart';
-import 'package:digging/ui/search/SearchPerfumeListView.dart';
+import 'package:digging/ui/linear_loading_view.dart';
+import 'package:digging/ui/search/view/SearchPerfumeListView.dart';
 import 'package:flutter/material.dart';
 
 import '/domain/note.dart';
@@ -28,41 +29,13 @@ class _NoteListView extends State<NoteListView> {
       future: _api.fetchNotes(_noteGroup.id),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Scaffold(
-            appBar: AppBar(
-              toolbarHeight: 44,
-              elevation: 0.0,
-              backgroundColor: Color(0xfff8f8f8),
-            ),
-            body: LinearProgressIndicator(),
-          );
+          return LinearLoadingView();
         }
         List<Note> notes = (snapshot.data as List<NoteSimple>)
             .map((e) => Note(e.id, e.name))
             .toList();
         return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              _noteGroup.name,
-              style: TextStyle(
-                fontSize: 16,
-                color: Color(0xff1b1b1b),
-              ),
-            ),
-            centerTitle: true,
-            toolbarHeight: 44,
-            elevation: 0.0,
-            backgroundColor: Color(0xfff8f8f8),
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Color(0xff1b1b1b),
-              ),
-            ),
-          ),
+          appBar: _appBar(),
           body: SafeArea(
             child: Container(
               color: Color(0xfff8f8f8),
@@ -131,6 +104,31 @@ class _NoteListView extends State<NoteListView> {
           ),
         );
       },
+    );
+  }
+
+  PreferredSizeWidget _appBar() {
+    return AppBar(
+      title: Text(
+        _noteGroup.name,
+        style: TextStyle(
+          fontSize: 16,
+          color: Color(0xff1b1b1b),
+        ),
+      ),
+      centerTitle: true,
+      toolbarHeight: 44,
+      elevation: 0.0,
+      backgroundColor: Color(0xfff8f8f8),
+      leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: Color(0xff1b1b1b),
+        ),
+      ),
     );
   }
 
