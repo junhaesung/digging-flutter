@@ -1,2 +1,1 @@
 - provisioning profile 변경
-- 기기 등록
