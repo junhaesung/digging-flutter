@@ -1,1 +1,2 @@
-- 검색 기능 추가
+- provisioning profile 변경
+- 기기 등록
