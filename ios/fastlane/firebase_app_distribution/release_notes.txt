@@ -1,1 +1,2 @@
 - provisioning profile 변경
+- 테스터 기기등록 및 profile 에 device 추가
