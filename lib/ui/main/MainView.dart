@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:digging/adapter/api/DiggingApi.dart';
 import 'package:digging/domain/brand.dart';
 import 'package:digging/domain/notegroup.dart';
@@ -17,6 +18,7 @@ class MainView extends StatefulWidget {
 }
 
 class _MainView extends State<MainView> {
+  int _forYouPerfumeIndex = 0;
   int _selectedNoteGroupId = 0;
   final DiggingApi _api = const DiggingApi();
 
@@ -31,35 +33,12 @@ class _MainView extends State<MainView> {
 
     return BlocBuilder<OnboardBloc, OnboardState>(
       builder: (context, state) => Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: [
-              Text('digg'),
-              Text(
-                'ing',
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ],
-          ),
-          backgroundColor: Color(0xff83daff),
-          elevation: 0.0,
-          // FIXME: (테스트) splash 화면 이동하는 버튼
-          actions: [
-            IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () {
-                _goToSplashView(context);
-              },
-            ),
-          ],
-        ),
+        appBar: _appBar(context),
         body: SafeArea(
           child: ListView(
             children: [
               // For you
-              getForYouWidget(context, Perfume.getPerfumes(1)),
+              getForYouWidget(context, Perfume.getPerfumes(3)),
               // 인기브랜드
               getPopularBrandWidget(context),
               // 디깅의 추천 향수
@@ -74,112 +53,161 @@ class _MainView extends State<MainView> {
     );
   }
 
+  PreferredSizeWidget _appBar(context) {
+    return AppBar(
+      title: Row(
+        children: [
+          Text('digg'),
+          Text(
+            'ing',
+            style: TextStyle(
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: Color(0xff83daff),
+      elevation: 0.0,
+      // FIXME: (테스트) splash 화면 이동하는 버튼
+      actions: [
+        IconButton(
+          icon: Icon(Icons.logout),
+          onPressed: () {
+            _goToSplashView(context);
+          },
+        ),
+      ],
+    );
+  }
+
   /// For you
   Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) {
-    Perfume perfume = perfumes.first;
     return Container(
       // height: 382,
       child: Padding(
         padding: const EdgeInsets.only(
           top: 12,
-          left: 34,
-          right: 34,
+          // left: 34,
+          // right: 34,
           bottom: 20,
         ),
         child: Column(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      offset: Offset(0.0, 1.0),
-                      blurRadius: 6.0,
-                    ),
-                  ]),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 16,
-                  left: 21,
-                  right: 21,
-                ),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        _goToPerfumeDetailView(context, perfumes.first);
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Color(0xffe2b949),
-                                ),
-                                Text(
-                                  ' For you',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: Image.network(
-                                perfume.imageUrl,
-                                height: 189,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 6, bottom: 15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Text(
-                                    perfume.brandName,
-                                    style: TextStyle(
-                                      color: Color(0xffc7c7c7),
-                                      fontSize: 12,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                Text(
-                                  perfume.name,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+            CarouselSlider(
+              options: CarouselOptions(
+                height: 330,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _forYouPerfumeIndex = index;
+                  });
+                },
               ),
+              items: perfumes.map((perfume) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 7.0),
+                      child: _forYouCarouselItem(context, perfume),
+                    );
+                  },
+                );
+              }).toList(),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20),
-              child: DotsIndicator(dotsCount: 3, position: 0),
+              child: DotsIndicator(dotsCount: 3, position: _forYouPerfumeIndex.toDouble()),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _forYouCarouselItem(BuildContext context, Perfume perfume) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              offset: Offset(0.0, 1.0),
+              blurRadius: 6.0,
+            ),
+          ]),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: 16,
+          left: 21,
+          right: 21,
+        ),
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                _goToPerfumeDetailView(context, perfume);
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.star,
+                          color: Color(0xffe2b949),
+                        ),
+                        Text(
+                          ' For you',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Image.network(
+                        perfume.imageUrl,
+                        height: 189,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 6, bottom: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            perfume.brandName,
+                            style: TextStyle(
+                              color: Color(0xffc7c7c7),
+                              fontSize: 12,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Text(
+                          perfume.name,
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),
