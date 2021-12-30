@@ -1,6 +1,7 @@
-import 'package:digging/adapter/api/DiggingApi.dart';
 import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
+import 'package:digging/ui/onboard/nickname/bloc/nickname_bloc.dart';
+import 'package:digging/ui/onboard/nickname/model/model.dart';
 import 'package:digging/ui/onboard/onboard_dots_indicator.dart';
 import 'package:digging/ui/onboard/repository/onboard_repository.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,6 @@ class NicknameView extends StatefulWidget {
 }
 
 class _NicknameView extends State<NicknameView> {
-  final _formKey = GlobalKey<FormState>();
-  final _api = const DiggingApi();
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OnboardBloc, OnboardState>(
@@ -40,53 +38,7 @@ class _NicknameView extends State<NicknameView> {
                         ),
                       ),
                       Container(height: 28),
-                      Container(
-                        height: 52,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        child: Form(
-                          key: _formKey,
-                          child: TextFormField(
-                            validator: (value) {
-                              if (value == null ||
-                                  value.length < 2 ||
-                                  value.length > 6) {
-                                return "2자~6자까지 입력이 가능해요.";
-                              }
-                              return null;
-                            },
-                            onChanged: (value) {
-                              _formKey.currentState?.validate();
-                            },
-                            onFieldSubmitted: (value) async {
-                              if (_formKey.currentState?.validate() == true) {
-                                final result =
-                                    await _api.update(nickname: value);
-                                print('result: $result');
-                                if (result == null) {
-                                  print('success');
-                                } else {
-                                  print('failure. result: $result');
-                                }
-                              }
-                            },
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: '2자~6자까지 입력이 가능해요.',
-                              hintStyle: TextStyle(
-                                fontSize: 16,
-                                color: Color(0xffc7c7c7),
-                              ),
-                            ),
-                            keyboardType: TextInputType.name,
-                            textInputAction: TextInputAction.go,
-                            enableSuggestions: false,
-                          ),
-                        ),
-                      ),
+                      _nicknameForm(),
                     ],
                   ),
                 ),
@@ -117,27 +69,55 @@ class _NicknameView extends State<NicknameView> {
   }
 
   Widget _floatingActionButtonWidget(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 6.0,
-        horizontal: 20.0,
-      ),
-      child: ElevatedButton(
-        onPressed: () => _goToNextPage(context),
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
+    return BlocBuilder<NicknameBloc, NicknameState>(
+      builder: (context, state) => Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 6.0,
+          horizontal: 20.0,
         ),
-        child: Container(
-          height: 52,
-          child: Center(
-            child: Text(
-              "다음",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+        child: state.status == NicknameStatus.completed
+            ? _activeButton()
+            : _inactiveButton(),
+      ),
+    );
+  }
+
+  _activeButton() {
+    return ElevatedButton(
+      onPressed: () => _goToNextPage(context),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
+      ),
+      child: Container(
+        height: 52,
+        child: Center(
+          child: Text(
+            "다음",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _inactiveButton() {
+    return Container(
+      height: 52,
+      decoration: BoxDecoration(
+        color: Color(0xffc7c7c7),
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Center(
+        child: Text(
+          "다음",
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
       ),
@@ -148,5 +128,64 @@ class _NicknameView extends State<NicknameView> {
     context
         .read<OnboardBloc>()
         .add(OnboardStatusChanged(status: OnboardStatus.genderAndAge));
+  }
+
+  Widget _nicknameForm() {
+    return BlocBuilder<NicknameBloc, NicknameState>(
+      builder: (context, state) {
+        final nicknameBloc = context.read<NicknameBloc>();
+        final hasErrorMessage = state.validation.message.isNotEmpty;
+        return Column(
+          children: [
+            Container(
+              height: 52,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                border: hasErrorMessage
+                    ? BorderDirectional(
+                        top: BorderSide(color: Color(0xfff94747)),
+                        bottom: BorderSide(color: Color(0xfff94747)),
+                        start: BorderSide(color: Color(0xfff94747)),
+                        end: BorderSide(color: Color(0xfff94747)),
+                      )
+                    : null,
+              ),
+              child: TextFormField(
+                initialValue: state.nickname,
+                autofocus: true,
+                onChanged: (value) {
+                  nicknameBloc.add(NicknameChanged(nickname: value));
+                },
+                onFieldSubmitted: (value) {
+                  nicknameBloc.add(NicknameSubmitted(nickname: value));
+                },
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: '2자~6자까지 입력이 가능해요.',
+                  hintStyle: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xffc7c7c7),
+                  ),
+                ),
+                keyboardType: TextInputType.name,
+                textInputAction: TextInputAction.go,
+                enableSuggestions: false,
+              ),
+            ),
+            Container(height: 14),
+            if (state.validation.message.isNotEmpty)
+              Text(
+                state.validation.message,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Color(0xfff94747),
+                ),
+              ),
+          ],
+        );
+      },
+    );
   }
 }
