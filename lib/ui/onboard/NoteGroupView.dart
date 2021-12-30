@@ -34,7 +34,8 @@ class NoteGroupView extends StatelessWidget {
         ),
         floatingActionButton: BlocBuilder<NoteGroupBloc, NoteGroupState>(
           builder: (context, state) => _FloatingActionButton(
-            isAvailable: context.read<NoteGroupBloc>().state.noteGroupIds.isNotEmpty,
+            isAvailable:
+                context.read<NoteGroupBloc>().state.noteGroupIds.isNotEmpty,
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -155,28 +156,42 @@ class _FloatingActionButton extends StatelessWidget {
         vertical: 6.0,
         horizontal: 20.0,
       ),
-      child: ElevatedButton(
-        onPressed: () {
-          if (isAvailable) {
-            _submitOnboard(context);
-          }
-        },
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-              Color(isAvailable ? 0xff1c1c1c : 0xffc7c7c7)),
-        ),
-        child: Container(
-          height: 52,
-          child: Center(
-            child: Text(
-              "선택 완료",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
+      child: isAvailable ? _activeButton(context) : _inactiveButton(),
+    );
+  }
+
+  Widget _activeButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () => _submitOnboard(context),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(DiggingColor.black),
+      ),
+      child: Container(
+        height: 52,
+        child: _buttonText(),
+      ),
+    );
+  }
+
+  Widget _inactiveButton() {
+    return Container(
+      height: 52,
+      decoration: BoxDecoration(
+        color: Color(0xffc7c7c7),
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: _buttonText(),
+    );
+  }
+
+  Widget _buttonText() {
+    return Center(
+      child: Text(
+        "선택 완료",
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
         ),
       ),
     );
@@ -184,12 +199,12 @@ class _FloatingActionButton extends StatelessWidget {
 
   void _submitOnboard(BuildContext context) {
     context.read<OnboardBloc>().add(
-      OnboardSubmitted(
-        gender: context.read<GenderBloc>().state.gender,
-        ageGroup: context.read<AgeGroupBloc>().state.ageGroup,
-        noteGroupIds: context.read<NoteGroupBloc>().state.noteGroupIds,
-      ),
-    );
+          OnboardSubmitted(
+            gender: context.read<GenderBloc>().state.gender,
+            ageGroup: context.read<AgeGroupBloc>().state.ageGroup,
+            noteGroupIds: context.read<NoteGroupBloc>().state.noteGroupIds,
+          ),
+        );
   }
 }
 
