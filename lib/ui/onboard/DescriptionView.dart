@@ -8,14 +8,12 @@ class DescriptionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<OnboardBloc, OnboardState>(
       builder: (context, state) => Scaffold(
-        body: SafeArea(
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _getDescriptionWidget(),
-              ],
-            ),
+        body: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _getDescriptionWidget(),
+            ],
           ),
         ),
         floatingActionButton: _floatingActionButtonWidget(context),
