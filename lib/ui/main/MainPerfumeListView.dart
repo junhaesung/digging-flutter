@@ -2,6 +2,7 @@ import 'package:digging/adapter/api/DiggingApi.dart';
 import 'package:digging/adapter/api/model/BrandDetail.dart';
 import 'package:digging/adapter/api/model/PerfumeSimple.dart';
 import 'package:digging/domain/perfume.dart';
+import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/ui/perfume/PerfumeDetailView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +89,7 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xffc7c7c7),
+                            color: DiggingColor.grey100,
                           ),
                         ),
                         Container(

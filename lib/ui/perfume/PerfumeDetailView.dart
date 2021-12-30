@@ -3,6 +3,7 @@ import 'package:digging/adapter/api/model/Accord.dart';
 import 'package:digging/adapter/api/model/PerfumeDetail.dart';
 import 'package:digging/adapter/api/model/PerfumeNotes.dart';
 import 'package:digging/adapter/api/model/PerfumeSimple.dart';
+import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/util/StringColorConverter.dart';
 import 'package:flutter/material.dart';
 
@@ -130,7 +131,7 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
                     perfumeDetail.brandName,
                     style: TextStyle(
                       fontSize: 14,
-                      color: Color(0xffc7c7c7),
+                      color: DiggingColor.grey100,
                     ),
                   ),
                   Text(
@@ -378,7 +379,7 @@ class _PerfumeDetailView extends State<PerfumeDetailView> {
           height: 36,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
-            border: selected ? null : Border.all(color: Color(0xffc7c7c7)),
+            border: selected ? null : Border.all(color: DiggingColor.grey100),
             color: selected ? Color(0xff83daff) : null,
           ),
           child: Padding(

@@ -108,7 +108,7 @@ class _NicknameView extends State<NicknameView> {
     return Container(
       height: 52,
       decoration: BoxDecoration(
-        color: Color(0xffc7c7c7),
+        color: DiggingColor.grey100,
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Center(
@@ -166,7 +166,7 @@ class _NicknameView extends State<NicknameView> {
                   hintText: '2자~6자까지 입력이 가능해요.',
                   hintStyle: TextStyle(
                     fontSize: 16,
-                    color: Color(0xffc7c7c7),
+                    color: DiggingColor.grey100,
                   ),
                 ),
                 keyboardType: TextInputType.name,

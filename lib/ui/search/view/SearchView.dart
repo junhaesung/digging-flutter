@@ -1,4 +1,5 @@
 import 'package:digging/domain/note.dart';
+import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/ui/search/view/NoteListView.dart';
 import 'package:digging/ui/search/view/search_detail_view.dart';
 import 'package:digging/ui/tab_page/bottom_tab_bar.dart';
@@ -54,7 +55,7 @@ class SearchView extends StatelessWidget {
                                 hintText: '  향수 이름, 브랜드 영문 입력',
                                 hintStyle: TextStyle(
                                   fontSize: 14,
-                                  color: Color(0xffc7c7c7),
+                                  color: DiggingColor.grey100,
                                 ),
                               ),
                               onTap: () {

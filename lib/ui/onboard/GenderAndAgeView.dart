@@ -115,7 +115,7 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
     return Container(
       height: 52,
       decoration: BoxDecoration(
-        color: Color(0xffc7c7c7),
+        color: DiggingColor.grey100,
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Center(

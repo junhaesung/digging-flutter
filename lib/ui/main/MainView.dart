@@ -4,6 +4,7 @@ import 'package:digging/domain/brand.dart';
 import 'package:digging/domain/notegroup.dart';
 import 'package:digging/domain/perfume.dart';
 import 'package:digging/session/bloc/session_bloc.dart';
+import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/ui/main/MainPerfumeListView.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
 import 'package:digging/ui/perfume/PerfumeDetailView.dart';
@@ -188,7 +189,7 @@ class _MainView extends State<MainView> {
                           child: Text(
                             perfume.brandName,
                             style: TextStyle(
-                              color: Color(0xffc7c7c7),
+                              color: DiggingColor.grey100,
                               fontSize: 12,
                             ),
                             maxLines: 1,
@@ -280,7 +281,7 @@ class _MainView extends State<MainView> {
               ),
               borderRadius: BorderRadius.all(Radius.circular(50.0)),
               border: Border.all(
-                color: Color(0xffc7c7c7),
+                color: DiggingColor.grey100,
                 width: 0.5,
               ),
             ),
@@ -385,7 +386,7 @@ class _MainView extends State<MainView> {
                           ),
                           Icon(
                             Icons.arrow_forward_ios,
-                            color: Color(0xffc7c7c7),
+                            color: DiggingColor.grey100,
                           ),
                         ],
                       ),
