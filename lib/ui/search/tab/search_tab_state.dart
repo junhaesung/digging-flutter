@@ -7,6 +7,19 @@ enum SearchTabStateType {
   perfume,
 }
 
+extension SearchTabStateTypeX on SearchTabStateType {
+  String name() {
+    switch(this) {
+      case SearchTabStateType.all:
+        return 'ALL';
+      case SearchTabStateType.brand:
+        return 'BRAND';
+      case SearchTabStateType.perfume:
+        return 'PERFUME';
+    }
+  }
+}
+
 class SearchTabState extends Equatable {
   const SearchTabState({required this.type});
 

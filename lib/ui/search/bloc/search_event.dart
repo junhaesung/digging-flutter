@@ -27,6 +27,12 @@ class SearchReset extends SearchEvent {
   const SearchReset();
 }
 
+class SearchTypeChanged extends SearchEvent {
+  const SearchTypeChanged({required this.type});
+
+  final String type;
+}
+
 /// 검색어 제출함
 class SearchKeywordSubmitted extends SearchEvent {
   const SearchKeywordSubmitted({required this.keyword});

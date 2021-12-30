@@ -24,11 +24,13 @@ class SearchDetailView extends StatelessWidget {
                 _getSearchBar(context),
                 SearchDetailTabView(),
                 Expanded(
-                    child: Container(
-                        decoration: BoxDecoration(
-                          boxShadow: [],
-                        ),
-                        child: SearchTabNavigator())),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [],
+                    ),
+                    child: SearchTabNavigator(),
+                  ),
+                ),
               ],
             ),
           ),

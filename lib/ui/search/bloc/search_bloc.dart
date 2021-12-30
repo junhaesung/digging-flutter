@@ -13,9 +13,11 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   })  : _searchRepository = searchRepository,
         super(SearchState(
           keyword: '',
+          type: 'ALL',
           status: SearchStatus.ready,
         )) {
     on<SearchReset>(_onSearchReset);
+    on<SearchTypeChanged>(_onSearchTypeChanged);
     on<SearchKeywordSubmitted>(_onSearchKeywordSubmitted);
     on<SearchStatusChanged>(_onSearchStatusChanged);
     on<SearchResult>(_onSearchResult);
@@ -34,6 +36,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     print('_onSearchReset. event: $event, state: $state');
     emit(state.copyWith(
       keyword: '',
+      type: "ALL",
       status: SearchStatus.ready,
       result: null,
     ));
@@ -47,12 +50,39 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     // on search button pressed
 
     // api call
-    final searchResponse = await _searchRepository.searchAll(event.keyword);
+    final searchResponse = await _searchRepository.search(
+      keyword: event.keyword,
+      type: state.type,
+    );
     emit(state.copyWith(
       keyword: event.keyword,
       status: SearchStatus.success,
       result: searchResponse,
     ));
+  }
+
+  /// 탭 변경시 검색 타입도 변경
+  Future<void> _onSearchTypeChanged(
+    SearchTypeChanged event,
+    Emitter<SearchState> emit,
+  ) async {
+    print('_onSearchTypeChanged. event: $event, state: $state');
+    if (state.status == SearchStatus.success ||
+        state.status == SearchStatus.failure) {
+      emit(state.copyWith(
+        type: event.type,
+        status: SearchStatus.inProgress,
+      ));
+      final searchResponse = await _searchRepository.search(
+        keyword: state.keyword,
+        type: event.type,
+      );
+      emit(state.copyWith(
+        type: event.type,
+        status: SearchStatus.success,
+        result: searchResponse,
+      ));
+    }
   }
 
   FutureOr<void> _onSearchStatusChanged(

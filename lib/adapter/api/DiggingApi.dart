@@ -174,7 +174,7 @@ class DiggingApi {
     required String keyword,
     int page = 0,
   }) async {
-    return _search(
+    return search(
       keyword: keyword,
       type: 'ALL',
       page: page,
@@ -186,7 +186,7 @@ class DiggingApi {
     required String keyword,
     int page = 0,
   }) async {
-    return _search(
+    return search(
       keyword: keyword,
       type: 'BRAND',
       page: page,
@@ -198,14 +198,15 @@ class DiggingApi {
     required String keyword,
     int page = 0,
   }) async {
-    return _search(
+    return search(
       keyword: keyword,
       type: 'PERFUME',
       page: page,
     );
   }
 
-  Future<SearchResponse> _search({
+  /// 검색
+  Future<SearchResponse> search({
     required String keyword,
     required String type,
     int page = 0,
@@ -217,6 +218,7 @@ class DiggingApi {
       page: page,
       size: 20,
     );
+    print('searchRequest: $searchRequest');
     return http
         .post(
           Uri.http(_host, '/api/v1/search'),

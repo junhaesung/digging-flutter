@@ -36,8 +36,9 @@ class DiggingApp extends StatelessWidget {
     final ageGroupBloc = AgeGroupBloc(onboardBloc: onboardBloc);
     final noteGroupBloc = NoteGroupBloc(onboardBloc: onboardBloc);
     final tabPageCubit = TabPageCubit();
-    final searchTabCubit = SearchTabCubit();
     final searchBloc = SearchBloc(searchRepository: searchRepository);
+    final searchTabCubit = SearchTabCubit(searchBloc: searchBloc);
+
 
     return MultiRepositoryProvider(
       providers: [
@@ -59,8 +60,8 @@ class DiggingApp extends StatelessWidget {
           BlocProvider<AgeGroupBloc>(create: (_) => ageGroupBloc),
           BlocProvider<NoteGroupBloc>(create: (_) => noteGroupBloc),
           BlocProvider<TabPageCubit>(create: (_) => tabPageCubit),
-          BlocProvider<SearchTabCubit>(create: (_) => searchTabCubit),
           BlocProvider<SearchBloc>(create: (_) => searchBloc),
+          BlocProvider<SearchTabCubit>(create: (_) => searchTabCubit),
         ],
         child: MaterialApp(
           home: AppNavigator(),

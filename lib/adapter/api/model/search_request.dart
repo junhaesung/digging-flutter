@@ -19,4 +19,9 @@ class SearchRequest {
       'size': size,
     };
   }
+
+  @override
+  String toString() {
+    return 'SearchRequest{name: $name, type: $type, page: $page, size: $size}';
+  }
 }

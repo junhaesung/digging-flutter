@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:digging/adapter/api/DiggingApi.dart';
-import 'package:digging/adapter/api/model/PerfumeSimple.dart';
-import 'package:digging/adapter/api/model/brand_simple.dart';
 import 'package:digging/adapter/api/model/search_response.dart';
 
 class SearchRepository {
@@ -15,45 +13,23 @@ class SearchRepository {
     yield* _controller.stream;
   }
 
-  Future<SearchResponse?> searchAll(String keyword) async {
+  Future<SearchResponse?> search({
+    required String keyword,
+    required String type,
+  }) async {
     _controller.add(SearchStatus.inProgress);
     try {
-      final searchResponse = await _api.searchAll(keyword: keyword);
-      print('searchAll. response: $searchResponse');
-      print('searchAll. response.brands.length: ${searchResponse.brands?.length}');
-      print('searchAll. response.perfumes.length: ${searchResponse.perfumes?.length}');
+      final searchResponse = await _api.search(
+        keyword: keyword,
+        type: type,
+      );
+      print('response: $searchResponse');
+      print('response.brands.length: ${searchResponse.brands?.length}');
+      print('response.perfumes.length: ${searchResponse.perfumes?.length}');
       return searchResponse;
     } catch (e) {
       print('Failed to search api. $e');
       _controller.add(SearchStatus.failure);
-      return null;
-    }
-  }
-
-  Future<List<BrandSimple>?> searchBrand(String keyword) async {
-    _controller.add(SearchStatus.inProgress);
-    try {
-      final searchResponse = await _api.searchBrand(keyword: keyword);
-      _controller.add(SearchStatus.success);
-      return searchResponse.brands!;
-    } catch (e) {
-      print('Failed to search api. $e');
-      _controller.add(SearchStatus.failure);
-      return null;
-    }
-  }
-
-  Future<List<PerfumeSimple>?> searchPerfume(String keyword) async {
-    _controller.add(SearchStatus.inProgress);
-    try {
-      final searchResponse = await _api.searchPerfume(keyword: keyword);
-      _controller.add(SearchStatus.success);
-      _controller.add(SearchStatus.ready);
-      return searchResponse.perfumes!;
-    } catch (e) {
-      print('Failed to search api. $e');
-      _controller.add(SearchStatus.failure);
-      _controller.add(SearchStatus.ready);
       return null;
     }
   }
