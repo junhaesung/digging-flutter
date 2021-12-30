@@ -93,9 +93,7 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
     return ElevatedButton(
       onPressed: () => _goToNextPage(context),
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
-          Color(0xff1c1c1c),
-        ),
+        backgroundColor: MaterialStateProperty.all(DiggingColor.black),
       ),
       child: Container(
         height: 52,

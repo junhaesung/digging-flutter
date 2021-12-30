@@ -1,3 +1,4 @@
+import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
 import 'package:digging/ui/onboard/repository/onboard_repository.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,7 @@ class DescriptionView extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () => _goToNextPage(context),
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Color(0xff1c1c1c)),
+          backgroundColor: MaterialStateProperty.all(DiggingColor.black),
         ),
         child: Container(
           height: 52,
