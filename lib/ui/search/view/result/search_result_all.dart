@@ -1,5 +1,5 @@
-import 'package:digging/adapter/api/model/PerfumeSimple.dart';
 import 'package:digging/adapter/api/model/brand_simple.dart';
+import 'package:digging/adapter/api/model/perfume_simple.dart';
 import 'package:digging/adapter/api/model/search_response.dart';
 import 'package:digging/ui/search/bloc/search_bloc.dart';
 import 'package:digging/ui/search/repository/repository.dart';

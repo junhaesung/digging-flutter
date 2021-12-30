@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:digging/adapter/api/DiggingApi.dart';
+import 'package:digging/adapter/api/digging_api.dart';
 import 'package:digging/session/session.dart';
 import 'package:digging/ui/onboard/age_group/age_group.dart';
 import 'package:digging/ui/onboard/gender/gender.dart';

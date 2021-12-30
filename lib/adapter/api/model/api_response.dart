@@ -1,11 +1,11 @@
 import 'package:digging/adapter/api/model/member_data.dart';
 import 'package:digging/adapter/api/model/search_response.dart';
 
-import 'BrandData.dart';
-import 'LoginResponse.dart';
-import 'NotesData.dart';
-import 'PerfumeData.dart';
-import 'PerfumesData.dart';
+import 'brand_data.dart';
+import 'login_response.dart';
+import 'notes_data.dart';
+import 'perfume_data.dart';
+import 'perfumes_data.dart';
 
 class ApiResponse<T> {
   String code;

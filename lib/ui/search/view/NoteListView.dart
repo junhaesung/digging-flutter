@@ -1,6 +1,6 @@
-import 'package:digging/adapter/api/DiggingApi.dart';
-import 'package:digging/adapter/api/model/NoteSimple.dart';
-import 'package:digging/domain/notegroup.dart';
+import 'package:digging/adapter/api/digging_api.dart';
+import 'package:digging/adapter/api/model/note_simple.dart';
+import 'package:digging/domain/note_group.dart';
 import 'package:digging/ui/linear_loading_view.dart';
 import 'package:digging/ui/search/view/SearchPerfumeListView.dart';
 import 'package:flutter/material.dart';

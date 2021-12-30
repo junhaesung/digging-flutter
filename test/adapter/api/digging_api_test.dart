@@ -1,4 +1,4 @@
-import 'package:digging/adapter/api/DiggingApi.dart';
+import 'package:digging/adapter/api/digging_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

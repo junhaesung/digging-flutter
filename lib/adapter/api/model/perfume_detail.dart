@@ -1,6 +1,6 @@
-import 'Accord.dart';
-import 'PerfumeNotes.dart';
-import 'PerfumeSimple.dart';
+import 'accord.dart';
+import 'perfume_notes.dart';
+import 'perfume_simple.dart';
 
 class PerfumeDetail {
   int id;

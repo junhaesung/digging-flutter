@@ -1,7 +1,7 @@
-import 'package:digging/adapter/api/DiggingApi.dart';
-import 'package:digging/adapter/api/model/BrandDetail.dart';
-import 'package:digging/adapter/api/model/PerfumeSimple.dart';
+import 'package:digging/adapter/api/digging_api.dart';
+import 'package:digging/adapter/api/model/brand_detail.dart';
 import 'package:digging/adapter/api/model/brand_simple.dart';
+import 'package:digging/adapter/api/model/perfume_simple.dart';
 import 'package:digging/ui/linear_loading_view.dart';
 import 'package:digging/ui/search/view/result/item/search_result_perfume_item.dart';
 import 'package:flutter/material.dart';

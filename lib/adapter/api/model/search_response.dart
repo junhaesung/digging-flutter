@@ -1,5 +1,5 @@
-import 'package:digging/adapter/api/model/PerfumeSimple.dart';
 import 'package:digging/adapter/api/model/brand_simple.dart';
+import 'package:digging/adapter/api/model/perfume_simple.dart';
 import 'package:equatable/equatable.dart';
 
 class SearchResponse extends Equatable{

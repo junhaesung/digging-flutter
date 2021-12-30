@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:digging/adapter/api/DiggingApi.dart';
+import 'package:digging/adapter/api/digging_api.dart';
 import 'package:digging/ui/onboard/nickname/model/model.dart';
 import 'package:digging/ui/onboard/nickname/repository/repository.dart';
 import 'package:equatable/equatable.dart';

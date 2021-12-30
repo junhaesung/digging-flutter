@@ -1,4 +1,4 @@
-import 'package:digging/adapter/api/model/PerfumeSimple.dart';
+import 'package:digging/adapter/api/model/perfume_simple.dart';
 import 'package:digging/ui/perfume/PerfumeDetailView.dart';
 import 'package:flutter/material.dart';
 

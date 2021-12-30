@@ -1,4 +1,4 @@
-import 'PerfumeDetail.dart';
+import 'perfume_detail.dart';
 
 class PerfumeData {
   PerfumeDetail perfumeDetail;

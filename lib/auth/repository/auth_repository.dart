@@ -1,5 +1,5 @@
-import 'package:digging/adapter/api/DiggingApi.dart';
-import 'package:digging/adapter/api/model/MemberDetail.dart';
+import 'package:digging/adapter/api/digging_api.dart';
+import 'package:digging/adapter/api/model/member_detail.dart';
 import 'package:digging/adapter/storage/secure_storage_api.dart';
 
 class AuthRepository {

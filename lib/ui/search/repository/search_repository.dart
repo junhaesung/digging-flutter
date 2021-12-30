@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:digging/adapter/api/DiggingApi.dart';
+import 'package:digging/adapter/api/digging_api.dart';
 import 'package:digging/adapter/api/model/search_response.dart';
 
 class SearchRepository {

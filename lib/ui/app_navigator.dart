@@ -1,6 +1,6 @@
 import 'package:digging/session/bloc/session_bloc.dart';
 import 'package:digging/ui/onboard/onboard_navigator.dart';
-import 'package:digging/ui/splash/SplashView.dart';
+import 'package:digging/ui/splash/splash_view.dart';
 import 'package:digging/ui/tab_page/tab_page_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

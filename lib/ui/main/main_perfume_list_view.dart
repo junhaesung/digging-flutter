@@ -1,6 +1,6 @@
-import 'package:digging/adapter/api/DiggingApi.dart';
-import 'package:digging/adapter/api/model/BrandDetail.dart';
-import 'package:digging/adapter/api/model/PerfumeSimple.dart';
+import 'package:digging/adapter/api/digging_api.dart';
+import 'package:digging/adapter/api/model/brand_detail.dart';
+import 'package:digging/adapter/api/model/perfume_simple.dart';
 import 'package:digging/domain/perfume.dart';
 import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/ui/perfume/PerfumeDetailView.dart';

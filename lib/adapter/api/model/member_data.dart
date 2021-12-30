@@ -1,4 +1,4 @@
-import 'package:digging/adapter/api/model/MemberDetail.dart';
+import 'package:digging/adapter/api/model/member_detail.dart';
 
 class MemberData {
   MemberDetail memberDetail;

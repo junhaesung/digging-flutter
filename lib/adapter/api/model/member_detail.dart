@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'NoteGroupSimple.dart';
+import 'note_group_simple.dart';
 
 class MemberDetail extends Equatable {
   final int id;

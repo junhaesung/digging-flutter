@@ -1,11 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:digging/adapter/api/DiggingApi.dart';
+import 'package:digging/adapter/api/digging_api.dart';
 import 'package:digging/domain/brand.dart';
-import 'package:digging/domain/notegroup.dart';
+import 'package:digging/domain/note_group.dart';
 import 'package:digging/domain/perfume.dart';
 import 'package:digging/session/bloc/session_bloc.dart';
 import 'package:digging/ui/design/digging_color.dart';
-import 'package:digging/ui/main/MainPerfumeListView.dart';
+import 'package:digging/ui/main/main_perfume_list_view.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
 import 'package:digging/ui/perfume/PerfumeDetailView.dart';
 import 'package:digging/ui/tab_page/bottom_tab_bar.dart';

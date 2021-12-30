@@ -1,23 +1,23 @@
 import 'dart:convert';
 
-import 'package:digging/adapter/api/model/LoginRequest.dart';
-import 'package:digging/adapter/api/model/MemberDetail.dart';
-import 'package:digging/adapter/api/model/PerfumeSimple.dart';
-import 'package:digging/adapter/api/model/UpdateNicknameRequest.dart';
+import 'package:digging/adapter/api/model/login_request.dart';
+import 'package:digging/adapter/api/model/member_detail.dart';
+import 'package:digging/adapter/api/model/perfume_simple.dart';
 import 'package:digging/adapter/api/model/search_request.dart';
 import 'package:digging/adapter/api/model/search_response.dart';
+import 'package:digging/adapter/api/model/update_nickname_request.dart';
 import 'package:digging/adapter/storage/secure_storage_api.dart';
 import 'package:digging/ui/onboard/age_group/age_group.dart';
 import 'package:digging/ui/onboard/gender/gender.dart';
 import 'package:digging/ui/onboard/note_group/note_group.dart';
 import 'package:http/http.dart' as http;
 
-import 'model/ApiResponse.dart';
-import 'model/BrandDetail.dart';
-import 'model/LoginResponse.dart';
-import 'model/NoteSimple.dart';
-import 'model/PerfumeDetail.dart';
+import 'model/api_response.dart';
+import 'model/brand_detail.dart';
 import 'model/initialize_request.dart';
+import 'model/login_response.dart';
+import 'model/note_simple.dart';
+import 'model/perfume_detail.dart';
 
 class DiggingApi {
   const DiggingApi();

@@ -1,4 +1,4 @@
-import 'MemberDetail.dart';
+import 'member_detail.dart';
 
 class LoginResponse {
   final MemberDetail memberDetail;

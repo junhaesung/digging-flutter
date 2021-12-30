@@ -5,7 +5,7 @@ import 'package:digging/ui/search/view/search_detail_view.dart';
 import 'package:digging/ui/tab_page/bottom_tab_bar.dart';
 import 'package:flutter/material.dart';
 
-import '/domain/notegroup.dart';
+import '/domain/note_group.dart';
 
 class SearchView extends StatelessWidget {
   static Route route() => MaterialPageRoute(builder: (_) => SearchView());

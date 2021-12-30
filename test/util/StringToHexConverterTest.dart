@@ -1,4 +1,4 @@
-import 'package:digging/util/StringColorConverter.dart';
+import 'package:digging/util/string_color_converter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

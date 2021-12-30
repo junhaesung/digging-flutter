@@ -1,4 +1,4 @@
-import 'package:digging/adapter/api/model/PerfumeSimple.dart';
+import 'package:digging/adapter/api/model/perfume_simple.dart';
 
 class PerfumesData {
   List<PerfumeSimple> perfumeSimples;

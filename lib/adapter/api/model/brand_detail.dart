@@ -1,4 +1,4 @@
-import 'PerfumeSimple.dart';
+import 'perfume_simple.dart';
 
 class BrandDetail {
   int id;

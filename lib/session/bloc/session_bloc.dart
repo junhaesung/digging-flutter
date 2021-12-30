@@ -1,4 +1,4 @@
-import 'package:digging/adapter/api/model/MemberDetail.dart';
+import 'package:digging/adapter/api/model/member_detail.dart';
 import 'package:digging/auth/auth.dart';
 import 'package:digging/util/device_id_resolver.dart';
 import 'package:equatable/equatable.dart';

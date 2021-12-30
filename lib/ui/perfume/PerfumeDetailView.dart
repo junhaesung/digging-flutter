@@ -1,10 +1,10 @@
-import 'package:digging/adapter/api/DiggingApi.dart';
-import 'package:digging/adapter/api/model/Accord.dart';
-import 'package:digging/adapter/api/model/PerfumeDetail.dart';
-import 'package:digging/adapter/api/model/PerfumeNotes.dart';
-import 'package:digging/adapter/api/model/PerfumeSimple.dart';
+import 'package:digging/adapter/api/digging_api.dart';
+import 'package:digging/adapter/api/model/accord.dart';
+import 'package:digging/adapter/api/model/perfume_detail.dart';
+import 'package:digging/adapter/api/model/perfume_notes.dart';
+import 'package:digging/adapter/api/model/perfume_simple.dart';
 import 'package:digging/ui/design/digging_color.dart';
-import 'package:digging/util/StringColorConverter.dart';
+import 'package:digging/util/string_color_converter.dart';
 import 'package:flutter/material.dart';
 
 class PerfumeDetailView extends StatefulWidget {

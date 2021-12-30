@@ -1,4 +1,4 @@
-import 'package:digging/domain/notegroup.dart';
+import 'package:digging/domain/note_group.dart';
 import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/ui/onboard/age_group/age_group.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';

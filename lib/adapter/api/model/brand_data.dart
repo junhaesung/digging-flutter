@@ -1,4 +1,4 @@
-import 'BrandDetail.dart';
+import 'brand_detail.dart';
 
 class BrandData {
   BrandDetail brandDetail;

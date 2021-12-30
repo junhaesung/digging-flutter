@@ -1,9 +1,9 @@
 import 'package:digging/ui/circular_loading_view.dart';
-import 'package:digging/ui/onboard/DescriptionView.dart';
-import 'package:digging/ui/onboard/GenderAndAgeView.dart';
-import 'package:digging/ui/onboard/NicknameView.dart';
-import 'package:digging/ui/onboard/NoteGroupView.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
+import 'package:digging/ui/onboard/description_view.dart';
+import 'package:digging/ui/onboard/gender_and_age_view.dart';
+import 'package:digging/ui/onboard/nickname_view.dart';
+import 'package:digging/ui/onboard/note_group_view.dart';
 import 'package:digging/ui/onboard/repository/onboard_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
