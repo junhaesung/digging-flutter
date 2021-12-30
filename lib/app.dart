@@ -73,6 +73,9 @@ class DiggingApp extends StatelessWidget {
         ],
         child: MaterialApp(
           home: AppNavigator(),
+          theme: ThemeData(
+            fontFamily: "SF Pro Display",
+          ),
         ),
       ),
     );
