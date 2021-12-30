@@ -1,7 +1,7 @@
 import 'package:digging/adapter/api/DiggingApi.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
+import 'package:digging/ui/onboard/onboard_dots_indicator.dart';
 import 'package:digging/ui/onboard/repository/onboard_repository.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,13 +19,7 @@ class _NicknameView extends State<NicknameView> {
     return BlocBuilder<OnboardBloc, OnboardState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            title: DotsIndicator(dotsCount: 3, position: 0),
-            centerTitle: true,
-            elevation: 0.0,
-            backgroundColor: Color(0xffe5e5e5),
-            automaticallyImplyLeading: false,
-          ),
+          appBar: _appBar(),
           body: Container(
             color: Color(0xffe5e5e5),
             child: SafeArea(
@@ -103,6 +97,16 @@ class _NicknameView extends State<NicknameView> {
               FloatingActionButtonLocation.centerFloat,
         );
       },
+    );
+  }
+
+  PreferredSizeWidget _appBar() {
+    return AppBar(
+      title: OnboardDotsIndicator(position: 0),
+      centerTitle: true,
+      elevation: 0.0,
+      backgroundColor: Color(0xffe5e5e5),
+      automaticallyImplyLeading: false,
     );
   }
 

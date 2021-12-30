@@ -3,8 +3,8 @@ import 'package:digging/ui/onboard/age_group/age_group.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
 import 'package:digging/ui/onboard/gender/gender.dart';
 import 'package:digging/ui/onboard/note_group/note_group.dart';
+import 'package:digging/ui/onboard/onboard_dots_indicator.dart';
 import 'package:digging/ui/onboard/repository/repository.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,7 +13,7 @@ class NoteGroupView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<OnboardBloc, OnboardState>(
       builder: (context, state) => Scaffold(
-        appBar: _appBarWidget(context),
+        appBar: _appBar(context),
         body: SafeArea(
           child: Container(
             color: Color(0xffe5e5e5),
@@ -57,9 +57,9 @@ class NoteGroupView extends StatelessWidget {
         );
   }
 
-  PreferredSizeWidget _appBarWidget(BuildContext context) {
+  PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
-      title: DotsIndicator(dotsCount: 3, position: 2),
+      title: OnboardDotsIndicator(position: 2),
       centerTitle: true,
       backgroundColor: Color(0xffe5e5e5),
       elevation: 0.0,
