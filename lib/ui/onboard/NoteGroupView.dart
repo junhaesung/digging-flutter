@@ -1,4 +1,5 @@
 import 'package:digging/domain/notegroup.dart';
+import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/ui/onboard/age_group/age_group.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
 import 'package:digging/ui/onboard/gender/gender.dart';
@@ -16,7 +17,7 @@ class NoteGroupView extends StatelessWidget {
         appBar: _appBar(context),
         body: SafeArea(
           child: Container(
-            color: Color(0xffe5e5e5),
+            color: DiggingColor.backgroundGrey,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Column(
@@ -61,7 +62,7 @@ class NoteGroupView extends StatelessWidget {
     return AppBar(
       title: OnboardDotsIndicator(position: 2),
       centerTitle: true,
-      backgroundColor: Color(0xffe5e5e5),
+      backgroundColor: DiggingColor.backgroundGrey,
       elevation: 0.0,
       leading: IconButton(
         onPressed: () => _goToPreviousPage(context),

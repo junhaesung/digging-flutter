@@ -1,4 +1,5 @@
 import 'package:digging/adapter/api/DiggingApi.dart';
+import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
 import 'package:digging/ui/onboard/onboard_dots_indicator.dart';
 import 'package:digging/ui/onboard/repository/onboard_repository.dart';
@@ -21,7 +22,7 @@ class _NicknameView extends State<NicknameView> {
         return Scaffold(
           appBar: _appBar(),
           body: Container(
-            color: Color(0xffe5e5e5),
+            color: DiggingColor.backgroundGrey,
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -105,7 +106,7 @@ class _NicknameView extends State<NicknameView> {
       title: OnboardDotsIndicator(position: 0),
       centerTitle: true,
       elevation: 0.0,
-      backgroundColor: Color(0xffe5e5e5),
+      backgroundColor: DiggingColor.backgroundGrey,
       automaticallyImplyLeading: false,
     );
   }

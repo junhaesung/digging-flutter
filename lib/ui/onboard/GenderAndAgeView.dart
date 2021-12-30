@@ -1,3 +1,4 @@
+import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
 import 'package:digging/ui/onboard/gender/gender.dart';
 import 'package:digging/ui/onboard/onboard_dots_indicator.dart';
@@ -37,7 +38,7 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
           appBar: _appBar(context),
           body: SafeArea(
             child: Container(
-              color: Color(0xffe5e5e5),
+              color: DiggingColor.backgroundGrey,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: ListView(
@@ -117,7 +118,7 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
     return AppBar(
       title: OnboardDotsIndicator(position: 1),
       centerTitle: true,
-      backgroundColor: Color(0xffe5e5e5),
+      backgroundColor: DiggingColor.backgroundGrey,
       elevation: 0.0,
       leading: IconButton(
         onPressed: () {
