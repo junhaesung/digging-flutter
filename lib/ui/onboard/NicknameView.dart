@@ -20,7 +20,7 @@ class _NicknameView extends State<NicknameView> {
         return Scaffold(
           appBar: _appBar(),
           body: Container(
-            color: DiggingColor.backgroundGrey,
+            color: DiggingColor.whiteGrey,
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -58,7 +58,7 @@ class _NicknameView extends State<NicknameView> {
       title: OnboardDotsIndicator(position: 0),
       centerTitle: true,
       elevation: 0.0,
-      backgroundColor: DiggingColor.backgroundGrey,
+      backgroundColor: DiggingColor.whiteGrey,
       automaticallyImplyLeading: false,
     );
   }

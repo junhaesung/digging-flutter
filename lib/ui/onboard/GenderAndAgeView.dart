@@ -38,7 +38,7 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
           appBar: _appBar(context),
           body: SafeArea(
             child: Container(
-              color: DiggingColor.backgroundGrey,
+              color: DiggingColor.whiteGrey,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: ListView(
@@ -85,29 +85,48 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
         vertical: 6.0,
         horizontal: 20.0,
       ),
-      child: ElevatedButton(
-        onPressed: () {
-          if (isValid) {
-            _goToNextPage(context);
-          }
-        },
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-            Color(isValid ? 0xff1c1c1c : 0xc7c7c7),
-          ),
-          enableFeedback: false,
+      child: isValid ? _activeButton() : _inactiveButton(),
+    );
+  }
+
+  Widget _activeButton() {
+    return ElevatedButton(
+      onPressed: () => _goToNextPage(context),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(
+          Color(0xff1c1c1c),
         ),
-        child: Container(
-          height: 52,
-          child: Center(
-            child: Text(
-              "다음",
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+      ),
+      child: Container(
+        height: 52,
+        child: Center(
+          child: Text(
+            "다음",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _inactiveButton() {
+    return Container(
+      height: 52,
+      decoration: BoxDecoration(
+        color: Color(0xffc7c7c7),
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Center(
+        child: Text(
+          "다음",
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
       ),
@@ -118,7 +137,7 @@ class _GenderAndAgeView extends State<GenderAndAgeView> {
     return AppBar(
       title: OnboardDotsIndicator(position: 1),
       centerTitle: true,
-      backgroundColor: DiggingColor.backgroundGrey,
+      backgroundColor: DiggingColor.whiteGrey,
       elevation: 0.0,
       leading: IconButton(
         onPressed: () {

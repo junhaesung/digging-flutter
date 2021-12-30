@@ -17,7 +17,7 @@ class NoteGroupView extends StatelessWidget {
         appBar: _appBar(context),
         body: SafeArea(
           child: Container(
-            color: DiggingColor.backgroundGrey,
+            color: DiggingColor.whiteGrey,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Column(
@@ -62,7 +62,7 @@ class NoteGroupView extends StatelessWidget {
     return AppBar(
       title: OnboardDotsIndicator(position: 2),
       centerTitle: true,
-      backgroundColor: DiggingColor.backgroundGrey,
+      backgroundColor: DiggingColor.whiteGrey,
       elevation: 0.0,
       leading: IconButton(
         onPressed: () => _goToPreviousPage(context),
