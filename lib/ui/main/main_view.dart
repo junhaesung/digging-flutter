@@ -4,6 +4,7 @@ import 'package:digging/domain/brand.dart';
 import 'package:digging/domain/note_group.dart';
 import 'package:digging/domain/perfume.dart';
 import 'package:digging/session/bloc/session_bloc.dart';
+import 'package:digging/ui/circular_loading_view.dart';
 import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/ui/main/main_perfume_list_view.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
@@ -32,25 +33,36 @@ class _MainView extends State<MainView> {
     }
     List<Perfume> perfumes = Perfume.getPerfumes(10).toList();
 
-    return BlocBuilder<OnboardBloc, OnboardState>(
-      builder: (context, state) => Scaffold(
-        appBar: _appBar(context),
-        body: SafeArea(
-          child: ListView(
-            children: [
-              // For you
-              getForYouWidget(context, Perfume.getPerfumes(3)),
-              // 인기브랜드
-              getPopularBrandWidget(context),
-              // 디깅의 추천 향수
-              getRecommendedPerfumeWidget(),
-              // 내가 좋아할 노트
-              getFavoriteNotePerfume(context, noteGroups, perfumes),
-            ],
+    return FutureBuilder(
+      future: _api.fetchMainPage(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Scaffold(
+            body: CircularLoadingView(),
+          );
+        }
+        print(snapshot.data);
+        return BlocBuilder<OnboardBloc, OnboardState>(
+        builder: (context, state) => Scaffold(
+          appBar: _appBar(context),
+          body: SafeArea(
+            child: ListView(
+              children: [
+                // For you
+                getForYouWidget(context, Perfume.getPerfumes(3)),
+                // 인기브랜드
+                getPopularBrandWidget(context),
+                // 디깅의 추천 향수
+                getRecommendedPerfumeWidget(),
+                // 내가 좋아할 노트
+                getFavoriteNotePerfume(context, noteGroups, perfumes),
+              ],
+            ),
           ),
+          bottomNavigationBar: BottomTabBar(),
         ),
-        bottomNavigationBar: BottomTabBar(),
-      ),
+      );
+      },
     );
   }
 

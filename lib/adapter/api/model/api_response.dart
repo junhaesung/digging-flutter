@@ -1,3 +1,4 @@
+import 'package:digging/adapter/api/model/main_page_data.dart';
 import 'package:digging/adapter/api/model/member_data.dart';
 import 'package:digging/adapter/api/model/search_response.dart';
 
@@ -75,6 +76,22 @@ class ApiResponse<T> {
       json['code'] as String,
       json['message'] as String,
       SearchResponse.fromJson(json['data']),
+    );
+  }
+
+  static ApiResponse<MainPageData?> mainPageData(Map<String, dynamic> json) {
+    var mainPageData = null;
+    try {
+      mainPageData =
+          json['data'] != null ? MainPageData.fromJson(json['data']) : null;
+    } catch (e) {
+      print('error: $e');
+    }
+
+    return ApiResponse(
+      json['code'] as String,
+      json['message'] as String,
+      mainPageData,
     );
   }
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:digging/adapter/api/model/login_request.dart';
+import 'package:digging/adapter/api/model/main_page_response.dart';
 import 'package:digging/adapter/api/model/member_detail.dart';
 import 'package:digging/adapter/api/model/perfume_simple.dart';
 import 'package:digging/adapter/api/model/search_request.dart';
@@ -230,6 +231,20 @@ class DiggingApi {
         )
         .then((value) => ApiResponse.searchData(json.decode(value.body)))
         .then((value) => value.data!);
+  }
+
+  /// 메인페이지
+  Future<MainPageResponse> fetchMainPage() async {
+    final accessToken = await _getAccessToken();
+    return http
+        .get(
+      Uri.http(_host, '/api/v1/recommend/main'),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
+    )
+        .then((value) => ApiResponse.mainPageData(json.decode(value.body)))
+        .then((value) => value.data!.mainPageResponse);
   }
 
   Future<String?> _getAccessToken() async {
