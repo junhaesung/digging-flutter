@@ -8,6 +8,8 @@ class BottomTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<TabPageCubit, TabPageState>(
       builder: (context, state) => BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         currentIndex: state.index,
         onTap: (index) {
           if (index == 0) {
