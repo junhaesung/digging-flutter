@@ -1,6 +1,6 @@
 import 'package:digging/domain/note.dart';
 import 'package:digging/ui/design/digging_color.dart';
-import 'package:digging/ui/search/view/NoteListView.dart';
+import 'package:digging/ui/search/view/note_list_view.dart';
 import 'package:digging/ui/search/view/search_detail_view.dart';
 import 'package:digging/ui/tab_page/bottom_tab_bar.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,5 @@
 import 'package:digging/adapter/api/model/perfume_simple.dart';
-import 'package:digging/ui/perfume/PerfumeDetailView.dart';
+import 'package:digging/ui/perfume/perfume_detail_view.dart';
 import 'package:flutter/material.dart';
 
 class SearchResultPerfumeItem extends StatelessWidget {

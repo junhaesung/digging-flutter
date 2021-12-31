@@ -8,7 +8,7 @@ import 'package:digging/ui/circular_loading_view.dart';
 import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/ui/main/main_perfume_list_view.dart';
 import 'package:digging/ui/onboard/bloc/onboard_bloc.dart';
-import 'package:digging/ui/perfume/PerfumeDetailView.dart';
+import 'package:digging/ui/perfume/perfume_detail_view.dart';
 import 'package:digging/ui/tab_page/bottom_tab_bar.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';

@@ -2,7 +2,7 @@ import 'package:digging/adapter/api/digging_api.dart';
 import 'package:digging/adapter/api/model/perfume_simple.dart';
 import 'package:digging/domain/note.dart';
 import 'package:digging/domain/perfume.dart';
-import 'package:digging/ui/perfume/PerfumeDetailView.dart';
+import 'package:digging/ui/perfume/perfume_detail_view.dart';
 import 'package:flutter/material.dart';
 
 class SearchPerfumeListView extends StatefulWidget {

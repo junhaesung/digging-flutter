@@ -2,7 +2,7 @@ import 'package:digging/adapter/api/digging_api.dart';
 import 'package:digging/adapter/api/model/note_simple.dart';
 import 'package:digging/domain/note_group.dart';
 import 'package:digging/ui/linear_loading_view.dart';
-import 'package:digging/ui/search/view/SearchPerfumeListView.dart';
+import 'package:digging/ui/search/view/search_perfume_list_view.dart';
 import 'package:flutter/material.dart';
 
 import '/domain/note.dart';
