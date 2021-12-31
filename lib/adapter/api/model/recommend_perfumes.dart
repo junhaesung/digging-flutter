@@ -8,7 +8,7 @@ class RecommendPerfumes {
   factory RecommendPerfumes.fromJson(Map<String, dynamic> json) {
     return RecommendPerfumes(
       perfumes: (json['perfumes'] as List)
-          .map((e) => PerfumeSimple.fromJson2(e))
+          .map((e) => PerfumeSimple.fromJson(e))
           .toList(),
     );
   }

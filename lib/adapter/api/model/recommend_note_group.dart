@@ -15,7 +15,7 @@ class RecommendNoteGroups {
     return RecommendNoteGroups(
       id: json['id'] as int,
       name: json['name'] as String,
-      recommendNotes: (json['recommendNotes'] as List)
+      recommendNotes: (json['notes'] as List)
           .map((e) => NoteDetail.fromJson(e))
           .toList(),
     );

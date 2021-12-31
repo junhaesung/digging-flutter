@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:digging/adapter/api/digging_api.dart';
-import 'package:digging/domain/brand.dart';
+import 'package:digging/adapter/api/model/brand_simple.dart';
+import 'package:digging/adapter/api/model/main_page_response.dart';
+import 'package:digging/adapter/api/model/perfume_simple.dart';
+import 'package:digging/adapter/api/model/recommend_perfumes.dart';
 import 'package:digging/domain/note_group.dart';
-import 'package:digging/domain/perfume.dart';
 import 'package:digging/session/bloc/session_bloc.dart';
 import 'package:digging/ui/circular_loading_view.dart';
 import 'package:digging/ui/design/digging_color.dart';
@@ -31,32 +33,49 @@ class _MainView extends State<MainView> {
     if (_selectedNoteGroupId == 0) {
       _selectedNoteGroupId = noteGroups.first.id;
     }
-    List<Perfume> perfumes = Perfume.getPerfumes(10).toList();
 
-    return FutureBuilder(
+    return FutureBuilder<MainPageResponse>(
       future: _api.fetchMainPage(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        if (!snapshot.hasData || snapshot.data == null) {
           return Scaffold(
             body: CircularLoadingView(),
           );
         }
-        print(snapshot.data);
+        final mainPageResponse = snapshot.data!;
         return BlocBuilder<OnboardBloc, OnboardState>(
           builder: (context, state) => Scaffold(
             appBar: _appBar(context),
             body: SafeArea(
-              child: ListView(
-                children: [
-                  // For you
-                  getForYouWidget(context, Perfume.getPerfumes(3)),
-                  // 인기브랜드
-                  getPopularBrandWidget(context),
-                  // 디깅의 추천 향수
-                  getRecommendedPerfumeWidget(),
-                  // 내가 좋아할 노트
-                  getFavoriteNotePerfume(context, noteGroups, perfumes),
-                ],
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: ListView(
+                  children: [
+                    // For you
+                    getForYouWidget(
+                      context: context,
+                      perfumes: mainPageResponse.recommendPerfumes[0].perfumes,
+                    ),
+                    // 인기 브랜드
+                    getPopularBrandWidget(
+                      context: context,
+                      brands: mainPageResponse.popularBrands,
+                    ),
+                    // 디깅의 추천 향수
+                    getRecommendedPerfumeWidget(
+                      context: context,
+                      recommendPerfumes: mainPageResponse.recommendPerfumes,
+                    ),
+                    // 내가 좋아할 노트
+                    getFavoriteNotePerfume(
+                      context: context,
+                      noteGroups: noteGroups,
+                      perfumes: mainPageResponse.recommendPerfumes[3].perfumes,
+                    ),
+                  ],
+                ),
               ),
             ),
             bottomNavigationBar: BottomTabBar(),
@@ -94,56 +113,61 @@ class _MainView extends State<MainView> {
   }
 
   /// For you
-  Widget getForYouWidget(BuildContext context, List<Perfume> perfumes) {
+  Widget getForYouWidget({
+    required BuildContext context,
+    required List<PerfumeSimple> perfumes,
+  }) {
     return Container(
-      // height: 382,
       child: Padding(
         padding: const EdgeInsets.only(
           top: 12,
-          // left: 34,
-          // right: 34,
           bottom: 20,
         ),
-        child: Column(
-          children: [
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 330,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _forYouPerfumeIndex = index;
-                  });
-                },
-              ),
-              items: perfumes.map((perfume) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 7.0),
-                      child: _forYouCarouselItem(context, perfume),
-                    );
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+          ),
+          child: Column(
+            children: [
+              CarouselSlider(
+                options: CarouselOptions(
+                  height: 330,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _forYouPerfumeIndex = index;
+                    });
                   },
-                );
-              }).toList(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: DotsIndicator(
-                dotsCount: 3,
-                position: _forYouPerfumeIndex.toDouble(),
-                decorator: DotsDecorator(
-                  color: DiggingColor.grey,
-                  activeColor: DiggingColor.skyBlue,
+                ),
+                items: perfumes.map((perfume) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 7.0),
+                        child: _forYouCarouselItem(context, perfume),
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: DotsIndicator(
+                  dotsCount: 3,
+                  position: _forYouPerfumeIndex.toDouble(),
+                  decorator: DotsDecorator(
+                    color: DiggingColor.grey,
+                    activeColor: DiggingColor.skyBlue,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  _forYouCarouselItem(BuildContext context, Perfume perfume) {
+  _forYouCarouselItem(BuildContext context, PerfumeSimple perfume) {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -235,56 +259,61 @@ class _MainView extends State<MainView> {
     );
   }
 
-  /// 인기브랜드
-  Widget getPopularBrandWidget(BuildContext context) {
-    List<Brand> brands = Brand.getBrands();
+  /// 인기 브랜드
+  Widget getPopularBrandWidget({
+    required BuildContext context,
+    required List<BrandSimple> brands,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(
         top: 30,
+        bottom: 30,
         left: 20,
       ),
-      child: Container(
-        height: 186,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '인기브랜드',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '인기브랜드',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 32),
-              child: Container(
-                height: 86,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: getBrandWidgets(context, brands),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 32),
+            child: Container(
+              height: 86,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: getBrandWidgets(
+                  context: context,
+                  brands: brands,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  List<Widget> getBrandWidgets(BuildContext context, List<Brand> brands) =>
-      brands
-          .map((e) => toBrandWidget(context, e, Perfume.getPerfumes(10)))
-          .toList();
+  List<Widget> getBrandWidgets({
+    required BuildContext context,
+    required List<BrandSimple> brands,
+  }) =>
+      brands.map((e) => toBrandWidget(context: context, brand: e)).toList();
 
-  Widget toBrandWidget(
-    BuildContext context,
-    Brand brand,
-    List<Perfume> perfumes,
-  ) =>
+  Widget toBrandWidget({
+    required BuildContext context,
+    required BrandSimple brand,
+  }) =>
       GestureDetector(
         onTap: () {
-          // _goToPerfumeListView(context, brand, perfumes);
-          _goToFuturePerfumeListView(context, brand);
+          _goToFuturePerfumeListView(
+            context: context,
+            brand: brand,
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -294,7 +323,7 @@ class _MainView extends State<MainView> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
-                  brand.logoImageUrl,
+                  brand.thumbnailImageUrl,
                 ),
                 fit: BoxFit.cover,
               ),
@@ -309,7 +338,11 @@ class _MainView extends State<MainView> {
       );
 
   /// 디깅의 추천 향수
-  Widget getRecommendedPerfumeWidget() => Container(
+  Widget getRecommendedPerfumeWidget({
+    required BuildContext context,
+    required List<RecommendPerfumes> recommendPerfumes,
+  }) =>
+      Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -337,17 +370,17 @@ class _MainView extends State<MainView> {
                   getRecommendedItem(
                     context,
                     '이달의 향수',
-                    Perfume.getPerfumes(10).toList(),
+                    recommendPerfumes[1].perfumes,
                   ),
                   getRecommendedItem(
                     context,
                     '모든 분들에게 인기가 많아요',
-                    Perfume.getPerfumes(10).toList(),
+                    recommendPerfumes[2].perfumes,
                   ),
                   getRecommendedItem(
                     context,
                     '선물하기 좋은 향수',
-                    Perfume.getPerfumes(10).toList(),
+                    recommendPerfumes[3].perfumes,
                   ),
                 ],
               ),
@@ -359,7 +392,7 @@ class _MainView extends State<MainView> {
   Widget getRecommendedItem(
     BuildContext context,
     String title,
-    List<Perfume> perfumes,
+    List<PerfumeSimple> perfumes,
   ) =>
       Padding(
         padding: const EdgeInsets.only(
@@ -433,7 +466,7 @@ class _MainView extends State<MainView> {
         ),
       );
 
-  Widget toPerfumeWidget(Perfume perfume) => Container(
+  Widget toPerfumeWidget(PerfumeSimple perfume) => Container(
         child: Column(
           children: [
             Container(
@@ -441,7 +474,7 @@ class _MainView extends State<MainView> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                    perfume.imageUrl,
+                    perfume.thumbnailImageUrl,
                   ),
                   fit: BoxFit.fitHeight,
                 ),
@@ -471,11 +504,11 @@ class _MainView extends State<MainView> {
       );
 
   /// 내가 좋아할 노트
-  Widget getFavoriteNotePerfume(
-    BuildContext context,
-    List<NoteGroup> noteGroups,
-    List<Perfume> perfumes, // TODO: noteGroups.perfumes
-  ) {
+  Widget getFavoriteNotePerfume({
+    required BuildContext context,
+    required List<NoteGroup> noteGroups,
+    required List<PerfumeSimple> perfumes, // TODO: noteGroups.perfumes
+  }) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -563,7 +596,7 @@ class _MainView extends State<MainView> {
   Widget _toNoteGroupPerfumeWidget(
     BuildContext context,
     NoteGroup noteGroup,
-    List<Perfume> perfumes,
+    List<PerfumeSimple> perfumes,
   ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -588,7 +621,7 @@ class _MainView extends State<MainView> {
                         width: 50,
                         height: 90,
                         child: Image.network(
-                          perfumes[0].imageUrl,
+                          perfumes[0].thumbnailImageUrl,
                           fit: BoxFit.fitWidth,
                         ),
                       ),
@@ -599,14 +632,14 @@ class _MainView extends State<MainView> {
                             width: 35,
                             height: 50,
                             child: Image.network(
-                              perfumes[1].imageUrl,
+                              perfumes[1].thumbnailImageUrl,
                             ),
                           ),
                           Container(
                             width: 35,
                             height: 50,
                             child: Image.network(
-                              perfumes[2].imageUrl,
+                              perfumes[2].thumbnailImageUrl,
                             ),
                           )
                         ],
@@ -633,10 +666,10 @@ class _MainView extends State<MainView> {
   }
 
   /// 인기브랜드 -> 향수 목록 화면
-  void _goToFuturePerfumeListView(
-    BuildContext context,
-    Brand brand,
-  ) {
+  void _goToFuturePerfumeListView({
+    required BuildContext context,
+    required BrandSimple brand,
+  }) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => MainPerfumeListView.brand(
@@ -651,7 +684,7 @@ class _MainView extends State<MainView> {
   void _goToPerfumeListViewWithTitleAndPerfumes(
     BuildContext context,
     String title,
-    List<Perfume> perfumes,
+    List<PerfumeSimple> perfumes,
   ) {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -665,7 +698,7 @@ class _MainView extends State<MainView> {
 
   void _goToPerfumeDetailView(
     BuildContext context,
-    Perfume perfume,
+    PerfumeSimple perfume,
   ) {
     Navigator.of(context).push(
       MaterialPageRoute(

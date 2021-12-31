@@ -2,31 +2,29 @@ class PerfumeSimple {
   int id;
   String name;
   String brandName;
+  String imageUrl;
   String thumbnailImageUrl;
 
-  PerfumeSimple(this.id, this.name, this.brandName, this.thumbnailImageUrl);
+  PerfumeSimple(
+    this.id,
+    this.name,
+    this.brandName,
+    this.imageUrl,
+    this.thumbnailImageUrl,
+  );
 
   factory PerfumeSimple.fromJson(Map<String, dynamic> json) {
     return PerfumeSimple(
       json['id'] as int,
       json['name'] as String,
       json['brandName'] as String,
+      json['imageUrl'] as String,
       json['thumbnailImageUrl'] as String,
-    );
-  }
-
-  /// api 변경 전까지 임시로 사용하는 메서드
-  factory PerfumeSimple.fromJson2(Map<String, dynamic> json) {
-    return PerfumeSimple(
-      json['id'] as int,
-      json['name'] as String,
-      json['brand'] as String,
-      json['image'] as String,
     );
   }
 
   @override
   String toString() {
-    return 'PerfumeSimple{id: $id, name: $name, brandName: $brandName, thumbnailImageUrl: $thumbnailImageUrl}';
+    return 'PerfumeSimple{id: $id, name: $name, brandName: $brandName, imageUrl: $imageUrl, thumbnailImageUrl: $thumbnailImageUrl}';
   }
 }

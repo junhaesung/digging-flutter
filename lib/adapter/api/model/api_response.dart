@@ -80,18 +80,10 @@ class ApiResponse<T> {
   }
 
   static ApiResponse<MainPageData?> mainPageData(Map<String, dynamic> json) {
-    var mainPageData = null;
-    try {
-      mainPageData =
-          json['data'] != null ? MainPageData.fromJson(json['data']) : null;
-    } catch (e) {
-      print('error: $e');
-    }
-
     return ApiResponse(
       json['code'] as String,
       json['message'] as String,
-      mainPageData,
+      json['data'] != null ? MainPageData.fromJson(json['data']) : null,
     );
   }
 

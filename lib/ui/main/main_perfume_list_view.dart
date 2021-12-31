@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 class MainPerfumeListView extends StatefulWidget {
   final String title;
   final int? brandId;
-  final List<Perfume>? perfumes;
+  final List<PerfumeSimple>? perfumes;
 
   MainPerfumeListView.brand({
     required this.title,
@@ -36,7 +36,7 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
   final DiggingApi api = DiggingApi();
   final String title;
   int? brandId;
-  List<Perfume>? perfumes;
+  List<PerfumeSimple>? perfumes;
 
   _MainPerfumeListView(
     this.title,
@@ -54,7 +54,7 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
     return getRecommendedPerfumeWidget(context, perfumes!);
   }
 
-  Widget toPerfumeListItem(BuildContext context, Perfume perfume) {
+  Widget toPerfumeListItem(BuildContext context, PerfumeSimple perfume) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: GestureDetector(
@@ -72,7 +72,7 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
             child: Row(
               children: [
                 Image.network(
-                  perfume.imageUrl,
+                  perfume.thumbnailImageUrl,
                   fit: BoxFit.fitHeight,
                 ),
                 Expanded(
@@ -125,8 +125,7 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
         }
 
         BrandDetail brandDetail = snapshot.data;
-        List<Perfume> perfumes =
-            brandDetail.perfumes.map((e) => _toPerfume(e)).toList();
+        List<PerfumeSimple> perfumes = brandDetail.perfumes;
 
         return Scaffold(
           appBar: getAppBarWidget(context, title),
@@ -138,7 +137,7 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
 
   Widget getRecommendedPerfumeWidget(
     BuildContext context,
-    List<Perfume> perfumes,
+    List<PerfumeSimple> perfumes,
   ) {
     return Scaffold(
       appBar: getAppBarWidget(context, title),
@@ -146,7 +145,7 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
     );
   }
 
-  void _goToPerfumeDetail(BuildContext context, Perfume perfume) {
+  void _goToPerfumeDetail(BuildContext context, PerfumeSimple perfume) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => PerfumeDetailView(perfumeId: perfume.id),
@@ -208,7 +207,7 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
 
   Widget getBodyWidget(
     BuildContext context,
-    List<Perfume> perfumes,
+    List<PerfumeSimple> perfumes,
   ) =>
       SafeArea(
         child: Container(

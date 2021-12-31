@@ -39,7 +39,7 @@ class PerfumeDetail {
       (json['accords'] as List).map((e) => Accord.fromJson(e)).toList(),
       PerfumeNotes.fromJson(json['notes']),
       (json['similarPerfumes'] as List)
-          .map((e) => PerfumeSimple.fromJson2(e))
+          .map((e) => PerfumeSimple.fromJson(e))
           .toList(),
     );
   }

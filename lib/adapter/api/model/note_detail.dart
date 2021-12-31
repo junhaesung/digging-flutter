@@ -15,9 +15,8 @@ class NoteDetail {
     return NoteDetail(
       id: json['id'] as int,
       name: json['name'] as String,
-      // TODO: rename api
-      perfumes: (json['recommendPerfumes'] as List)
-          .map((e) => PerfumeSimple.fromJson2(e))
+      perfumes: (json['perfumes'] as List)
+          .map((e) => PerfumeSimple.fromJson(e))
           .toList(),
     );
   }
