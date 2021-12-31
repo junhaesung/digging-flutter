@@ -66,7 +66,7 @@ class PerfumeDetailView extends StatelessWidget {
                   color: Color(0xfff8f8f8),
                 ),
                 // Accords
-                _getAccordWidget(perfumeDetail),
+                _AccordViewer(perfumeDetail: perfumeDetail),
                 // note
                 _NoteViewer(perfumeDetail: perfumeDetail),
                 // 유사한 향수
@@ -224,8 +224,97 @@ class PerfumeDetailView extends StatelessWidget {
     );
   }
 
-  /// 메인 어코드 정보
-  Widget _getAccordWidget(PerfumeDetail perfumeDetail) {
+  /// 이 향수와 비슷한 제품
+  Widget _getSimilarPerfumesWidget(
+    BuildContext context,
+    PerfumeDetail perfumeDetail,
+  ) {
+    List<PerfumeSimple> perfumeSimples = perfumeDetail.perfumeSimples;
+    return Container(
+      height: 300,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 30.0,
+          horizontal: 20.0,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '이 향수와 비슷한 제품',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff1b1b1b),
+              ),
+            ),
+            Container(height: 32),
+            Expanded(
+              child: GridView.count(
+                physics: NeverScrollableScrollPhysics(),
+                childAspectRatio: 105 / 167,
+                crossAxisCount: 3,
+                crossAxisSpacing: 10.0,
+                children: perfumeSimples.map((e) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              PerfumeDetailView(perfumeId: e.id),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 100,
+                            child: Image.network(
+                              e.thumbnailImageUrl,
+                              fit: BoxFit.fitHeight,
+                            ),
+                          ),
+                          Container(height: 8),
+                          Text(
+                            e.brandName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xffababab),
+                            ),
+                          ),
+                          Text(
+                            e.name,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// 구성 성분 (accord)
+class _AccordViewer extends StatelessWidget {
+  const _AccordViewer({required this.perfumeDetail});
+
+  final PerfumeDetail perfumeDetail;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
@@ -310,88 +399,6 @@ class PerfumeDetailView extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-
-  /// 이 향수와 비슷한 제품
-  Widget _getSimilarPerfumesWidget(
-    BuildContext context,
-    PerfumeDetail perfumeDetail,
-  ) {
-    List<PerfumeSimple> perfumeSimples = perfumeDetail.perfumeSimples;
-    return Container(
-      height: 300,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 30.0,
-          horizontal: 20.0,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '이 향수와 비슷한 제품',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xff1b1b1b),
-              ),
-            ),
-            Container(height: 32),
-            Expanded(
-              child: GridView.count(
-                physics: NeverScrollableScrollPhysics(),
-                childAspectRatio: 105 / 167,
-                crossAxisCount: 3,
-                crossAxisSpacing: 10.0,
-                children: perfumeSimples.map((e) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              PerfumeDetailView(perfumeId: e.id),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 100,
-                            child: Image.network(
-                              e.thumbnailImageUrl,
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                          Container(height: 8),
-                          Text(
-                            e.brandName,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xffababab),
-                            ),
-                          ),
-                          Text(
-                            e.name,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
