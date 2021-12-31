@@ -6,7 +6,7 @@ class MainPageResponse {
   final bool hasOnboarded;
   final List<BrandSimple> popularBrands;
   final List<RecommendPerfumes> recommendPerfumes;
-  final List<RecommendNoteGroups> recommendNoteGroups;
+  final List<RecommendNoteGroup> recommendNoteGroups;
 
   MainPageResponse({
     required this.hasOnboarded,
@@ -25,7 +25,7 @@ class MainPageResponse {
           .map((e) => RecommendPerfumes.fromJson(e))
           .toList(),
       recommendNoteGroups: (json['recommendNoteGroups'] as List)
-          .map((e) => RecommendNoteGroups.fromJson(e))
+          .map((e) => RecommendNoteGroup.fromJson(e))
           .toList(),
     );
   }
