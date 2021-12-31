@@ -398,68 +398,68 @@ class _MainView extends State<MainView> {
         padding: const EdgeInsets.only(
           bottom: 30,
         ),
-        child: GestureDetector(
-          onTap: () {
-            _goToPerfumeListViewWithTitleAndPerfumes(
-              context,
-              title,
-              perfumes,
-            );
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.white,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 30,
+              left: 20,
+              bottom: 30,
+              right: 12,
             ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 30,
-                left: 20,
-                bottom: 30,
-                right: 12,
-              ),
-              child: Container(
-                height: 226,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 30),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              title,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
+            child: Container(
+              height: 226,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            title,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Icon(
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            _goToPerfumeListViewWithTitleAndPerfumes(
+                              context,
+                              title,
+                              perfumes,
+                            );
+                          },
+                          icon: Icon(
                             Icons.arrow_forward_ios,
                             color: DiggingColor.grey100,
                           ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: GridView.count(
-                          physics: NeverScrollableScrollPhysics(),
-                          crossAxisCount: 3,
-                          childAspectRatio: 90 / 150,
-                          crossAxisSpacing: 12,
-                          children: perfumes
-                              .take(3)
-                              .map((e) => toPerfumeWidget(e))
-                              .toList(),
                         ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: GridView.count(
+                        physics: NeverScrollableScrollPhysics(),
+                        crossAxisCount: 3,
+                        childAspectRatio: 90 / 150,
+                        crossAxisSpacing: 12,
+                        children: perfumes
+                            .take(3)
+                            .map((e) => toPerfumeWidget(e))
+                            .toList(),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
