@@ -454,7 +454,10 @@ class _MainView extends State<MainView> {
                         crossAxisSpacing: 12,
                         children: perfumes
                             .take(3)
-                            .map((e) => toPerfumeWidget(e))
+                            .map((e) => toPerfumeWidget(
+                                  context: context,
+                                  perfume: e,
+                                ))
                             .toList(),
                       ),
                     ),
@@ -466,40 +469,49 @@ class _MainView extends State<MainView> {
         ),
       );
 
-  Widget toPerfumeWidget(PerfumeSimple perfume) => Container(
-        child: Column(
-          children: [
-            Container(
-              height: 90,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                    perfume.thumbnailImageUrl,
+  Widget toPerfumeWidget({
+    required BuildContext context,
+    required PerfumeSimple perfume,
+  }) =>
+      GestureDetector(
+        onTap: () {
+          _goToPerfumeDetailView(context, perfume);
+        },
+        child: Container(
+          child: Column(
+            children: [
+              Container(
+                height: 90,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                      perfume.thumbnailImageUrl,
+                    ),
+                    fit: BoxFit.fitHeight,
                   ),
-                  fit: BoxFit.fitHeight,
                 ),
               ),
-            ),
-            Container(height: 8),
-            Text(
-              perfume.brandName,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 12,
-                color: Color(0xffababab),
+              Container(height: 8),
+              Text(
+                perfume.brandName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Color(0xffababab),
+                ),
               ),
-            ),
-            Text(
-              perfume.name,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
+              Text(
+                perfume.name,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
 
