@@ -469,95 +469,86 @@ class _MainView extends State<MainView> {
     List<NoteGroup> noteGroups,
     List<Perfume> perfumes, // TODO: noteGroups.perfumes
   ) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 30,
-        bottom: 30,
-        left: 12,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
       ),
-      child: Container(
-        height: 321,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '내가 좋아할 노트',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff1b1b1b),
-                ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 30.0, left: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '내가 좋아할 노트',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff1b1b1b),
               ),
-              Container(height: 16),
-              Container(
-                height: 26,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: noteGroups.length,
-                  separatorBuilder: (context, index) => Container(width: 10),
-                  itemBuilder: (context, index) {
-                    NoteGroup noteGroup = noteGroups[index];
-                    var selected = noteGroup.id == _selectedNoteGroupId;
-                    return GestureDetector(
-                      onTap: () =>
-                          setState(() => _selectedNoteGroupId = noteGroup.id),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color:
-                              selected ? Color(0xffffeef4) : Color(0xfff3f3f3),
+            ),
+            Container(height: 16),
+            Container(
+              height: 26,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: noteGroups.length,
+                separatorBuilder: (context, index) => Container(width: 10),
+                itemBuilder: (context, index) {
+                  NoteGroup noteGroup = noteGroups[index];
+                  var selected = noteGroup.id == _selectedNoteGroupId;
+                  return GestureDetector(
+                    onTap: () =>
+                        setState(() => _selectedNoteGroupId = noteGroup.id),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color:
+                            selected ? Color(0xffffeef4) : Color(0xfff3f3f3),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 12,
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 4,
-                            horizontal: 12,
-                          ),
-                          child: Center(
-                            child: Text(
-                              noteGroup.name,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: selected
-                                    ? Color(0xffff5894)
-                                    : Color(0xff888888),
-                              ),
+                        child: Center(
+                          child: Text(
+                            noteGroup.name,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: selected
+                                  ? Color(0xffff5894)
+                                  : Color(0xff888888),
                             ),
                           ),
                         ),
                       ),
-                    );
-                  },
+                    ),
+                  );
+                },
+              ),
+            ),
+            Container(
+              height: 32,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 20.0,
+              ),
+              child: Container(
+                height: 161,
+                child: Row(
+                  children: [0, 1]
+                      .map((e) => _toNoteGroupPerfumeWidget(
+                            context,
+                            noteGroups[e],
+                            perfumes.getRange(e * 3, (e + 1) * 3).toList(),
+                          ))
+                      .toList(),
                 ),
               ),
-              Container(
-                height: 32,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  right: 20.0,
-                ),
-                child: Container(
-                  height: 161,
-                  child: Row(
-                    children: [0, 1]
-                        .map((e) => _toNoteGroupPerfumeWidget(
-                              context,
-                              noteGroups[e],
-                              perfumes.getRange(e * 3, (e + 1) * 3).toList(),
-                            ))
-                        .toList(),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
