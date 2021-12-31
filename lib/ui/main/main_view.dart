@@ -43,25 +43,25 @@ class _MainView extends State<MainView> {
         }
         print(snapshot.data);
         return BlocBuilder<OnboardBloc, OnboardState>(
-        builder: (context, state) => Scaffold(
-          appBar: _appBar(context),
-          body: SafeArea(
-            child: ListView(
-              children: [
-                // For you
-                getForYouWidget(context, Perfume.getPerfumes(3)),
-                // 인기브랜드
-                getPopularBrandWidget(context),
-                // 디깅의 추천 향수
-                getRecommendedPerfumeWidget(),
-                // 내가 좋아할 노트
-                getFavoriteNotePerfume(context, noteGroups, perfumes),
-              ],
+          builder: (context, state) => Scaffold(
+            appBar: _appBar(context),
+            body: SafeArea(
+              child: ListView(
+                children: [
+                  // For you
+                  getForYouWidget(context, Perfume.getPerfumes(3)),
+                  // 인기브랜드
+                  getPopularBrandWidget(context),
+                  // 디깅의 추천 향수
+                  getRecommendedPerfumeWidget(),
+                  // 내가 좋아할 노트
+                  getFavoriteNotePerfume(context, noteGroups, perfumes),
+                ],
+              ),
             ),
+            bottomNavigationBar: BottomTabBar(),
           ),
-          bottomNavigationBar: BottomTabBar(),
-        ),
-      );
+        );
       },
     );
   }
@@ -128,7 +128,14 @@ class _MainView extends State<MainView> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20),
-              child: DotsIndicator(dotsCount: 3, position: _forYouPerfumeIndex.toDouble()),
+              child: DotsIndicator(
+                dotsCount: 3,
+                position: _forYouPerfumeIndex.toDouble(),
+                decorator: DotsDecorator(
+                  color: DiggingColor.grey,
+                  activeColor: DiggingColor.skyBlue,
+                ),
+              ),
             ),
           ],
         ),
@@ -502,8 +509,7 @@ class _MainView extends State<MainView> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color:
-                            selected ? Color(0xffffeef4) : Color(0xfff3f3f3),
+                        color: selected ? Color(0xffffeef4) : Color(0xfff3f3f3),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
