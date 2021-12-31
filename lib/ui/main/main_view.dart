@@ -407,7 +407,7 @@ class _RecommendPerfumes extends StatelessWidget {
                 ),
                 getRecommendedItem(
                   context,
-                  '모든 분들에게 인기가 많아요',
+                  '모든 분들에게 인기가 많아요!',
                   recommendPerfumes[2].perfumes,
                 ),
                 getRecommendedItem(
