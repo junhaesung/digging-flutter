@@ -1,7 +1,6 @@
 import 'package:digging/adapter/api/digging_api.dart';
 import 'package:digging/adapter/api/model/brand_detail.dart';
 import 'package:digging/adapter/api/model/perfume_simple.dart';
-import 'package:digging/domain/perfume.dart';
 import 'package:digging/ui/design/digging_color.dart';
 import 'package:digging/ui/perfume/perfume_detail_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -153,15 +152,6 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
     );
   }
 
-  Perfume _toPerfume(PerfumeSimple perfumeSimple) {
-    return Perfume(
-      perfumeSimple.id,
-      perfumeSimple.name,
-      perfumeSimple.brandName,
-      perfumeSimple.thumbnailImageUrl,
-    );
-  }
-
   Widget getLoadingWidget() => Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xfff3fbff),
@@ -177,7 +167,6 @@ class _MainPerfumeListView extends State<MainPerfumeListView> {
           ),
           toolbarHeight: 44,
         ),
-        // body: Text('snapshot has no data. brandId: $_brandId'),
         body: LinearProgressIndicator(),
       );
 

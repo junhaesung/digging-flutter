@@ -338,67 +338,121 @@ class _AccordViewer extends StatelessWidget {
   }
 
   Widget _accordList(List<Accord> accords) {
+    List<Color> accordColors = [
+      (accords.length >= 1)
+          ? StringColorConverter.toColor(accords[0].backgroundColor)
+          : Color(0xfffffdc7),
+      (accords.length >= 2)
+          ? StringColorConverter.toColor(accords[1].backgroundColor)
+          : Color(0xffecdfd1),
+      (accords.length >= 3)
+          ? StringColorConverter.toColor(accords[2].backgroundColor)
+          : Color(0xffcfbcdc),
+      Color(0xfff2f2f2),
+    ];
+    final width = 95.0;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // 첫번쨰껀 글씨 굵게
+        // 첫번째는 글씨 굵게
         // 4번째부터는 회색에 매핑
+        _accordImage(accordColors[0], width),
         Row(
           children: [
             Container(
-              height: 60,
-              width: 95,
-              color: (accords.length >= 1)
-                  ? StringColorConverter.toColor(accords[0].backgroundColor)
-                  : Color(0xfffffdc7),
+              height: 50,
+              width: width,
+              color: accordColors[0],
             ),
-            Container(width: 8),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 12.0),
+              child: accords.length >= 1
+                  ? Container(width: 10, height: 1, color: Color(0xff1b1b1b))
+                  : Container(width: 10)
+            ),
             Text((accords.length >= 1) ? accords[0].name : ''),
           ],
         ),
+        Container(
+          color: accordColors[0],
+          child: _accordImage(accordColors[1], width),
+        ),
         Row(
           children: [
             Container(
-              height: 60,
-              width: 95,
-              color: (accords.length >= 2)
-                  ? StringColorConverter.toColor(accords[1].backgroundColor)
-                  : Color(0xffecdfd1),
+              height: 50,
+              width: width,
+              color: accordColors[1],
             ),
-            Container(width: 8),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 12.0),
+              child: accords.length >= 2
+                  ? Container(width: 10, height: 1, color: Color(0xff1b1b1b))
+                  : Container(width: 10)
+            ),
             Text((accords.length >= 2) ? accords[1].name : ''),
           ],
         ),
-        Row(
-          children: [
-            Container(
-              height: 60,
-              width: 95,
-              color: (accords.length >= 3)
-                  ? StringColorConverter.toColor(accords[2].backgroundColor)
-                  : Color(0xffcfbcdc),
-            ),
-            Container(width: 8),
-            Text((accords.length >= 3) ? accords[2].name : ''),
-          ],
+        Container(
+          color: accordColors[1],
+          child: _accordImage(accordColors[2], width),
         ),
         Row(
           children: [
             Container(
-              height: 180,
-              width: 95,
-              color: Colors.grey,
+              height: 50,
+              width: width,
+              color: accordColors[2],
             ),
-            Container(width: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: (accords.length >= 3)
-                  ? accords.sublist(3).map((e) => Text(e.name)).toList()
-                  : [],
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 12.0),
+              child: accords.length >= 3
+                  ? Container(width: 10, height: 1, color: Color(0xff1b1b1b))
+                  : Container(width: 10)
+            ),
+            Text((accords.length >= 3) ? accords[2].name : ''),
+          ],
+        ),
+        Container(
+          color: accordColors[2],
+          child: _accordImage(accordColors[3], width),
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 170,
+              width: width,
+              color: accordColors[3],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 12.0, top: 27.0),
+              child: accords.length >= 4
+                  ? Container(width: 10, height: 1, color: Color(0xff1b1b1b))
+                  : Container(width: 10),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: (accords.length >= 4)
+                    ? accords.sublist(3).map((e) => Text(e.name)).toList()
+                    : [],
+              ),
             ),
           ],
         ),
       ],
+    );
+  }
+
+  Image _accordImage(Color color, double width) {
+    return Image.asset(
+      'images/perfumes/accord_layer.png',
+      width: width,
+      fit: BoxFit.fitWidth,
+      colorBlendMode: BlendMode.srcIn,
+      color: color,
     );
   }
 }
