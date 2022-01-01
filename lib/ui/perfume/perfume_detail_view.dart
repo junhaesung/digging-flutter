@@ -69,7 +69,11 @@ class PerfumeDetailView extends StatelessWidget {
                 _AccordViewer(perfumeDetail: perfumeDetail),
                 // note
                 _NoteViewer(perfumeDetail: perfumeDetail),
-                // 유사한 향수
+                Container(
+                  height: 8,
+                  color: Color(0xfff8f8f8),
+                ),
+                // 이 향수와 비슷한 제품
                 _getSimilarPerfumesWidget(context, perfumeDetail),
               ],
             ),
