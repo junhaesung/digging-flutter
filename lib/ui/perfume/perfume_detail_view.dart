@@ -365,12 +365,14 @@ class _AccordViewer extends StatelessWidget {
               color: accordColors[0],
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 12.0),
-              child: accords.length >= 1
-                  ? Container(width: 10, height: 1, color: Color(0xff1b1b1b))
-                  : Container(width: 10)
+                padding: const EdgeInsets.only(left: 8.0, right: 12.0),
+                child: accords.length >= 1
+                    ? Container(width: 10, height: 1, color: Color(0xff1b1b1b))
+                    : Container(width: 10)),
+            Text(
+              (accords.length >= 1) ? accords[0].name : '',
+              style: _textStyleFirst(),
             ),
-            Text((accords.length >= 1) ? accords[0].name : ''),
           ],
         ),
         Container(
@@ -387,10 +389,13 @@ class _AccordViewer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 12.0),
               child: accords.length >= 2
-                  ? Container(width: 10, height: 1, color: Color(0xff1b1b1b))
-                  : Container(width: 10)
+                  ? Container(width: 10, height: 1, color: DiggingColor.grey100)
+                  : Container(width: 10),
             ),
-            Text((accords.length >= 2) ? accords[1].name : ''),
+            Text(
+              (accords.length >= 2) ? accords[1].name : '',
+              style: _textStyleSecond(),
+            ),
           ],
         ),
         Container(
@@ -407,10 +412,13 @@ class _AccordViewer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 12.0),
               child: accords.length >= 3
-                  ? Container(width: 10, height: 1, color: Color(0xff1b1b1b))
-                  : Container(width: 10)
+                  ? Container(width: 10, height: 1, color: DiggingColor.grey100)
+                  : Container(width: 10),
             ),
-            Text((accords.length >= 3) ? accords[2].name : ''),
+            Text(
+              (accords.length >= 3) ? accords[2].name : '',
+              style: _textStyleSecond(),
+            ),
           ],
         ),
         Container(
@@ -428,7 +436,7 @@ class _AccordViewer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 12.0, top: 27.0),
               child: accords.length >= 4
-                  ? Container(width: 10, height: 1, color: Color(0xff1b1b1b))
+                  ? Container(width: 10, height: 1, color: DiggingColor.grey100)
                   : Container(width: 10),
             ),
             Padding(
@@ -436,7 +444,13 @@ class _AccordViewer extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: (accords.length >= 4)
-                    ? accords.sublist(3).map((e) => Text(e.name)).toList()
+                    ? accords
+                        .sublist(3)
+                        .map((e) => Text(
+                              e.name,
+                              style: _textStyleOther(),
+                            ))
+                        .toList()
                     : [],
               ),
             ),
@@ -453,6 +467,29 @@ class _AccordViewer extends StatelessWidget {
       fit: BoxFit.fitWidth,
       colorBlendMode: BlendMode.srcIn,
       color: color,
+    );
+  }
+
+  _textStyleFirst() {
+    return TextStyle(
+      fontWeight: FontWeight.w700,
+      fontSize: 18,
+    );
+  }
+
+  _textStyleSecond() {
+    return TextStyle(
+      fontWeight: FontWeight.w400,
+      color: DiggingColor.grey200,
+      fontSize: 18,
+    );
+  }
+
+  _textStyleOther() {
+    return TextStyle(
+      fontWeight: FontWeight.w400,
+      color: DiggingColor.grey200,
+      fontSize: 14,
     );
   }
 }
