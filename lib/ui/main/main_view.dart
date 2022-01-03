@@ -30,6 +30,7 @@ class MainView extends StatelessWidget {
           );
         }
         final mainPageResponse = snapshot.data!;
+        final hasOnboarded = mainPageResponse.hasOnboarded;
         return BlocBuilder<OnboardBloc, OnboardState>(
           builder: (context, state) => Scaffold(
             appBar: _appBar(context),
@@ -49,10 +50,12 @@ class MainView extends StatelessWidget {
                     // 디깅의 추천 향수
                     _RecommendPerfumes(
                       recommendPerfumes: mainPageResponse.recommendPerfumes,
+                      hasOnboarded: hasOnboarded,
                     ),
                     // 내가 좋아할 노트
                     _FavoriteNotes(
                       recommendNoteGroups: mainPageResponse.recommendNoteGroups,
+                      hasOnboarded: hasOnboarded,
                     ),
                   ],
                 ),
@@ -369,9 +372,13 @@ class _PopularBrand extends StatelessWidget {
 
 /// 디깅의 추천 향수
 class _RecommendPerfumes extends StatelessWidget {
-  _RecommendPerfumes({required this.recommendPerfumes});
+  _RecommendPerfumes({
+    required this.recommendPerfumes,
+    required this.hasOnboarded,
+  });
 
   final List<RecommendPerfumes> recommendPerfumes;
+  final bool hasOnboarded;
 
   @override
   Widget build(BuildContext context) {
@@ -391,7 +398,7 @@ class _RecommendPerfumes extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 30),
               child: Text(
-                '디깅의 추천 향수',
+                hasOnboarded ? '당신을 위한 추천 향수' : '디깅의 추천 향수',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -402,7 +409,7 @@ class _RecommendPerfumes extends StatelessWidget {
               children: [
                 getRecommendedItem(
                   context,
-                  '이달의 향수',
+                  hasOnboarded ? '{성별} 인기 향수' : '이달의 향수',
                   recommendPerfumes[1].perfumes,
                 ),
                 getRecommendedItem(
@@ -412,7 +419,7 @@ class _RecommendPerfumes extends StatelessWidget {
                 ),
                 getRecommendedItem(
                   context,
-                  '선물하기 좋은 향수',
+                  hasOnboarded ? '{상큼한 향}, 이 향수 어때요?' : '선물하기 좋은 향수',
                   recommendPerfumes[3].perfumes,
                 ),
               ],
@@ -568,19 +575,24 @@ class _RecommendPerfumes extends StatelessWidget {
 
 /// 내가 좋아할 노트
 class _FavoriteNotes extends StatefulWidget {
-  _FavoriteNotes({required this.recommendNoteGroups});
+  _FavoriteNotes({
+    required this.recommendNoteGroups,
+    required this.hasOnboarded,
+  });
 
   final List<RecommendNoteGroup> recommendNoteGroups;
+  final bool hasOnboarded;
 
   @override
   State<StatefulWidget> createState() =>
-      _FavoriteNotesState(recommendNoteGroups);
+      _FavoriteNotesState(recommendNoteGroups, hasOnboarded);
 }
 
 class _FavoriteNotesState extends State<_FavoriteNotes> {
-  _FavoriteNotesState(this.recommendNoteGroups);
+  _FavoriteNotesState(this.recommendNoteGroups, this.hasOnboarded);
 
   final List<RecommendNoteGroup> recommendNoteGroups;
+  final bool hasOnboarded;
   int _selectedNoteGroupId = 0;
 
   @override
@@ -601,7 +613,7 @@ class _FavoriteNotesState extends State<_FavoriteNotes> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '내가 좋아할 노트',
+              hasOnboarded ? '취향을 맞춘 노트' : '내가 좋아할 노트',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -662,7 +674,8 @@ class _FavoriteNotesState extends State<_FavoriteNotes> {
                   children: [0, 1]
                       .map((e) => _toNoteGroupPerfumeWidget(
                           context,
-                          recommendNoteGroups.firstWhere((ng) => ng.id == _selectedNoteGroupId),
+                          recommendNoteGroups.firstWhere(
+                              (ng) => ng.id == _selectedNoteGroupId),
                           e))
                       .toList(),
                 ),
